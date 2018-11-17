@@ -17,7 +17,7 @@ Generator（生成器）是由一个generator function返回的，并且它符�
 ```
 也就是说，**迭代器 ==== 一个 带有next函数 的对象**
 
-## Generator 的实现（用ES5）
+## Generator 的实现（用ES5）
 ```js
 function makeIterator(array) {
     var index = 0;
