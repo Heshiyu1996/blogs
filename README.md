@@ -20,7 +20,7 @@
   * [CSS 基础总结一](/src/CSS/CSS基础总结一.md)
 
 * JavaScript
-  * [类型](/src/JavaScript/类型.md)
+  * [Generator](/src/js/Generator.md)
 
 * 浏览器
   * [HTTP](/src/browser/HTTP.md)

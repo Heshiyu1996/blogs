@@ -36,14 +36,14 @@ function makeIterator(array) {
 var iterator = makeIterator([2, 5, 7]); 
 // iterator是迭代器；makeIterator是生成器
 
-iterator.next() // {value: 2, done: false}
-iterator.next() // {value: 5, done: false}
-iterator.next() // {value: 7, done: false}
-iterator.next() // {value: undefined, done: true}
+iterator.next() // {value: 2, done: false}
+iterator.next() // {value: 5, done: false}
+iterator.next() // {value: 7, done: false}
+iterator.next() // {value: undefined, done: true}
 ```
 
 ## Generator 的实现（用ES6）
-ES6引入了generator，可以使用轻松地创建迭代器。
+ES6引入了generator，可以轻松地创建迭代器。
 
 ```js
 function* createIterator() {
@@ -59,7 +59,6 @@ iterator2.next() // {value: 1, done: false}
 iterator2.next() // {value: 2, done: false}
 iterator2.next() // {value: 3, done: false}
 ```
-
 上面的例子是在生成器里面写yield，那如果要传入特定的数组呢？
 ```js
 // 这样改写生成器，调用时传入特定的参数就行了
@@ -76,4 +75,4 @@ var iterator3 = createIterator2([2, 5, 7])
 ## yield的特点
  * 用来说明next函数返回的value
  * 每个yield调用后，后面的代码都会停止执行
- * yield不能穿透函数，也就是说，不能用forEach遍历来声明yield（改用for）
+ * yield不能穿透函数，也就是说，不能用forEach遍历来声明yield（改用for）
