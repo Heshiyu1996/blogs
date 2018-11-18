@@ -6,15 +6,15 @@
  * {Function | Object} |[definition]
 
 ## 功能
- * 注册全局组件
+ * 注册全局组件
  ```js
  // 传入一个扩展过的构造器
  Vue.component('c-toast', Vue.extend({ /* ... */}))
 
  // 传入一个包含实例选项的对象，自动调用Vue.extend()
- Vue.component('c-toast, { /* ... */ })
+ Vue.component('c-toast', { /* ... */ })
  ```
- * 获取全局组件（的构造器，要new才能用）
+ * 获取全局组件（的构造器，要new才能用）
  ```js
  // 返回一个构造器
  Vue.component('c-toast')
@@ -22,7 +22,7 @@
 
  ------
 ## 运用 && 实践
-  在项目中，一般会有一些原子组件是需要 **自动注册** 的，这时候可通过一个js文件来写
+在项目中，一般会有一些原子组件是需要 **自动注册** 的，这时候可通过一个js文件来写
 ```js
 import Vue from 'vue'
 
@@ -48,7 +48,7 @@ Components.keys().map(key => {
     // by the way, 注册时，会将 第一个参数id 自动作为组件名(虽然也不知道name有啥用)
 })
 ```
-以上自动注册完成了。
+以上自动注册完成了。
 
 如果要获取某一个全局组件，并且绑定在vue的原型上的时候，就应该：
 ```js
