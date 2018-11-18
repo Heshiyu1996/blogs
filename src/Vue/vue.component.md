@@ -1,5 +1,5 @@
-# vue.component
-> generator
+# Vue.component
+> Vue.component
 
 ## 参数
  * {string} | id
