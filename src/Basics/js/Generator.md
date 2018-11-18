@@ -58,6 +58,7 @@ var iterator2 = createIterator()
 iterator2.next() // {value: 1, done: false}
 iterator2.next() // {value: 2, done: false}
 iterator2.next() // {value: 3, done: false}
+iterator2.next() // {value: undefined, done: true}
 ```
 上面的例子是在生成器里面写yield，那如果要传入特定的数组呢？
 ```js

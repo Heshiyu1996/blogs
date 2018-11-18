@@ -14,13 +14,13 @@
 
 ## 前端基础
 * HTML
-  * [HTML](/src/HTML/HTML.md)
+  * [HTML](/src/Basics/HTML/HTML.md)
 
 * CSS
-  * [CSS 基础总结一](/src/CSS/CSS基础总结一.md)
+  * [CSS 基础总结一](/src/Basics/CSS/CSS基础总结一.md)
 
 * JavaScript
-  * [Generator](/src/js/Generator.md)
+  * [Generator](/src/Basics/js/Generator.md)
 
 * 浏览器
   * [HTTP](/src/browser/HTTP.md)
@@ -31,7 +31,7 @@
 
 ## 前端框架
 * Vue
-  * [Vue 的组件通信](/src/Vue/Vue组件通信.md)
+  * [Vue.component](/src/Vue/vue.component.md)
 
 ## 读书心得
 * [《高性能的 JavaScript》](/src/book/高性能的JavaScript.md)
