@@ -34,13 +34,14 @@
   * [Vue.component](/src/Vue/vue.component.md)
 
 ## 读书心得
-* [《高性能的 JavaScript》](/src/book/高性能的JavaScript.md)
+* [《WebAssembly 的未来》](/src/Article/WebAssembly.md)
 
 ## 前端早读课
 * [JavaScript 复杂判断的更优雅写法](https://mp.weixin.qq.com/s/k-c2A-0mrLPW-ebZ-0P3Ng)
 * [forEach究竟能不能改变数组的值](https://blog.csdn.net/ZhengKehang/article/details/81281563)
 * [你应该知道的 JavaScript Array.map() 的 5 种用途](https://juejin.im/entry/5beb69746fb9a049bd41d815)
 * [js异步回调Async/Await与Promise区别](http://caibaojian.com/asyncawait.html)
+* [WebAssembly 的未来：将逐渐解锁整个“技能树](https://mp.weixin.qq.com/s/3k0am9CkpWopqSpO1iOkzA)
 
 ## 2018校招面试
 * [一些检验的方法](/src/interview/一些检验的方法.md)
