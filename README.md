@@ -35,7 +35,7 @@
 
 ## 读书心得
 * [《WebAssembly 的未来》](/src/Article/WebAssembly.md)
-* [《JavaScript Source Map 详解 —— 阮一峰》](/src/Article/SourceMap.md)
+* [《JavaScript Source Map 详解 —— 阮一峰》](/src/Article/SourceMap.md)
 
 ## 前端早读课
 * [JavaScript 复杂判断的更优雅写法](https://mp.weixin.qq.com/s/k-c2A-0mrLPW-ebZ-0P3Ng)
