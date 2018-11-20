@@ -43,6 +43,7 @@
 * [你应该知道的 JavaScript Array.map() 的 5 种用途](https://juejin.im/entry/5beb69746fb9a049bd41d815)
 * [js异步回调Async/Await与Promise区别](http://caibaojian.com/asyncawait.html)
 * [WebAssembly 的未来：将逐渐解锁整个“技能树](https://mp.weixin.qq.com/s/3k0am9CkpWopqSpO1iOkzA)
+* [webpack4中新的插件系统是如何工作的？](https://medium.com/webpack/the-new-plugin-system-week-22-23-c24e3b22e95)
 
 ## 2018校招面试
 * [一些检验的方法](/src/interview/一些检验的方法.md)
