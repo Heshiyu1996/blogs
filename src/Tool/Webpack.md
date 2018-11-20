@@ -2,7 +2,7 @@
 > Webpack
 
 ## 定义
-webpack是一个模块打包器。它通过一个给定的入口文件，然后开始找到项目中的所有依赖文件，并且借助 **loaders、plugins** 来 改变、压缩、优化它们，最后打包成一个或者多个浏览器可识别的js文件。
+Webpack是一个模块打包器。它通过一个给定的入口文件，然后开始找到项目中的所有依赖文件，并且借助 **loaders、plugins** 来 改变、压缩、优化它们，最后打包成一个或者多个浏览器可识别的js文件。
 ![alt](./img/webpack-1.png)
 
 ## webpack 4.0 的新特性
@@ -14,7 +14,7 @@
    "build": "webpack --mode production"
 }
 ```
-#### 设置为“development”时，webpack提供以下特性：
+#### 设置为“development”时，webpack提供以下特性：
 
 1、浏览器调试工具
 
@@ -24,7 +24,7 @@
 
 #### 设置为“production”时，webpack提供以下特性：
 
-1、开启所有的优化代码
+1、开启所有的优化代码
 
 2、更小的bundle体积
 
@@ -44,8 +44,8 @@ WebAssembly会带来运行时性能的大幅度提升，webpack4对它做了开�
 
 ### 新的插件系统
 
-webpack4最大的突破就是有了新的插件系统。
-旧的插件系统：
+webpack4最大的突破就是有了 **新的插件系统**。
+#### 旧的插件系统：
 
 1、Performance（定义上）
 
@@ -59,7 +59,7 @@ webpack4最大的突破就是有了新的插件系统。
 
 6、继承的方式（旧的需要`extend Tapable`，然后去用它的功能）
 
-新的API：
+#### 新的API：
 
 1、所有的hooks都存放到`hooks`这个对象里，作为扩展来的属性
 
