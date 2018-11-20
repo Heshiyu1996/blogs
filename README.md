@@ -27,7 +27,7 @@
   * [渲染机制](/src/browser/渲染机制.md)
 
 * 工具
-  * [webpack](/src/tool/webpack.md)
+  * [webpack](/src/Tool/Webpack.md)
 
 ## 前端框架
 * Vue
