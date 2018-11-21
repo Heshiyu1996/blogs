@@ -45,6 +45,9 @@
 * [WebAssembly 的未来：将逐渐解锁整个“技能树](https://mp.weixin.qq.com/s/3k0am9CkpWopqSpO1iOkzA)
 * [webpack4中新的插件系统是如何工作的？](https://medium.com/webpack/the-new-plugin-system-week-22-23-c24e3b22e95)
 
+## 部分项目经验
+* [修改npm全局安装路径](/src/Experience/NPM.md)
+
 ## 2018校招面试
 * [一些检验的方法](/src/interview/一些检验的方法.md)
 * [qiu-deqing/FE-interview](https://github.com/qiu-deqing/FE-interview)
