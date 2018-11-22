@@ -33,6 +33,7 @@
 ## 前端框架
 * Vue
   * [Vue.component](/src/Vue/vue.component.md)
+  * [vm.$attrs](/src/Vue/vm.$attrs.md)
 
 ## 读书心得
 * [《WebAssembly 的未来》](/src/Article/WebAssembly.md)
