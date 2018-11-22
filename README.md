@@ -15,6 +15,7 @@
 ## 前端基础
 * HTML
   * [HTML](/src/Basics/HTML/HTML.md)
+  * [input file的onChange只触发一次](/src/Basics/HTML/Input.md)
 
 * CSS
   * [CSS 基础总结一](/src/Basics/CSS/CSS基础总结一.md)
