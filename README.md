@@ -29,6 +29,7 @@
 
 ## 前端框架
 * Vue
+  * [参加《VueConf》的感悟总结](/src/Vue/VueConf.md)
   * [Vue.component](/src/Vue/vue.component.md)
   * [vm.$attrs](/src/Vue/vm.$attrs.md)
   * [Vue.js的最佳实践](/src/Vue/experience.md)
