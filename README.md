@@ -14,26 +14,24 @@
 
 ## 前端基础
 * HTML
-  * [HTML](/src/Basics/HTML/HTML.md)
-  * [input file的onChange只触发一次](/src/Basics/HTML/Input.md)
+  * [Input](/src/Basics/HTML/Input.md)
 
 * CSS
-  * [CSS 基础总结一](/src/Basics/CSS/CSS基础总结一.md)
 
 * JavaScript
   * [Generator](/src/Basics/js/Generator.md)
 
 * 浏览器
-  * [HTTP](/src/browser/HTTP.md)
-  * [渲染机制](/src/browser/渲染机制.md)
 
 * 工具
   * [webpack](/src/Tool/Webpack.md)
+  * [兼容性在线查询](https://caniuse.com/)
 
 ## 前端框架
 * Vue
   * [Vue.component](/src/Vue/vue.component.md)
   * [vm.$attrs](/src/Vue/vm.$attrs.md)
+  * [Vue.js的最佳实践](/src/Vue/experience.md)
 
 ## 读书心得
 * [《WebAssembly 的未来》](/src/Article/WebAssembly.md)
@@ -51,6 +49,5 @@
 * [修改npm全局安装路径](/src/Experience/NPM.md)
 
 ## 2018校招面试
-* [一些检验的方法](/src/interview/一些检验的方法.md)
 * [qiu-deqing/FE-interview](https://github.com/qiu-deqing/FE-interview)
 
