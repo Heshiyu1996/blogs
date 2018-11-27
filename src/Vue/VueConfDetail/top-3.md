@@ -18,6 +18,7 @@
  yarn global remove vue-cli
 
  yarn global add @vue/cli
+ 
  // 可见：
  // 1、如果目前电脑上有老版本的vue-cli，需要先移除
  // 2、官方推荐使用yarn来安装

@@ -3,7 +3,7 @@
 ## 会议日程
 * [主题演讲（演讲者：尤雨溪）](./VueConfDetail/top-1.md)
 * [挖掘Vue的声明式交互能力（演讲者：Winter）](./VueConfDetail/top-2.md)
-* [What_I_Learned_from_Maintaining_Vue_Cli](./VueConfDetail/top-3.md)
+* [What_I_Learned_from_Maintaining_Vue_Cli（演讲者：蒋豪群）](./VueConfDetail/top-3.md)
 * <闪电>燃烧你的vue-cli（演讲者：韦元悦）
 * 让你的Vue应用变得易接入(演讲者：勾三股四)
 * 探索Vue的高级应用(AntDesignVue里的那些黑科技)(演讲者：唐金州)
