@@ -3,22 +3,10 @@
 ## 会议日程
 * [主题演讲（演讲者：尤雨溪）](./VueConfDetail/top-1.md)
 * [挖掘Vue的声明式交互能力（演讲者：Winter）](./VueConfDetail/top-2.md)
-* [What I Learned from Maintaining Vue CLI（演讲者：蒋豪群）](#What I Learned from Maintaining Vue CLI（演讲者：蒋豪群）)
-* [<闪电>燃烧你的vue-cli（演讲者：韦元悦）](./VueConfDetail/top-3.md)
-* [让你的Vue应用变得易接入(演讲者：勾三股四)](#让你的Vue应用变得易接入(演讲者：勾三股四))
-* [探索Vue的高级应用(AntDesignVue里的那些黑科技)(演讲者：唐金州)](#探索Vue的高级应用(AntDesignVue里的那些黑科技)(演讲者：唐金州))
-* [基于Electron-Vue的桌面应用开发实践(演讲者：赵帅)](#基于Electron-Vue的桌面应用开发实践(演讲者：赵帅))
-* [多端统一方案：Hippy-Vue是如何设计实现的((演讲者：旷旭卿))](#多端统一方案：Hippy-Vue是如何设计实现的((演讲者：旷旭卿)))
-* [应用多端统一的实践((演讲者：卓凌))](#应用多端统一的实践((演讲者：卓凌)))
-
-
-## What I Learned from Maintaining Vue CLI（演讲者：蒋豪群）
-> 主题介绍：本次演讲将给大家分享 Vue CLI 的一些设计思路、Vue 生态圈的 tooling 发展和如何更好地跟进这些新技术。
-
-
-## <闪电>燃烧你的vue-cli（演讲者：韦元悦）
-## 让你的Vue应用变得易接入(演讲者：勾三股四)
-## 探索Vue的高级应用(AntDesignVue里的那些黑科技)(演讲者：唐金州)
-## 基于Electron-Vue的桌面应用开发实践(演讲者：赵帅)
-## 多端统一方案：Hippy-Vue是如何设计实现的(演讲者：旷旭卿)
-## 应用多端统一的实践(演讲者：卓凌)
+* [What_I_Learned_from_Maintaining_Vue_Cli](./VueConfDetail/top-3.md)
+* <闪电>燃烧你的vue-cli（演讲者：韦元悦）
+* 让你的Vue应用变得易接入(演讲者：勾三股四)
+* 探索Vue的高级应用(AntDesignVue里的那些黑科技)(演讲者：唐金州)
+* 基于Electron-Vue的桌面应用开发实践(演讲者：赵帅)
+* 多端统一方案：Hippy-Vue是如何设计实现的((演讲者：旷旭卿))
+* 应用多端统一的实践((演讲者：卓凌))

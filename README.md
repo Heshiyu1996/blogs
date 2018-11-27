@@ -20,6 +20,7 @@
 
 * JavaScript
   * [Generator](/src/Basics/js/Generator.md)
+  * [暂时性死区](/src/Basics/js/TDZ.md)
 
 * 浏览器
 
