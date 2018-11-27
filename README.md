@@ -22,8 +22,6 @@
   * [Generator](/src/Basics/js/Generator.md)
   * [暂时性死区](/src/Basics/js/TDZ.md)
 
-* 浏览器
-
 * 工具
   * [webpack](/src/Tool/Webpack.md)
   * [兼容性在线查询](https://caniuse.com/)
@@ -37,7 +35,7 @@
 
 ## 读书心得
 * [《WebAssembly 的未来》](/src/Article/WebAssembly.md)
-* [《JavaScript Source Map 详解》【作者【阮一峰】](/src/Article/SourceMap.md)
+* [《JavaScript Source Map 详解》【作者：阮一峰】](/src/Article/SourceMap.md)
 * [《VUE CONF大会之后的感想(非技术)》【作者：RobinsonZhang】](/src/Article/VueConfFeeling.md)
 
 ## 前端早读课
@@ -49,6 +47,7 @@
 * [webpack4中新的插件系统是如何工作的？](https://medium.com/webpack/the-new-plugin-system-week-22-23-c24e3b22e95)
 
 ## 部分项目经验
+* [项目小技巧](/src/Experience/Skill.md)
 * [修改npm全局安装路径](/src/Experience/NPM.md)
 
 ## 2018校招面试
