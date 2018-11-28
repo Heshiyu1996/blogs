@@ -6,5 +6,5 @@
 
  - 如果是中文，还要担心encode问题，可以使用 `encodeURIComponent` 来转码：
 ```js
-`https://www.baidu.com/heshiyu.png?download=${encodeURIComponent('使用手册_七鱼一触即达.pptx')}`
+`https://www.baidu.com/heshiyu.png?download=${encodeURIComponent('麦当劳.png')}`
 ```

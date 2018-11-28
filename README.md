@@ -19,8 +19,12 @@
 * CSS
 
 * JavaScript
-  * [Generator](/src/Basics/js/Generator.md)
-  * [暂时性死区](/src/Basics/js/TDZ.md)
+  * [Generator](/src/Basics/JS/Generator.md)
+  * [暂时性死区](/src/Basics/JS/TDZ.md)
+  * [JavaScript的超集——TypeScript](/src/Basics/JS/TypeScript.md)
+
+* TypeScript
+  * [基础类型](/src/Basics/TS/BasicTypes.md)
 
 * 工具
   * [webpack](/src/Tool/Webpack.md)
