@@ -55,5 +55,6 @@
 * [修改npm全局安装路径](/src/Experience/NPM.md)
 
 ## 2018校招面试
+* [setTimeout&&var](/src/Interview/setTimeout&&var.md)
 * [qiu-deqing/FE-interview](https://github.com/qiu-deqing/FE-interview)
 
