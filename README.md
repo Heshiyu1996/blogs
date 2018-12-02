@@ -53,6 +53,7 @@
 
 ## 部分项目经验
 * [项目小技巧](/src/Experience/Skill.md)
+* [在Vue里用Prettier为什么这么难！](/src/Experience/Prettier.md)
 * [修改npm全局安装路径](/src/Experience/NPM.md)
 
 ## 2018校招面试
