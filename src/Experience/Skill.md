@@ -8,3 +8,14 @@
 ```js
 `https://www.baidu.com/heshiyu.png?download=${encodeURIComponent('麦当劳.png')}`
 ```
+
+### package.json中的^和~
+#### ~
+    "vue": "~2.5.17"
+    // 意思是[2.5.17, 2.6.0)
+
+#### ^
+    "jquery": "^3.3.1",
+    // 意思是[3.3.1, 4.0.0)
+
+
