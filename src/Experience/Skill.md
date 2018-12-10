@@ -1,6 +1,32 @@
 ## Skill
 > 平时做项目的时候经常会碰到一些零散的小技巧！虽然不成体系，也不知道收纳到哪里才好，也想记录下来，那就都先放在这里吧！
 
+### const和map
+有时候const定义常量时，需要status对应的text的话可以这样写：
+```js
+const TRAIN_STATUS = {
+    NEW: '0',
+    SUCCESS: '1',
+    FAILED: '2'
+}
+
+const MAP_TRAIN_STATUS_TXT = {
+    [TRAIN_STATUS.NEW]: '未训练',
+    [TRAIN_STATUS.SUCCESS]: '训练成功',
+    [TRAIN_STATUS.FAILED]: '训练失败',
+}
+```
+
+### Vue里的v-for数组和对象
+v-for ... in里对于数组和对象遍历的是不一样的
+```js
+// array
+<div v-for="(item, index) in array"></div>
+
+// obj
+<div v-for="(val, key, index) in object"></div>
+```
+
 ### Vue的data()实例选项
 data实例选项里的字段只能用作初始化，而且这个初始化只能初始化静态的内容
 ```js
