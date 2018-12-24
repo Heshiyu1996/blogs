@@ -1,6 +1,20 @@
 ## Skill
 > 平时做项目的时候经常会碰到一些零散的小技巧！虽然不成体系，也不知道收纳到哪里才好，也想记录下来，那就都先放在这里吧！
 
+### JS 获取DOM节点宽高与绝对位置
+```js
+document.getElementById('hsy').getBoundingClientRect()
+
+{
+    top: 11,
+    left: 22,
+    bottom: 33,
+    right: 44,
+    width: 55,
+    height: 11
+}
+```
+
 ### 滑动到滚动条底部
 首先要找到`overflow: scroll`的dom节点
 ```js
