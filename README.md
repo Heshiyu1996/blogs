@@ -25,6 +25,7 @@
 * TypeScript
   * [基础类型](/src/Basics/TS/BasicTypes.md)
   * [解构赋值](/src/Basics/TS/Destructuring.md)
+  * [接口](/src/Basics/TS/Interfaces.md)
 
 * 工具
   * [webpack](/src/Tool/Webpack.md)
