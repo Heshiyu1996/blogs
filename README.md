@@ -34,6 +34,9 @@
 * 浏览器
   * [sessionStorage、localStorage、cookies的区别](/src/Browser/Storage.md)
 
+* 性能提升
+  * [图片转成base64](/src/Performance/base64.md)
+
 ## 前端框架
 * Vue
   * [参加《VueConf》的感悟总结](/src/Vue/VueConf.md)
