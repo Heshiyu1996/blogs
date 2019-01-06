@@ -1,6 +1,15 @@
 ## Skill
 > 平时做项目的时候经常会碰到一些零散的小技巧！虽然不成体系，也不知道收纳到哪里才好，也想记录下来，那就都先放在这里吧！
 
+### git的.gitignore文件不生效解决方法
+原因：新建的文件在git中会有缓存。如果某些文件已经被纳入了版本管理中（也就是上次已经成功提交过一次上去了），就算在`.gitignore`中已经声明了忽略路径也是不起作用的。所以需要把本地缓存删除，在进行`git push`
+```bash
+// git清除本地缓存命令
+git rm -r --cached .
+git add .
+git commit -m "update .ignore"
+```
+
 ### JS 获取DOM节点宽高与绝对位置
 ```js
 document.getElementById('hsy').getBoundingClientRect()

@@ -4,7 +4,7 @@
 > 更新时间： 2019-01-06
 
 我是导航条：
-[准备工具](#准备工具) -> [安装MySQL](#安装MySQL) -> [安装WorkBench](#安装WorkBench) -> [在Node.js中的写法](#Node.js中的写法) -> [Postman的使用](#Postman的使用)
+[准备工具](#准备工具) -> [安装MySQL](#安装MySQL) -> [安装WorkBench](#安装WorkBench) -> [在Node.js中的写法](#在Node.js中的写法) -> [Postman的使用](#Postman的使用)
 
 ### 准备工具
  - Node.js
@@ -45,7 +45,7 @@ SET PASSWORD FOR 'root'@'localhost' = PASSWORD('newpass');
 ![alt](./img/Node-Mysql-1.png)
 ![alt](./img/Node-Mysql-2.png)
 
-### Node.js中的写法
+### 在Node.js中的写法
 #### 准备的npm包
 ```json
   "dependencies": {
