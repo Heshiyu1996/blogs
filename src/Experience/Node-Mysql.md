@@ -1,7 +1,10 @@
-## Node-Mysql
+## Node-MySQL
 > 很早之前就知道nodeJS也可以写后台，而且也有很成熟的http框架。也想自己搭建一个服务器来访问自己的本地数据库，平时可以联调下post请求之类的
 > 
 > 更新时间： 2019-01-06
+
+我是导航条：
+[准备工具](#准备工具) -> [安装MySQL](#安装MySQL) -> [安装WorkBench](#安装WorkBench) -> [在Node.js中的写法](#Node.js中的写法) -> [Postman的使用](#Postman的使用)
 
 ### 准备工具
  - Node.js
@@ -13,7 +16,8 @@
  - Postman
  （https://www.getpostman.com/apps）
 
-### 安装Mysql
+
+### 安装MySQL
 1、打开dmg，一直下一步。注册本地数据库的账号、密码；
 
 2、开启Mysql，在“系统偏好设置” - “mysql” - “start Mysql server”；
@@ -32,7 +36,7 @@ PATH=$PATH:/usr/local/mysql/bin
 // 使其生效
 source ~/.bash_profile
 ```
-4、修改密码方法：
+4、修改密码：
 ```js
 SET PASSWORD FOR 'root'@'localhost' = PASSWORD('newpass');
 ```
@@ -42,7 +46,7 @@ SET PASSWORD FOR 'root'@'localhost' = PASSWORD('newpass');
 ![alt](./img/Node-Mysql-2.png)
 
 ### Node.js中的写法
-#### 准备工具包
+#### 准备的npm包
 ```json
   "dependencies": {
     "body-parser": "^1.18.3",
@@ -67,7 +71,7 @@ SET PASSWORD FOR 'root'@'localhost' = PASSWORD('newpass');
  - 如果没有注册body-parser，那将`req.body`将是 **undefined** 的
 
 ### Postman的使用
-#### Post
+#### 以Post为例
 1、设置请求的Headers，`Content-Type`设置为`application/x-www-form-urlencoded`
 ![alt](./img/Node-Mysql-3.png)
 
