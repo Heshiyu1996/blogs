@@ -12,8 +12,8 @@
 其它：
 * [<闪电>燃烧你的vue-cli（演讲者：韦元悦）](https://slides.com/miccycn/vuecli)
 * [探索Vue的高级应用(AntDesignVue里的那些黑科技)(演讲者：唐金州)](https://img.w3ctech.com/VueConf_%E5%94%90%E9%87%91%E5%B7%9E.pdf)
-* [基于Electron-Vue的桌面应用开发实践(演讲者：赵帅)](https://img.w3ctech.com/%E5%9F%BA%E4%BA%8EElectron-vue%E7%9A%84%E6%A1%8C%E5%BA%94%E7%94%A8%E5%AE%9E%E6%88%982.pdf）
-* [多端统一方案：Hippy-Vue是如何设计实现的((演讲者：旷旭卿))](https://img.w3ctech.com/Hippy-VueConf.pdf)
-* [应用多端统一的实践((演讲者：卓凌))](https://img.w3ctech.com/%E5%BA%94%E7%94%A8%E5%A4%9A%E7%AB%AF%E7%BB%9F%E4%B8%80%E7%9A%84%E5%AE%9E%E8%B7%B5.pdf）
-* [再谈Vue SSR -- 响应式数据流在快手游戏直播中的应用](https://img.w3ctech.com/vue-conf-tianxiang.pdf)
-* [how CRDT improves Vue apps](http://slides.com/ai/crdt-vue-cn#/)
+* [基于Electron-Vue的桌面应用开发实践(演讲者：赵帅)](https://img.w3ctech.com/基于Electron-vue的桌应用实战2.pdf)
+* [多端统一方案：Hippy-Vue是如何设计实现的(演讲者：旷旭卿)](https://img.w3ctech.com/Hippy-VueConf.pdf)
+* [应用多端统一的实践(演讲者：卓凌)](https://img.w3ctech.com/应用多端统一的实践.pdf)
+* [再谈Vue SSR -- 响应式数据流在快手游戏直播中的应用(演讲者：天翔)](https://img.w3ctech.com/vue-conf-tianxiang.pdf)
+* [how CRDT improves Vue apps(演讲者：Andrey Sitnik)](http://slides.com/ai/crdt-vue-cn#/)
