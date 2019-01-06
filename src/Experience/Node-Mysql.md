@@ -80,3 +80,17 @@ SET PASSWORD FOR 'root'@'localhost' = PASSWORD('newpass');
 
 3、可以从本地node服务器接受到来自postman的请求，并且通过`req.body`可以拿到参数
 ![alt](./img/Node-Mysql-5.png)
+
+在这过程也参考了网友的一些文章，才得以顺利搭建，总结的链接如下：
+
+1、《NodeJs针对Express框架配置Mysql进行数据库操作》
+
+（https://www.cnblogs.com/eczhou/p/7845529.html）
+
+2、《express做登录验证获取req.body为空对象问题》
+
+（https://blog.csdn.net/TyrionJ/article/details/81990048）
+
+3、《nodejs 写接口的步骤》
+
+（https://blog.csdn.net/weixin_42193625/article/details/80447390）
