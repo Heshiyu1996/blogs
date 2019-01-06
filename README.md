@@ -39,7 +39,7 @@
 
 ## 前端框架
 * Vue
-  * [参加《VueConf》的感悟总结](/src/Vue/VueConf.md)
+  * [参加《VueConf》的感悟总结（2019-01-06）](/src/Vue/VueConf.md)
   * [Vue.component](/src/Vue/vue.component.md)
   * [vm.$attrs](/src/Vue/vm.$attrs.md)
   * [Vue.js的最佳实践](/src/Vue/experience.md)
@@ -58,7 +58,7 @@
 * [webpack4中新的插件系统是如何工作的？](https://medium.com/webpack/the-new-plugin-system-week-22-23-c24e3b22e95)
 
 ## 部分项目经验
-* [用node.js搭建本地服务器，并连接MySQL数据库 （2019-01-06）](/src/Experience/Node-Mysql.md)
+* [用node.js搭建本地服务器，并连接MySQL数据库（2019-01-06）](/src/Experience/Node-Mysql.md)
 * [项目小技巧](/src/Experience/Skill.md)
 * [在Vue里用Prettier为什么这么难！](/src/Experience/Prettier.md)
 * [修改npm全局安装路径](/src/Experience/NPM.md)
