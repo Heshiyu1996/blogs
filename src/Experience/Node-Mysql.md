@@ -65,7 +65,7 @@ SET PASSWORD FOR 'root'@'localhost' = PASSWORD('newpass');
 
 4、最后执行实例的listen方法，并制定监听的端口
 
-（项目代码：https://github.com/qq450979309/node-mysql）
+（项目代码：https://github.com/qq450979309/node-mysql ）
 
 #### 注意的点
  - 如果没有注册body-parser，那将`req.body`将是 **undefined** 的
