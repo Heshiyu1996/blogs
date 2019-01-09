@@ -3,7 +3,10 @@
 > 
 > 更新时间： 2019-01-09
 
- - 类型：`(CreateElement: () => VNode)  => VNode`
+ - 类型：`(createElement: () => VNode)  => VNode`
+##### 由类型可以看出，render函数的参数是createElement，返回值是VNode。
+##### 其中createElement也是一个函数，它的返回值也是VNode
+
  - 详细：该渲染函数接收一个`createElement`方法作为第一个参数，用来创建`VNode` [什么是VNode？](#什么是VNode？)
  - 写法：
  ```js
@@ -11,6 +14,8 @@
    return createElement('div', { class: 'heshiyu' }, '内容')
  }
  ```
+
+
 
 ### createElement
 由上面例子可知，createElement函数有三个参数：
