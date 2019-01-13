@@ -26,14 +26,14 @@
   * [基础类型](/src/Basics/TS/BasicTypes.md)
   * [解构赋值](/src/Basics/TS/Destructuring.md)
   * [接口](/src/Basics/TS/Interfaces.md)
-  * [函数（2018-01-19）](/src/Basics/TS/Function.md)
+  * [函数（2018-01-10）](/src/Basics/TS/Function.md)
 
 * 工具
   * [webpack](/src/Tool/Webpack.md)
   * [兼容性在线查询](https://caniuse.com/)
 
 * 浏览器
-  * [sessionStorage、localStorage、cookies的区别](/src/Browser/Storage.md)
+  * [sessionStorage、localStorage、cookies的区别（2019-01-13）](/src/Browser/webStorage.md)
 
 * 性能提升
   * [图片转成base64](/src/Performance/base64.md)

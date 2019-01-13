@@ -9,7 +9,7 @@
 回顾js里的两种函数的写法：
 ```js
 // 具名函数
-function add(x, y) { return x + y}
+function add(x, y) { return x + y }
 
 // 匿名函数
 let addition = function(x, y) { return x + y }
