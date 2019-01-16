@@ -5,7 +5,7 @@
 > 
 > 方法二：基于类的继承，并且对象是由类构建出来的
 > 
-> 更新时间： 2019-01-15
+> 更新时间： 2019-01-16
 
 ### 类的例子
 ```ts
@@ -92,16 +92,17 @@ caozuoxiao.move(3333)
 ```
 由上面例子可知，
  - `子类`拥有构造函数时（或要在构造函数里访问`this`属性前），一定要调用`super()`
- - `子类`重写了`父类`继承而来的方法，使得这些方法具有不同的功能
- - 即使`caozuoxiao`被声明为`Animal`类型，但他是`Horse`实例，调用`move`时会调用`Horse`里的方法
+ - `子类`重写了`父类`继承而来的方法，使得这些方法具有不同的功能（即重写）
+ - 即使`caozuoxiao`被声明为`Animal`类型，但他是`Horse`实例，调用`move`时会调用`Horse`里的方法（以实例的类为准）
 
  ### public、protected和private
  在TypeScript里，成员默认为`public`。
+
 | 修饰符 | public | protected | private |
 |--|--|--|--|
 | 作用 | 可以在声明它的类的外部访问 | 能在声明它的类的内部、子类的内部访问 | 能在声明它的类的内部访问 |
 
-注意：
+有一些注意的点，先看下例子：
 
 ```ts
 class Person {
@@ -122,6 +123,7 @@ class Employee extends Person {
 
 let heshiyu = new Employee('heshiyu', 'NEAI')
 let caozuoxiao = new Person('caozuoxiao', 'YX') // error, “Person”的构造函数时被保护的，无法在包含它的类外被实例化（可以再Employee里被实例化）
+console.log(heshiyu.name) // error，name是protected修饰符，故不能在类的外部访问！
 ```
 由上面例子可知，
  - 在`类的内部`能够访问，在类的外部就不行了，但是可以通过**实例方法来get**
@@ -139,23 +141,27 @@ class Person {
     }
 }
 ```
-#### 通过构造函数的参数直接定义属性
-也就是： **参数属性**
+#### 参数属性——通过构造函数的参数直接定义属性
 ```ts
 // before
 class Person {
-    public name: string
+    readonly name: string
     private age: number
 
-    constructor() { /* ... */ }
+    constructor(theName: string, theAge: number) {
+        this.name = theName
+        this.age = theAge
+    }
 }
 
 // after
 class Person {
-    constructor(
-        public name: string
-        private age: number
-    ) { /* ... */ }
+    constructor( readonly name: string, private age: number ) { }
 }
+
+let hsy = new Person('heshiyu', 21)
+console.log(hsy.name) // 'heshiyu'
+console.log(hsy.age) // error，因为age的修饰符是private，不能在类外面被访问
+hsy.name = 'hhh' // error，因为name是readonly的
 ```
-看上去`Person`不像是有属性的类，但它确实有。
+看上去`Person`这个类不像是有属性的，但它确实有。并且这两种写法是 **等效** 的
