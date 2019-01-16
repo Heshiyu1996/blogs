@@ -26,6 +26,7 @@
   * [基础类型](/src/Basics/TS/BasicTypes.md)
   * [解构赋值](/src/Basics/TS/Destructuring.md)
   * [接口](/src/Basics/TS/Interfaces.md)
+  * [类](/src/Basics/TS/Class.md)
   * [函数（2019-01-10）](/src/Basics/TS/Function.md)
   * [泛型（2019-01-14）](/src/Basics/TS/Generics.md)
 
