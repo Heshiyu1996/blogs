@@ -51,6 +51,7 @@
 
 * Node.js
   * [回调函数（2019-01-24）](/src/NodeJS/Callback.md)
+  * [EventEmitter（2019-01-24）](/src/NodeJS/EventEmitter.md)
 
 ## 读书心得
 * [《WebAssembly 的未来》](/src/Article/WebAssembly.md)
