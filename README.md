@@ -21,6 +21,7 @@
 * JavaScript
   * [Generator](/src/Basics/JS/Generator.md)
   * [暂时性死区](/src/Basics/JS/TDZ.md)
+  * [event loop](/src/Basics/JS/EventLoop.md)
 
 * TypeScript
   * [基础类型](/src/Basics/TS/BasicTypes.md)
