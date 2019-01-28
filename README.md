@@ -30,6 +30,7 @@
   * [类（2019-01-17）](/src/Basics/TS/Class.md)
   * [函数（2019-01-10）](/src/Basics/TS/Function.md)
   * [泛型（2019-01-14）](/src/Basics/TS/Generics.md)
+  * [枚举（2019-01-28）](/src/Basics/TS/ENum.md)
 
 * 工具
   * [webpack](/src/Tool/Webpack.md)
