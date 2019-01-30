@@ -29,8 +29,6 @@
     - 进入：beforeCreate -> created -> beforeMount -> mounted
     - 离开：beforeDestroy -> destroyed
 
-
-
 ### 利用router保留滚动条位置
 有时候会有需求：从 **列表** 跳转到 **详情** ，再从 **详情** 跳回来，需要回到 **跳转前滚动条的位置**。
 
@@ -105,3 +103,8 @@ new VueRouter({
 
 ### Vue实例生命周期
 ![alt](./img/keepAlive-1.png)
+
+### 参考链接
+[用 vue-route 的 beforeEach 实现导航守卫（路由跳转前验证登录）](https://blog.csdn.net/latency_cheng/article/details/78580161)
+
+[Vue scrollBehavior 滚动行为](https://www.cnblogs.com/sophie_wang/p/7880261.html)
