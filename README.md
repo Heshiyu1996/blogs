@@ -33,6 +33,7 @@
   * [枚举（2019-01-28）](/src/Basics/TS/ENum.md)
 
 * 工具
+  * [Git](/src/Tool/Git.md)
   * [webpack](/src/Tool/Webpack.md)
   * [兼容性在线查询](https://caniuse.com/)
 
@@ -44,6 +45,7 @@
 
 ## 前端进阶
 * Vue
+  * [keepAlive（2019-01-30）](/src/Vue/KeepAlive.md)
   * [为什么v-for要添加唯一key？（2019-01-23）](/src/Vue/VueKey.md)
   * [参加《VueConf》的感悟总结（2019-01-06）](/src/Vue/VueConf.md)
   * [render函数（2019-01-09）](/src/Vue/render.md)
