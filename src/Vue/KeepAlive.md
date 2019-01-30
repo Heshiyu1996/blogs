@@ -34,7 +34,7 @@
 
 解决思路：
 
-1、使用全局前置守卫`router.beforeEach`在导航切换前，记录**scrollTop**
+1、使用全局前置守卫`router.beforeEach`在导航切换前，记录**scrollTop**
 
 2、使用vue-router里的`scrollBehavior`方法（设置回退位置）
 
@@ -67,7 +67,7 @@ router.beforeEach((to, from, next) => {
 
 #### scrollBehavior
 
-`scrollBehavior`是实例化VueRouter时，传入的一个实例选项，它接受一个函数：
+`scrollBehavior`是实例化VueRouter时，传入的一个实例选项，它接受一个函数：
 ```js
 new VueRouter({
     scrollBehavior: function(to, from, savedPosition) {
