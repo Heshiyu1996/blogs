@@ -26,7 +26,7 @@
 * TypeScript
   * 基础
     * [基础类型](/src/Basics/TS/BasicTypes.md)
-    * [类型推论&&联合类型](/src/Basics/TS/TypeInference.md)
+    * [类型推论&&联合类型（2019-01-30）](/src/Basics/TS/TypeInference.md)
 
   * 进阶
     * [解构赋值](/src/Basics/TS/Destructuring.md)
