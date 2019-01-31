@@ -30,7 +30,7 @@
 
   * 进阶
     * [解构赋值](/src/Basics/TS/Destructuring.md)
-    * [接口](/src/Basics/TS/Interfaces.md)
+    * [接口（2019-01-31）](/src/Basics/TS/Interfaces.md)
     * [类（2019-01-17）](/src/Basics/TS/Class.md)
     * [函数（2019-01-10）](/src/Basics/TS/Function.md)
     * [泛型（2019-01-14）](/src/Basics/TS/Generics.md)
