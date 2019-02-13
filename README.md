@@ -12,6 +12,8 @@
 
 * [2018校招面试](#2018校招面试)
 
+* [前端效率工具](#前端效率工具)
+
 ## 前端基础
 * HTML
   * [Input](/src/Basics/HTML/Input.md)
@@ -83,4 +85,7 @@
 ## 2018校招面试
 * [setTimeout&&var](/src/Interview/setTimeout&&var.md)
 * [qiu-deqing/FE-interview](https://github.com/qiu-deqing/FE-interview)
+
+## 前端效率工具
+* [工具汇总](/src/Efficiency/Efficiency.md)
 
