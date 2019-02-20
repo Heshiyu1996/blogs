@@ -81,6 +81,15 @@ SET PASSWORD FOR 'root'@'localhost' = PASSWORD('newpass');
 3、可以从本地node服务器接受到来自postman的请求，并且通过`req.body`可以拿到参数
 ![alt](./img/Node-Mysql-5.png)
 
+注意：
+
+问题一：设置Content-Type无效
+
+例如：改成application/json，但是一直是application/x-www-form-urlencoded
+
+解决办法：那只能切换到`raw`里写下json数据（**key值记得用双引号**）
+![alt](./img/Node-Mysql-6.png)
+
 在这过程也参考了网友的一些文章，才得以顺利搭建，总结的链接如下：
 
 1、《NodeJs针对Express框架配置Mysql进行数据库操作》
