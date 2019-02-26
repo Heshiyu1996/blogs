@@ -21,6 +21,7 @@
 * CSS
 
 * JavaScript
+  * [Module](/src/Basics/JS/Module.md)
   * [Generator](/src/Basics/JS/Generator.md)
   * [暂时性死区](/src/Basics/JS/TDZ.md)
   * [Event Loop（2019-01-25）](/src/Basics/JS/EventLoop.md)
