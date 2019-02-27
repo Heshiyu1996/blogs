@@ -3,6 +3,23 @@
 > 
 > 更新时间：2019-01-06
 
+### 如何将字符串"false"转布尔值？
+```js
+// 明显这样是不行的：
+Boolean('false') // true
+Boolean('true') // true
+
+// 可以通过这样：
+JSON.parse('false') // false
+JSON.parse('true') // true
+```
+尽管如此，还是推荐用`0代表false`，`1代表true`
+
+```js
+!!1 // true
+!!0 // false
+```
+
 ### git的.gitignore文件不生效解决方法
 原因：新建的文件在git中会有缓存。如果某些文件已经被纳入了版本管理中（也就是上次已经成功提交过一次上去了），就算在`.gitignore`中已经声明了忽略路径也是不起作用的。所以需要把本地缓存删除，在进行`git push`
 ```bash
