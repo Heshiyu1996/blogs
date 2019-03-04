@@ -41,9 +41,19 @@ Vue实例初始化的过程中，实现依赖管理。大致总结如下：
 ### [工具]gulp与webpack的区别
 gulp：强调的是前端开发流程。通过定义一系列的task，再定义task处理的事物、顺序，最后让gulp执行task，从而构建前端项目；
 
+4个常用的方法：
+ - src（）：获取流
+ - dest（）：写文件
+ - task（）：定义任务
+ - watch（）：用来监听事件
+
 webpack：是一个前端模块化的方案，侧重模块打包。把开发的资源看成模块，通过`loader`、`plugins`对资源进行处理，最后打包成符合生产环境部署的前端资源。
+
+使用方法：
  - 不同环境下全局安装的webpack版本可能不符合这个项目，所以还是用局部依赖
  - ./node_modules/.bin/webpack input.js output.js
+ - 从入口文件`input.js`开始，找出所有依赖的文件，然后用对应的loaders去处理它们
+ - 最后打包成为一个浏览器可识别的js文件`output.js`
 
 ### [Vue.js]Vue.js的三大特点：
  - 响应式（数据双向绑定）
@@ -176,3 +186,61 @@ CSS3样式提纲：
  - 圆角（border-radius）、阴影（box-shadow、text-shadow）、渐变（gradient）、滤镜（filter）、文字省略（text-overflow: ellipsis）
  - 动画（animation）
  - 过渡（transition）、变换（transform）
+ - 新增盒模型——弹性盒模型（Flexbox）
+ - 新增box-sizing：content-box（即标准盒模型）、border-box（即IE盒模型）
+
+### 盒模型
+ - 标准盒模型
+ width、height、padding、margin 四个独立，所设及所得
+
+ - IE盒模型
+ width（height）包括了padding、margin，最终width会小一些
+
+### 弹性盒模型
+采用Flex布局的元素，成为`Flex容器`，它的子元素自动成为`Flex项目`
+
+容器存在两根轴：`主轴（水平）`、`交叉轴（垂直）`。`项目`默认沿主轴排列
+ - 容器的属性
+    - **justify-content** // 主轴上项目的对齐方式 { flex-start | flex-end | center | space-between }
+    - **align-items** // 交叉轴上项目的对齐方式 { flex-start | flex-end | center }
+    - flex-direction // 主轴的方向
+    - flex-wrap // 主轴是否换行
+    - flex-flow // 上两个缩写
+
+ - 项目的属性
+    - order // 项目各自的排列顺序
+    - flex-grow // 放大比例
+    - flex-shrink // 缩小比例
+    - flex-basis
+    - **flex** // 上三个的缩写
+
+### 完美居中的方案
+ - 父节点position: relative、子节点position: absolute搭配transform
+ ```css
+ .parent {
+     position: relative;
+ }
+ .child {
+     position: absolute;
+     top: 50%;
+     left: 50%;
+     transform: translate(-50%, -50%);
+ }
+ ```
+ - 父节点flexbox，子节点margin: auto
+ ```css
+ .parent {
+     display: flex;
+     width: 200px;
+     height: 200px;
+ }
+ .child {
+     margin: auto;
+ }
+ ```
+
+### 闭包
+
+### 移动端H5适配
+#### video里的子标签的track
+在不同的手机系统、不同的浏览器都不兼容
