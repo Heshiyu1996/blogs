@@ -105,3 +105,74 @@ $listeners也是一个对象，存着由父组件传递给子组件定义的所�
      event: 'input'
  }
  ```
+### [Vue.js]Vue里面的继承
+#### extend（单继承）
+ - Vue的全局方法
+ ```js
+ Vue.extend(...) // 传递Vue实例选项
+ ```
+ - Vue的实例选项
+ ```js
+ export default {
+     extends: myExtend
+ }
+ ```
+#### mixin（多继承）
+混入 可以接受 对象数组，所以类似多继承。
+
+当使用“混入对象”时，所有“混入对象”的选项，都将适当地 **合并** 到该组件本身的选项
+ - Vue的全局方法
+ ```js
+ Vue.mixin({
+     created() {
+         // ...
+     }
+ })
+ ```
+ - Vue的实例选项
+ ```js
+ export default {
+    mixins: [ ... ]
+ }
+ ```
+
+ #### 继承的合并规则
+  - 对象（覆盖冲突）
+    - （覆盖顺序优先）组件内部 > 混入对象（数组最右最优） > Extend对象
+
+  - 钩子函数
+    - （调用顺序优先）Extend对象 > 混入对象（数组最右最优） > 组件内部
+
+### [HTML5]HTML5的新语法
+#### 语法优化
+ - DOCTYPE html 简化
+    - 字符编码更简洁
+    - 不区分大小写
+
+#### 新增标签（语义化）
+ - 结构标签
+    - header（头部信息、标题）
+    - nav（导航条）
+    - section（内容区块）
+    - article（核心内容）
+    - footer（底部信息）
+
+ - 表单标签（input的type属性）
+    - email
+    - url
+    - number
+    - range
+    - Date
+    - search
+    - color
+
+ - 媒体标签
+    - video
+    - audio
+    - embed（嵌入内容，包括各种媒体：PDF、MP3等）
+
+### [CSS3]CSS3的新增属性
+CSS3样式提纲：
+ - 圆角（border-radius）、阴影（box-shadow、text-shadow）、渐变（gradient）、滤镜（filter）、文字省略（text-overflow: ellipsis）
+ - 动画（animation）
+ - 过渡（transition）、变换（transform）
