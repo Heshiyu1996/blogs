@@ -238,8 +238,45 @@ CSS3样式提纲：
      margin: auto;
  }
  ```
+### [CSS]CSS定位
+ - 绝对定位
+    - position: absolute | fixed（前者相对非static的父元素、后者相对浏览器的左上角）
+ - 相对定位
+    - position: relative（相对本身所在位置）
+
+### 
 
 ### 闭包
+`闭包`就是一个函数，这个函数能够访问 **其他函数的作用域** 中的变量。
+原理：内部函数的作用域链包含这个函数的作用域
+
+特点：
+ - 可以读取另外一个函数作用域里的变量
+ - 可以将这些变量保存在内存中
+ - 可能会导致内存泄露（因为闭包会携带：包含它的函数作用域）
+ - 创建一些特权方法
+
+#### 为什么闭包可以访问其他函数的作用域链？
+当调用一个函数时，
+ - 创建该函数的执行环境
+ - 在环境中创建它的作用域链
+ - 通过arguments和命名参数来初始化一个活动对象，push到作用域链顶端
+ - 再往作用域链后面push其他活动对象
+
+```js
+function outer() {
+    var a = 'heshiyu'
+    var inner = function() {
+        console.log(a)
+    }
+    return inner // 注意这里只是返回对这个方法的引用
+}
+var inner = outer() // 获得：闭包函数inner
+inner() // 'heshiyu'
+```
+当程序执行完`var inner = outer()`，其实`outer`的执行环境并没有销毁。因为它里面的**变量a仍然被inner函数的作用域链所引用**，当程序执行完`inner()`，`inner`和`outer`的执行环境才被销毁。
+
+### 事件委托
 
 ### 移动端H5适配
 #### video里的子标签的track
