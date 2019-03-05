@@ -248,6 +248,9 @@ CSS3样式提纲：
 
 ### 闭包
 `闭包`就是一个函数，这个函数能够访问 **其他函数的作用域** 中的变量。
+
+当函数可以记住并访问所在的词法作用域时，就产生了闭包。
+
 原理：内部函数的作用域链包含这个函数的作用域
 
 特点：
@@ -281,3 +284,45 @@ inner() // 'heshiyu'
 ### 移动端H5适配
 #### video里的子标签的track
 在不同的手机系统、不同的浏览器都不兼容
+
+## 2019-03-05
+### [JS]回调函数
+把函数作为参数传递，等待请求完成之后执行callback函数
+
+需求：创建100个div节点，然后把这些div节点都**设置为隐藏**。
+```js
+var appendDiv = function() {
+    for ( let i=0; i< 100; i++) {
+        var div = document.createElement('div')
+        div.innerHTML = i
+        document.body.appendChild(div)
+        div.style.display = 'none' // 这句不合理，影响复用
+    }
+}
+appendDiv()
+```
+可以看出`div.style.display = 'none'`的硬编码放在`appendDiv`中显然是不合理的。因为并不是每个人创建了节点都希望他们立刻被隐藏。
+
+做法：把`div.style.display = 'none'`抽离出来，用**回调函数**的形式传入appendDiv：
+```js
+var appendDiv = function(callback) {
+    for( let i=0; i< 100; i++ ) {
+        var div = document.createElement('div')
+        div.innerHTML = i
+        document.body.appendChild(div)
+        // 节点创建好了，还有其他需求吗？
+        if (typeof callback === 'function') {
+            callback(div)
+        }
+    }
+}
+
+appendDiv(function(node) {
+    node.style.display = 'none' // vip客户说：我还要增加一个功能，隐藏掉div
+})
+```
+把`“隐藏节点”`的逻辑放在回调函数中，委托给appendDiv方法，在指定时刻执行这个“客户定义的”回调函数。
+
+### vuex、redux
+
+### 设计模式
