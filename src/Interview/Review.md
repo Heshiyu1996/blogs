@@ -661,3 +661,39 @@ dev: {
      }
  }
  ```
+
+ ### [HTTP]请求头
+
+ ### IE兼容性问题
+
+ ### TypeScript接口用途
+
+ ### [小程序]登录过程
+  - 小程序端调用`wx.login()`获取`code`
+  - 带着`code`，传递给开发者后端
+  - 开发者后端带着`code + appid + appsecret`跟微信后端换取`session_key + openid`
+  - 开发者后端将自定义登录态与`session_key + openid`关联，并响应给小程序`登录态`
+  - 小程序把`登录态`写入Storage，等到下次有需要登录权限时，从Storage获取
+  - 开发者后端通过`自定义登录态`去查询`session_key + openid`，返回业务数据
+
+ ### [小程序]生命周期
+  - beforeCreate
+  - created
+    - 所有页面created会在项目加载的时候一起被调用，进入页面不会被调用，一般用onLoad代替
+--------
+  - onLoad，页面加载
+  - onShow，页面显示
+  - onReady，页面初次渲染完成
+  - onHide，页面隐藏
+  - onUnload，页面卸载
+--------
+  - beforeMount
+  - mounted
+    - 从B返回到A，A的mounted不会被触发，因为页面没有被重新加载，一般用onShow代替
+  - beforeDestroy
+  - destroyed
+
+ ### [小程序]跳转区别
+ `redirectTo`，跳转到指定页，并关闭当前页
+ `navigateTo`，跳转到指定页，并保留当前页
+ `switchTab`，跳转到tab bar页面，并关闭其他非tab bar页
