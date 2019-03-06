@@ -611,3 +611,53 @@ emitter.emit('someEvent', 'name')
 ----
  - 500：常见服务端错误
  - 503：服务端暂时无法处理请求
+
+### 正向代理 和 反向代理
+#### 正向代理
+一般说的 **代理** 指的是**正向代理**（如：VPN）
+
+正向代理的对象是 `客户端`
+
+```js
+// 在vue里的config/index.js中dev对象的proxyTable上设置，来解决开发时跨域问题
+dev: {
+    proxyTable: {
+        '/api': {
+            target: 'http://192.168.5.2',
+            changeOrigin: true
+        }
+    }
+}
+```
+
+#### 反向代理
+反向代理的对象是 `服务端`
+
+ - 在“反向代理”中，客户端做域名解析时，实际上得到的是 `反向代理服务器的IP`，而不是`服务器IP`
+ - `Nginx`接收客户端请求，根据`server_name`去匹配对应的`server节点`；再找到里面的`proxy_pass`转发过去
+
+ ```js
+ // 客户端 部分
+ 192.168.72.49 8081.max.com
+ 192.168.72.49 8082.max.com
+ --------------------------
+
+ // 服务端 部分
+ server {
+     listen 80;
+     server_name 8081.max.com // 根据这个字段进行匹配
+
+     location / {
+         proxy_pass http://192.168.72.49:8081 //再根据这个字段进行转发
+     }
+ }
+
+ server {
+     listen 80;
+     server_name 8082.max.com
+
+     location / {
+         proxy_pass http://192.168.72.49:8082
+     }
+ }
+ ```
