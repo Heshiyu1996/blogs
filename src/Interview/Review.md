@@ -336,3 +336,46 @@ appendDiv(function(node) {
  ### [HTTP]HTTP、HTTPS
 
  ### [浏览器]内核
+ - Trident （IE内核）
+ - Gecko （Firefox内核）
+ - Presto（Opera，已废弃）
+ - Webkit（Safari、Chrome28前）
+ - Blink（Chrome28后）
+
+ ### [浏览器]强缓存和协商缓存
+ 第一次请求成功后，再次请求同一个网页：
+  - 获取第一次请求成功后缓存下来的`Header`，里面包括：`Expires`、`Cache-control`、`Last-Modified`和`ETag`。前两者属于强缓存，后两者属于协商缓存
+  - 先看`Expires`和`Cache-control`，检查是否命中强缓存
+    - 若是，直接从本地磁盘获取资源（200）
+    - 若不是，再看`Last-Modified`、`ETag`检查是否命中协商缓存
+        - 若是，浏览器会响应新的Header信息给客户端（但不会返回资源内容），没有新修改的地方（304）
+        - 若不是，响应全新的资源内容给客户端
+
+### [HTML]HTML5 本地存储
+  * [sessionStorage、localStorage、cookies的区别（2019-01-13）](/src/Browser/webStorage.md)
+
+### [WEB]XSS、CSRF、SQL注入
+针对Web服务器的攻击，常见的有：`XSS（跨站脚本攻击）`、`CSRF（跨站请求伪造）`、`SQL注入`
+
+#### XSS（跨站脚本攻击）
+依赖JS。
+
+攻击者向某个web页面插入恶意的js脚本。当普通用户访问时，恶意脚本会自动执行，然后盗取用户cookie
+
+解决方法：
+ - 对于`输入点`，前端将`特殊字符进行编码`（例如Html标记的<>）
+ - 对于`输出点`，后端将`关键字符进行过滤`
+ - 对于`cookie`设置为`httpOnly`（防止客户端通过document.cookie读取cookie）
+
+#### CSRF（跨站请求伪造）
+攻击者盗用你的身份，以你的名义发送恶意请求。
+
+解决方法：
+ - 验证`HTTP Referer`字段
+ - 在请求地址中`添加token并验证`
+ - 在HTTP头中`添加自定义属性并验证`
+
+#### SQL注入
+攻击者把SQL命令插入到web表单的输入框，欺骗服务器执行恶意的SQL命令。
+
+解决方法：对用户的输入进行检查
