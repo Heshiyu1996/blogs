@@ -335,6 +335,7 @@ appendDiv(function(node) {
 
  ### [HTTP]HTTP、HTTPS
 
+## 2019-03-06
  ### [浏览器]内核
  - Trident （IE内核）
  - Gecko （Firefox内核）
@@ -430,3 +431,112 @@ appendDiv(function(node) {
 
 ### [Web]渐进增强
 渐进增强是指，在web设计时，注重`可访问性`、`语义化HTML标签`、`外部样式表和脚本`
+
+### [VueConf]Make Your Vue App Accessible
+
+### [js]原型对象与原型链
+`prototype`是指原型对象，函数才有的属性；
+ - 值取决于对象创建时的实现方式
+    - 字面量方式
+    ```js
+    // a是一个对象
+    var a = {}
+    console.log(a.prototype) // undefined
+    console.log(a.__proto__) // Object {}
+    ```
+    - 构造器方式
+    ```js
+    // A是一个函数
+    var A = function() {}
+    console.log(A.prototype) // A {}
+    console.log(A.__proto__) // function() {}
+    ```
+
+
+`__proto__`是指原型指针，每个对象都有的属性，js里万物皆对象；
+ - 指向取决于对象创建时的实现方式
+    - 字面量方式
+    ```js
+    var a = {}
+    console.log(a.__proto__) // Object {}
+    ```
+    - 构造器方式
+    ```js
+    var A = function() {}
+    var a = new A()
+    console.log(a.__proto__) // A {}
+    ```
+
+`原型链`是作为 **实现继承** 的主要方法，其基本思想是：`利用原型，让一个引用类型继承另一个引用类型的属性和方法`。
+
+ > 它实际上是`__proto__连起来的链条`
+
+ ### URS
+
+ ### NOS
+
+ ### 单例模式
+
+ ### [vuelidate]表单校验
+ vuelidate的调研思路：
+  - 引入方式（可全局、可局部）
+  - 基于数据模型
+    - 先获取Vue实例中的`validations选项`（通过`this.$options`）
+    - 再把选项里的配置规则解析为`$v`属性
+    - 将`$v`属性加入到Vue实例中的`computed选项`以便观察其响应变化
+  - 支持自定义函数
+  - 支持嵌套
+  - 支持Promise
+
+ ### [BOT]难点
+ 无分页列表数据庞大，无法正常显示。
+ 
+ 主要问题：
+ - 数据加载慢
+ - 校验（去重、字符规则）
+ - 全量保存
+
+ 解决方案：
+ - 真分页 + 增量保存
+    - 将校验交给后台。劣势：1、后台工作量增多；2、请求频繁，且耗时；
+ - 假分页 + 全量保存
+    - 将校验交给前端。
+- vue-virtual-scroller
+    - 第三方库分页工具。劣势：固定宽高。
+
+ ### [Vue]生命周期
+首先，从`new Vue()`开始
+ - 初始化生命周期、初始化事件系统
+ - `beforeCreate`
+ - 初始化State（props、data、computed...）、watcher
+ - `Created`
+ - 有el选项吗？
+    - 没有的话，等待 **vm.$mount(el)** 被执行时，才开始编辑
+ - 有template选项吗？
+    - 有，将template里的内容编译为render函数
+    - 没有，将el的outerHTML整个内容编译为render函数
+ - `beforeMount`（此时已准备好render函数了）
+ - 将render函数返回的VNode树渲染到真实DOM上
+ - `mounted`（挂载成功！）
+
+----
+ - 当data发生变化（未重绘）
+ - `beforeUpdate`
+ - 执行diff算法，并将变化的部分patch到真实DOM
+ - `updated`
+----
+ - 当this.$destroy()被执行
+ - `beforeDestroy`
+ - 摧毁watcher、子组件、事件绑定
+ - `destroyed`（摧毁成功！）
+
+
+### vuex
+
+### [jQuery]源码
+ - 首先，是从`闭包` + `立即执行函数`开始的（传入了window对象）
+    - 目的：避免变量冲突
+ - 然后，`重载`很常用
+    - 原因：单单为了实例化一个jQuery对象，就有9种不同的方法
+ - 最后，`链式调用`实现原理
+    - 原因：实现很简单。只需在实现链式调用的方法的返回结果里，返回this即可解决
