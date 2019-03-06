@@ -345,9 +345,9 @@ appendDiv(function(node) {
  ### [浏览器]强缓存和协商缓存
  第一次请求成功后，再次请求同一个网页：
   - 获取第一次请求成功后缓存下来的`Header`，里面包括：`Expires`、`Cache-control`、`Last-Modified`和`ETag`。前两者属于强缓存，后两者属于协商缓存
-  - 先看`Expires`和`Cache-control`，检查是否命中强缓存
+  - 先看`Expires`和`Cache-control`，检查是否命中 `强缓存`
     - 若是，直接从本地磁盘获取资源（200）
-    - 若不是，再看`Last-Modified`、`ETag`检查是否命中协商缓存
+    - 若不是，再看`Last-Modified`、`ETag`检查是否命中 `协商缓存`
         - 若是，浏览器会响应新的Header信息给客户端（但不会返回资源内容），没有新修改的地方（304）
         - 若不是，响应全新的资源内容给客户端
 
@@ -379,3 +379,54 @@ appendDiv(function(node) {
 攻击者把SQL命令插入到web表单的输入框，欺骗服务器执行恶意的SQL命令。
 
 解决方法：对用户的输入进行检查
+
+### [浏览器]输入URL，会发生什么？
+1、浏览器输入url
+
+2、浏览器检查`强缓存`（Expires、Cache-control）
+
+3、解析url、获取主机ip
+
+4、组装Http报文
+
+5、打开socket与目标ip，端口建立TCP连接
+
+6、TCP连接建立后，发送HTTP请求
+
+7、服务器接收并解析，检查`协商缓存`（ETag、Last-Modified）
+
+8、通过TCP返回响应报文
+
+9、浏览器缓存响应
+
+10、浏览器进行`解析HTML（构造DOM树）`、`下载资源`、`构造CSSOM树`、`执行JS脚本`
+
+### [Web]性能优化
+ - content方面
+    - 减少HTTP请求
+    - 减少DNS查询
+    - 减少DOM元素数量
+    - 非必需组件延迟加载
+    - 未来所需组件预加载
+ 
+ - Server方面
+    - 使用CDN
+    - 使用Expires、Cache-Control响应头，配置ETag
+
+ - Cookie方面
+    - 减小cookie大小
+    - 引入资源的域名不要包含cookie
+
+ - css方面
+    - 将样式表放到页面顶部
+    - 不使用CSS表达式
+
+ - js方面
+    - 将脚本放到页面底部
+    - 减少DOM访问
+
+ - 图片方面
+    - css精灵
+
+### [Web]渐进增强
+渐进增强是指，在web设计时，注重`可访问性`、`语义化HTML标签`、`外部样式表和脚本`
