@@ -404,11 +404,9 @@ appendDiv(function(node) {
 
 ### [Web]性能优化
  - content方面
-    - 减少HTTP请求
-    - 减少DNS查询
     - 减少DOM元素数量
-    - 非必需组件延迟加载
-    - 未来所需组件预加载
+    - 减少DNS查询
+    - 减少HTTP请求
  
  - Server方面
     - 使用CDN
@@ -416,7 +414,6 @@ appendDiv(function(node) {
 
  - Cookie方面
     - 减小cookie大小
-    - 引入资源的域名不要包含cookie
 
  - css方面
     - 将样式表放到页面顶部
@@ -533,7 +530,7 @@ appendDiv(function(node) {
 ### [npm]和yarn的区别
 
 ### [Node.js]
-Node.js 采用了`单线程`、`异步式I/O`、`事件驱动`的程序设计模型，实现了：`文件系统`、`模块`、`包`、`操作系统API`、`网络通信`等功能
+Node.js 采用了`单线程`、`异步式I/O`、`事件驱动`的程序设计模型，实现了：`包`、`模块`、`文件系统`、`网络通信`、`操作系统API`等功能
 
 #### 异步式I/O
  - `线程1` 将 **I/O操作** 发送给 `操作系统`，继续执行后面的语句；
@@ -593,7 +590,15 @@ emitter.emit('someEvent', 'name')
  - 假分页 + 全量保存
     - 将校验交给前端。
 - vue-virtual-scroller
-    - 第三方库分页工具。劣势：固定宽高。
+    - 第三方库分页工具。
+    - 两种模式：
+        - RecycleScroller
+            - 只加载当前可视窗口的图片
+            - 复用组件、DOM元素
+        - DynamicScroller
+            - 利用RecycleScroller
+            - 外加了一个：动态尺寸管理
+    - 大致思路：把刷新`可视区域的item`这个事件，放到用户滚动时触发；通过记录上次加载的startIndex、以及endIndex来记住buffer（？）
 
 ### [HTTP]状态码
  - 200：ok，正常返回
@@ -664,7 +669,7 @@ dev: {
 
  ### [HTTP]请求头
 
- ### IE兼容性问题
+
 
  ### TypeScript接口用途
 
@@ -695,5 +700,66 @@ dev: {
 
  ### [小程序]跳转区别
  `redirectTo`，跳转到指定页，并关闭当前页
+
  `navigateTo`，跳转到指定页，并保留当前页
+ 
  `switchTab`，跳转到tab bar页面，并关闭其他非tab bar页
+
+ ### [ES7] Async、Await和Promise有什么区别
+ 好处：
+  - 简洁。
+    - 不需要写`.then`、也不需要写`匿名函数处理resolve值`
+  - 错误处理。
+    - 可以`同时处理`同步和异步的错误
+  - 方便调试。
+  
+  坏处：
+  - 使得异步代码不明显
+
+ ### [mpVue]mpVue的源码
+ 开发微信小程序，如果使用mpVue会带来一些好处：
+  - 提高代码复用性
+  - 减少学习成本
+  - 组件化
+  - 状态的统一管理
+
+#### mpVue的实现原理
+ - 将`Vue.js实例`与`小程序Page实例`进行关联
+ - 【生命周期关联】小程序和Vue.js的生命周期建立映射关系
+    - 能在小程序生命周期中触发Vue.js的生命周期
+ - 【事件代理机制】小程序建立事件代理机制，能在 **事件代理函数** 中触发对应的Vue.js组件事件响应
+ - 【数据同步机制】vue和小程序的数据同步
+    - 在实例化vue的时候，会执行`initState`，将props、data、computed通过`Object.defineProperty`转化成`getter/setter`的形式
+    - 给每一个响应式属性实例化一个`observer`对象，对象里面也有一个`dep`对象，用来存储所有依赖的数据
+    - 当`setter`触发时，会触发`dep.notify()`方法，通知`dep`中所依赖的数据
+    - 最后再通过`diff算法`，patch到真实DOM中
+
+### IE8兼容性
+ - 兼容`addEventListener`和`attachEvent`
+    - 解决方法：
+        - 新增一个`EventUtils`对象
+        - 里面封装一个`add`方法
+        ```js
+            vae EventUtils = {
+                add: function(elem, type, listener) {
+                    if (elem.addEventListener) {
+                        elem.addEventListener(type, listener, false)
+                    } else if (elem.attachEvent) {
+                        elem.attachEvent('on' + type, listener)
+                    } else {
+                        elem['on' + type] = listener
+                    }
+                }
+            }
+        ```
+
+ - IE8不支持`placeholder`
+    - 解决方法：
+        - 读取input里面的`placeholder`属性；
+        - 在input表面覆盖一个`label`节点，并在页面加载时将`placeholder`的内容赋值进去；
+        - 当：`label`被点击、`input`聚焦时，label隐藏；
+        - 当：`input`失焦时，判断输入框中value长度，来控制`label`显示隐藏
+
+ - IE8不支持`rem`（相对于`html`的字体大小）
+    - 解决办法：
+        - 引入rem.js库（在body末尾）
