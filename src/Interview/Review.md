@@ -760,6 +760,77 @@ dev: {
         - 当：`label`被点击、`input`聚焦时，label隐藏；
         - 当：`input`失焦时，判断输入框中value长度，来控制`label`显示隐藏
 
- - IE8不支持`rem`（相对于`html`的字体大小）
+ - IE8不支持`rem`
     - 解决办法：
         - 引入rem.js库（在body末尾）
+
+### [css]rem
+`rem`是相对于（相对于`html`的字体大小）
+
+默认：1rem = 16px
+
+要设置成：1rem = 10px，则需要：
+
+```css
+html {
+    font-size: 62.5% /* 10 / 16 * 100% */
+}
+```
+
+
+
+### [H5]兼容性
+
+### [css]清除浮动
+ - 在父容器里最后一个子节点设为`clear: both`
+ - 对父容器添加伪类`after`
+    ```css
+    .container :after {
+        content: ' ',
+        clear: both
+    }
+    ```
+ - 对父容器设为`overflow: hidden`
+
+### [css]css hack
+`css hack`，指的是当不同浏览器对某些css属性做解析的时候，出现差异；然后去弥补这些差异的过程。
+
+分为：
+ - 条件hack
+ ```html
+ <!--[if le IE 8]>
+ <style>
+    .test2 {
+        width: 100px;
+    }
+ </style>
+ <![endif]--
+
+ /* 上面是表示当浏览器是小于ie8以下的 */
+ ```
+ - 属性hack
+ ```css
+ #test {
+     color: #c30; /* For Firefox */
+     color: red\0; /* For Opera */
+     color: yellow\9; /* For IE8 */
+     *color: blut; /* For IE7 */
+     _color: #ccc; /* For IE6 */
+ }
+ ```
+ - 选择符hack
+ ```css
+ * html .test {
+     color: red; /* For IE6 and earlier */
+ }
+ * + html .test {
+     color: yellow; /* For IE7 */
+ }
+ .test:lang(zh-cn) {
+     color: white; /* For IE8+ and not IE */
+ }
+ .test:nth-child(1) {
+     color: black; /* For IE9+ and not IE */
+ }
+ ```
+
