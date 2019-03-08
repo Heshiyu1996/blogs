@@ -889,5 +889,12 @@ html {
  ### [Axios] 源码解析
  `Axios`是一个基于`Promise`的http请求库。
 
- 每个axios实例都有一个`interceptors`实例属性，同时这个`interceptors`对象上有两个属性`request`、`response`
-
+ ```js
+ function Axios() {
+     this.interceptors = {
+         request: new InterceptorManager(), // 请求拦截器
+         response: new InterceptorManager() // 响应拦截器
+     }
+ }
+ ```
+ 每个axios实例都有一个`interceptors`实例属性，同时这个`interceptors`对象上有两个属性`request`、`response`，它们都是`InterceptorManager`的实例。`InterceptorManager`构造函数时用来实现拦截器的，且这个构造函数原型上有3个方法：`use`、`eject`、`forEach`
