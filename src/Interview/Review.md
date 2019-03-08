@@ -705,16 +705,68 @@ dev: {
  
  `switchTab`，跳转到tab bar页面，并关闭其他非tab bar页
 
- ### [ES7] Async、Await和Promise有什么区别
- 好处：
-  - 简洁。
-    - 不需要写`.then`、也不需要写`匿名函数处理resolve值`
-  - 错误处理。
-    - 可以`同时处理`同步和异步的错误
-  - 方便调试。
+ ### [ES7] callback、Async/Await和Promise
+ #### 回调函数
+ 如果是以前，可以用`回调函数`实现：
+ ```js
+ function runAsync(callback){
+     if(/* 异步操作成功 */) {
+         callback(value)
+     }
+ }
+
+// 传入一个匿名函数作为回调函数
+ runAsync(funtion(data) {
+     console.log(data)
+ })
+ ```
+ 缺点：
+  - 容易造成 **回调地狱**
+  - 影响阅读体验
+
+ #### Promise
+ Promise是一个容器，而且代表的是一个异步操作，有3种状态：
+  - `Pending（进行中）`
+  - `Fulfilled（已成功）`
+  - `Rejected（已失败）`
   
-  坏处：
-  - 使得异步代码不明显
+  只有 **异步操作的结果** 可以决定当前是哪一种状态，任何其他操作都无法改变这个状态（也就是“承诺”的意思）。
+  
+  并且，**它的状态可以影响后续的then行为**
+ ```js
+ // Promise的构造函数接收一个函数作为参数，这个函数又可以传入两个参数：resolve、reject；
+ // 它们分别表示：异步操作执行后，Promise的状态变为Fulfilled/Rejected的回调函数。
+ var promise = new Promise(function (resolve, reject) {
+     // ...
+     if(/* 异步操作成功 */) {
+         resolve(value) // 这个value表示的是异步操作后获得的数据
+     } else {
+         reject(error) // 这个error表示的是异步操作后报出的错误
+     }
+ })
+ ```
+ 优点：
+  - 解决了 **回调地狱**
+  - 方便阅读
+
+ 缺点：
+  - 返回值传递
+    - 仍然需要创建`then`调用链，需要创建匿名函数，把返回值一层层传递给下一个`then`
+  - 异常不会向上抛出
+    - `then`里函数有异常，`then调用链`外面写`try-catch`没有效果
+  - 不方便调试
+    - 在某个`.then`设置断点，不能直接进到下一个`.then`方法
+
+ #### Async、Await
+`async`是一个函数修饰符。如果是`async`关键词声明的函数会**隐式**返回一个`Promise`；
+
+`await`后面跟也是`Promise`，它的语义是：必须等到`await`后面跟的`Promise`有了返回值，才能继续执行`await`下一行代码；
+
+ 好处：
+  - 简洁。易于阅读和理解
+  - 错误处理。
+    - 可以被`try-catch`捕捉到
+  - 方便调试。
 
  ### [mpVue]mpVue的源码
  开发微信小程序，如果使用mpVue会带来一些好处：
@@ -833,4 +885,9 @@ html {
      color: black; /* For IE9+ and not IE */
  }
  ```
+
+ ### [Axios] 源码解析
+ `Axios`是一个基于`Promise`的http请求库。
+
+ 每个axios实例都有一个`interceptors`实例属性，同时这个`interceptors`对象上有两个属性`request`、`response`
 
