@@ -938,3 +938,56 @@ html {
  一般我们最常用的是`use`，
   - 对于`request`，我们就在`use`里对`config`进行修改，随后会覆盖掉默认配置
   - 对于`response`，我们就在`use`里对后端返回的数据进行一个预处理再返回
+
+ ### [MVVM] 什么是MVVM？
+ `M`：Model层，存放数据
+ `V`：View层，视图层
+ `VM`：ViewModel层，负责：
+   - 将Model层的数据`同步`到View层，进行呈现
+   - 将View层的修改`同步`到Model层，进行存储
+
+ ### [js] 函数防抖与函数节流
+ `函数防抖`（debounce），指的是在上次触发之后、再过N毫秒，才能执行该动作
+ 
+ 原理：在N毫秒内重复触发，会重新计时
+
+ 简单实现：
+ ```js
+ function debounce(fn, delay = 500) {
+     let timer
+     return function() {
+         let args = arguments
+         if (timer) {
+             clearTimeout(timer)
+         }
+         timer = setTimeout(() => {
+             fn.apply(this, args)
+         }, delay)
+     }
+ }
+ ```
+
+ `函数节流`（throttle），指的是函数按照一个周期N毫秒执行
+ 
+ 原理：判断上次操作、这次操作的时间间距
+
+ 简单实现：
+ ```js
+ function throttle(fn, delay = 500) {
+     let startTime = new Date.now()
+     return function() {
+         let args = arguments
+         let currentTime = new Date.now()
+         if (currentTime - startTime > delay) {
+             fn.apply(this, args)
+             startTime = currentTime // 刷新旧的startTime
+         }
+     }
+ }
+ ```
+
+ ### [js] let/var
+
+ ### [js] call/apply/bind
+ `call`：只能一个参数一个参数传
+ `apply`：只支持传一个数组（`arguments`）
