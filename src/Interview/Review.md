@@ -431,42 +431,20 @@ appendDiv(function(node) {
 
 ### [VueConf]Make Your Vue App Accessible
 
-### [js]原型对象与原型链
-`prototype`是指原型对象，函数才有的属性；
- - 值取决于对象创建时的实现方式
-    - 字面量方式
-    ```js
-    // a是一个对象
-    var a = {}
-    console.log(a.prototype) // undefined
-    console.log(a.__proto__) // Object {}
-    ```
-    - 构造器方式
-    ```js
-    // A是一个函数
-    var A = function() {}
-    console.log(A.prototype) // A {}
-    console.log(A.__proto__) // function() {}
-    ```
-
-
-`__proto__`是指原型指针，每个对象都有的属性，js里万物皆对象；
- - 指向取决于对象创建时的实现方式
-    - 字面量方式
-    ```js
-    var a = {}
-    console.log(a.__proto__) // Object {}
-    ```
-    - 构造器方式
-    ```js
-    var A = function() {}
-    var a = new A()
-    console.log(a.__proto__) // A {}
-    ```
+### [js]原型对象、原型指针与原型链
+`prototype`是指原型对象。
+ - 作用：
+    存放着所有实例对象的公用属性和方法（即原型属性和方法）
+ - 原理：
+     - 因为每个构造函数都有`prototype`属性，它指向的是该构造函数的原型对象；
+     - 再者，原型对象也有一个`constructor`属性，它指向的是该构造函数本身
+     - 也就是说，当实例化一个对象的时候，我们不仅可以获得这个`对象的实例属性（和方法）`，还可以获得`原型对象上的原型属性（和方法）`
 
 `原型链`是作为 **实现继承** 的主要方法，其基本思想是：`利用原型，让一个引用类型继承另一个引用类型的属性和方法`。
 
- > 它实际上是`__proto__连起来的链条`
+`__proto__`是原型指针，指向原型。（每个对象有都有的属性）
+
+ > 原型链实际上是`__proto__连起来的链条`
 
  ### URS
 
@@ -475,15 +453,19 @@ appendDiv(function(node) {
  ### 单例模式
 
  ### [vuelidate]表单校验
- vuelidate的调研思路：
-  - 引入方式（可全局、可局部）
+ #### 调研思路：
   - 基于数据模型
-    - 先获取Vue实例中的`validations选项`（通过`this.$options`）
-    - 再把选项里的配置规则解析为`$v`属性
-    - 将`$v`属性加入到Vue实例中的`computed选项`以便观察其响应变化
   - 支持自定义函数
   - 支持嵌套
   - 支持Promise
+  - 引入方式（可全局、可局部）
+ 
+ #### 源码实现（数据响应）
+  - 先获取Vue实例中的`validations`选项（通过`this.$options`）
+  - 再把选项里的配置规则转化为`$v`属性
+  - 将`$v`的代理通过`mixin`的方式，加入到Vue实例中的`computed选项`
+  - 默认是通过`input`事件进行校验。作者也推荐开发者可以通过给`v-model`定义`.lazy`修饰符，使得校验器可以进行懒校验
+ 
 
  ### [Vue]生命周期
 首先，从`new Vue()`开始
@@ -530,7 +512,7 @@ appendDiv(function(node) {
 ### [npm]和yarn的区别
 
 ### [Node.js]
-Node.js 采用了`单线程`、`异步式I/O`、`事件驱动`的程序设计模型，实现了：`包`、`模块`、`文件系统`、`网络通信`、`操作系统API`等功能
+Node.js 采用了`单线程`、`异步式I/O`、`事件驱动`的程序设计模型，实现了：`包和模块`、`文件系统`、`网络通信`、`操作系统API`等功能
 
 #### 异步式I/O
  - `线程1` 将 **I/O操作** 发送给 `操作系统`，继续执行后面的语句；
@@ -951,4 +933,8 @@ html {
      }
  }
  ```
- 每个axios实例都有一个`interceptors`实例属性，同时这个`interceptors`对象上有两个属性`request`、`response`，它们都是`InterceptorManager`的实例。`InterceptorManager`构造函数时用来实现拦截器的，且这个构造函数原型上有3个方法：`use`、`eject`、`forEach`
+ 每个axios实例都有一个`interceptors`实例属性，同时这个`interceptors`对象上有两个属性`request`、`response`，它们都是`InterceptorManager`的实例。`InterceptorManager`构造函数时用来实现拦截器的，且这个构造函数原型上有3个方法：`use`、`eject`、`forEach`。
+
+ 一般我们最常用的是`use`，
+  - 对于`request`，我们就在`use`里对`config`进行修改，随后会覆盖掉默认配置
+  - 对于`response`，我们就在`use`里对后端返回的数据进行一个预处理再返回
