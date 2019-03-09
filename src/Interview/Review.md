@@ -939,6 +939,18 @@ html {
   - 对于`request`，我们就在`use`里对`config`进行修改，随后会覆盖掉默认配置
   - 对于`response`，我们就在`use`里对后端返回的数据进行一个预处理再返回
 
+ ### [MVC] 什么是MVC？
+ `M`：Model层，存放数据
+ 
+ `V`：View层，视图层
+ 
+ `C`：Controller层，控制层
+
+ 本质：所有通信都是单向的；
+ 本质是：将**数据展示** 和 **数据** 进行隔离，提高代码的复用性和扩展性；
+
+ 特点：职责明确、相互分离；
+ 
  ### [MVVM] 什么是MVVM？
  `M`：Model层，存放数据
  `V`：View层，视图层
@@ -988,6 +1000,89 @@ html {
 
  ### [js] let/var
 
- ### [js] call/apply/bind
- `call`：只能一个参数一个参数传
- `apply`：只支持传一个数组（`arguments`）
+ ### [js] call、apply、bind
+ 3个方法的作用：
+   - 改变`this`的指向；
+   - 支持`传入参数`；
+   - `call`、`apply`返回函数结果；`bind`返回新函数
+ 
+ 特点：
+   - `call`：只能一个参数一个参数传
+   - `apply`：只支持传一个数组（`arguments`）
+
+ #### 实现call
+ ```js
+ Function.prototype.myCall = function(obj, ...arg) {
+     let result
+     // 0、传参检测
+     if (obj === null || obj === undefined) {
+         obj = window
+     } else {
+         obj = Object(obj)
+     }
+     // 1、改变`this`指向
+     // 要让传入的obj成为：函数调用时的this值
+     obj._fn_ = this
+     result = obj._fn_(...arg) // 2、支持`传入参数`
+     delete obj._fn_
+     return result // 3、利用变量保存函数的返回值
+ }
+ ```
+ #### 实现apply
+ ```js
+ // 注意，第二个参数是一个数组
+ Function.prototype.myApply = function(obj, arr) {
+     return this.myCall(obj, ...arr)
+ }
+ ```
+ #### 实现bind
+ ```js
+ Function.prototype.myBind = function(obj, ...arg) {
+     return (...arg2) => {
+         let args = arg.concat(arg2)
+         // 以下和实现call的一样
+         let result
+         // 0、传参检测
+         if (obj === null || obj === undefined) {
+             obj = window
+         } else {
+             obj = Object(obj)
+         }
+     // 1、改变`this`指向
+     // 要让传入的obj成为：函数调用时的this值
+         obj._fn_ = this
+         result = obj._fn_(...args) // 2、支持`传入参数`
+         delete obj._fn_
+         return result // 3、利用变量保存函数的返回值
+     }
+ }
+ ```
+
+ ### [http]HTTP和HTTPS的区别
+ `http`是无状态的超文本传输协议，是明文传输；
+  - 标准端口：80
+  - 不需要ca证书
+
+ `https`是由SSL + http协议构建的加密传输协议
+  - 标准端口：443
+  - 需要ca证书
+  - 增加cpu、带宽消耗
+  - 首次连接比较慢
+
+ ### [TCP]三次握手、四次挥手
+ 三次握手：
+  - `客户端`发送syn给`服务端`
+  - `服务端`收到syn后，会给`客户端`发送syn + ack
+  - `客户端`收到syn + ack后，会给`服务端`发送ack表示已收到
+
+ 四次挥手：
+  - `主动方`会发送FIN给`被动方`
+  - `被动方`收到FIN后，会发送ack给`主动方`
+  - `被动方`再发送FIN给`主动方`
+  - `主动方`收到FIN，发送ack给`被动方`
+
+### [js]new操作符经历了哪些步骤？
+ - 创建了一个`新的对象`
+ - 将`构造函数的作用域`赋值给`新的对象`（此时this指向新的对象）
+ - 执行`构造函数`里的代码（为这个新对象添加属性）
+ - 返回一个`新的对象`
