@@ -986,10 +986,10 @@ html {
  简单实现：
  ```js
  function throttle(fn, delay = 500) {
-     let startTime = new Date.now()
+     let startTime = Date.now()
      return function() {
          let args = arguments
-         let currentTime = new Date.now()
+         let currentTime = Date.now()
          if (currentTime - startTime > delay) {
              fn.apply(this, args)
              startTime = currentTime // 刷新旧的startTime
@@ -1086,3 +1086,29 @@ html {
  - 将`构造函数的作用域`赋值给`新的对象`（此时this指向新的对象）
  - 执行`构造函数`里的代码（为这个新对象添加属性）
  - 返回一个`新的对象`
+
+ ### [js]window对象和document对象的区别
+ `window`对象表示：浏览器中打开的窗口；
+
+ `document`对象表示：当前页面；它是`window`的一个对象属性
+
+ ### [算法] 八大算法
+ 不稳定：
+ - 简单选择排序
+ - 希尔排序
+ - 快速排序
+ - 堆排序
+
+ 稳定：
+ - 冒泡排序
+ - 归并排序
+ - 插入排序
+ - 基数排序
+
+ #### 稳定性的意义
+ 目的：`保证两次排序的结果相同`
+  - 比如先按ID（从小到大排序），已经排好了；
+  - 再按体重排序（轻的在前面、重的在后面），遇到体重相等时，就按ID排
+  - 如果是稳定性的算法，结果是相同的（体重相同者，ID小的在前面）
+  - 如果是不稳定的算法，结果可能是（体重相同者，ID小的在后面）
+ 
