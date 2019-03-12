@@ -1105,57 +1105,48 @@ html {
  - 该元素并不脱离文档流，仍然保留元素原本在文档流中的位置
 
  ### [浏览器]CORS跨域资源共享
- `CORS`是W3C标准，叫“跨域资源共享”。它允许`浏览器`向`跨源服务器`发出`XMLHttpRequest`请求，从而克服AJAX只能同源使用的限制。
+ `CORS`是W3C标准，叫“跨域资源共享”。它允许`浏览器`向`跨源服务器`发出`XMLHttpRequest`请求，从而克服AJAX只能`同源使用`的限制。
 
  需要`浏览器`+`服务端`同时支持（IE10+）
 
- 2类CORS请求：
-  - 简单请求
-  - 非简单请求
+ 一共2类CORS请求：`简单请求`、`非简单请求`
 
  #### 简单请求
  同时满足以下两种条件：
 
- 条件一：请求方法
- - HEAD
- - GET
- - POST
+ 条件一：请求方法：`HEAD`、`GET`、`POST`
 
  条件二：HTTP头部信息（不能多于以下字段）
- - Accept
- - Accept-Language
- - Content-Language
- - Last-Event-ID
- - Content-Type
+ - `Accept`
+ - `Accept-Language`
+ - `Content-Language`
+ - `Last-Event-ID`
+ - `Content-Type`
     - application/x-www-form-urlencoded
     - multipart/form-data
     - text/plain
 
-若是简单请求，则HTTP头部会自动添加一个`Origin`字段（表明请求来自哪个源）。
+**简单请求的HTTP头部**会自动添加一个`Origin`字段（表明请求来自哪个源）。
 
 若`Origin`指定的源：
  - 在许可范围
-    - 响应头信息会有`Access-Control-Allow-Origin`（其值要么是`Origin`的值，要么是`*`）
-    - 有关Cookie
-        - 响应头信息会有`Access-Control-Allow-Credentials`（`true`：请求可以带Cookie；`false`：相反）
-        - 响应`Access-Control-Allow-Origin`不能设为`*`，必须指定明确
-        - 对于浏览器，要设置`xhr.withCredentials = true`才可以发Cookie
-        - 对于浏览器：只有用`服务器域名`设置的Cookie才会上传，其他域名的Cookie不会上传
- - 在不许可范围
-    - 响应头信息没有包含`Access-Control-Allow-Origin`
-        - 有可能状态码200
-        - 能被`XMLHttpRequest`的`onerror`捕获
+    - 响应头信息**会有**`Access-Control-Allow-Origin`（其值要么是`Origin`的值，要么是`*`）
+ - 不在许可范围
+    - 响应头信息**没有**`Access-Control-Allow-Origin`（能被`XMLHttpRequest`的`onerror`捕获）
+
+> 有关Cookie**（前提：源在许可范围内）**
+>    - 响应头信息会有`Access-Control-Allow-Credentials`（`true`：请求可以带Cookie；`false`：相反）
+>    - 响应头信息的`Access-Control-Allow-Origin`不能设为`*`，必须指定明确
+>    - 浏览器要设置`xhr.withCredentials = true`才可以发Cookie，且只有用`服务器域名`设置的Cookie才会上传（其他域名的Cookie不会上传）
 
 #### 非简单请求
-`非简单请求`指的是对服务器有特殊要求的请求。
-
-若请求方法：`PUT`、`DELETE` 或者 Content-Type：`application/json`，则会先发送一个`预检请求`（`OPTIONS`）。
+`非简单请求`是指请求方法：`PUT`、`DELETE` 或者 Content-Type：`application/json`的请求，它会先发送一个`预检请求`（`OPTIONS`）。
 
 `预检请求`的HTTP头部会自动添加一个`Origin`字段（表明请求来自哪个源），以及以下两个特殊字段：
- - Access-Control-Request-Method
-    - 列出`接下来的CORS请求`会用到哪些方法
- - Access-Control-Request-Headers
-    - 指定`接下来的CORS请求`会额外发送哪些自定义头部
+ - `Access-Control-Request-Method`
+    - 列出**接下来的CORS请求**会用到哪些方法
+ - `Access-Control-Request-Headers`
+    - 指定**接下来的CORS请求**会额外发送哪些自定义头部
 
  服务器收到`预检请求`后，
  - 允许跨域
@@ -1168,4 +1159,6 @@ html {
  - 不允许跨域
     - 响应头信息没有任何CORS相关头信息字段(能被`XMLHttpRequest`的`onerror`捕获)
 
- 只要通过了“预检请求”，以后每次正常的CORS请求，都会跟`简单请求`一样了，有一个`Origin`头部信息。
+ 只要通过了“预检请求”，以后每次正常的CORS请求，都会跟`简单请求`一样了：
+  - 对于请求头部，会有一个`Origin`字段
+  - 对于响应头部，也会有`Access-Control-Allow-Origin`
