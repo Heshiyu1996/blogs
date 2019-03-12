@@ -191,10 +191,10 @@ CSS3样式提纲：
 
 ### 盒模型
  - 标准盒模型
- width、height、padding、margin 四个独立，所设及所得
+ width、height、padding、border、margin 五个独立，所设及所得
 
  - IE盒模型
- width（height）包括了padding、margin，最终width会小一些
+ width（height）包括了padding、border，（`margin依旧独立`），故最终width会小一些
 
 ### 弹性盒模型
 采用Flex布局的元素，成为`Flex容器`，它的子元素自动成为`Flex项目`
@@ -215,36 +215,12 @@ CSS3样式提纲：
     - **flex** // 上三个的缩写
 
 ### 完美居中的方案
- - 父节点position: relative、子节点position: absolute搭配transform
- ```css
- .parent {
-     position: relative;
- }
- .child {
-     position: absolute;
-     top: 50%;
-     left: 50%;
-     transform: translate(-50%, -50%);
- }
- ```
- - 父节点flexbox，子节点margin: auto
- ```css
- .parent {
-     display: flex;
-     width: 200px;
-     height: 200px;
- }
- .child {
-     margin: auto;
- }
- ```
+ 详见[2019-03-10](./2019-03-10.md)里的居中
 ### [CSS]CSS定位
  - 绝对定位
     - position: absolute | fixed（前者相对非static的父元素、后者相对浏览器的左上角）
  - 相对定位
     - position: relative（相对本身所在位置）
-
-### 
 
 ### 闭包
 `闭包`就是一个函数，这个函数能够访问 **其他函数的作用域** 中的变量。
