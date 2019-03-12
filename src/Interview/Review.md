@@ -1115,3 +1115,15 @@ html {
   - 如果是稳定性的算法，结果是相同的（体重相同者，ID小的在前面）
   - 如果是不稳定的算法，结果可能是（体重相同者，ID小的在后面）
  
+ ### [css]sticky
+ `sticky`是position的粘性属性。它是在`relative`和`fixed`中切换，具体看是否要移出`viewPort`。
+ ```css
+ div.sticky {
+     position: sticky;
+     top: 10px;
+ }
+ ```
+ 也就是说：当滚动时，这个元素有移出的倾向，则切换为`fixed`（通过阈值来进行一些buff的作用）
+ - 阈值是：`top`、`bottom`、`left`、`right`，必须设置四者之一
+ - 若设定了阈值为`top: 10px`，则表示：当距离`viewPort的顶部`提前到`10px`的位置就切换`fixed`
+ - 该元素并不脱离文档流，仍然保留元素原本在文档流中的位置
