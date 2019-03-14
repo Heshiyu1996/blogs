@@ -21,6 +21,7 @@
 * CSS
 
 * JavaScript
+  * [DOM（2019-03-14）](/src/Basics/JS/DOM.md)
   * [Module（2019-02-26）](/src/Basics/JS/Module.md)
   * [Generator](/src/Basics/JS/Generator.md)
   * [暂时性死区](/src/Basics/JS/TDZ.md)
@@ -49,6 +50,9 @@
 
 * 性能提升
   * [图片转成base64](/src/Performance/base64.md)
+
+* 算法
+  * [八大排序](/src/Algorithm/Sort.md)
 
 ## 前端进阶
 * Vue
