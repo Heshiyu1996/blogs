@@ -25,13 +25,18 @@ webpack：是一个前端模块化的方案，侧重模块打包。把开发的�
  - 最后打包成为一个浏览器可识别的js文件`output.js`
 
 
-### [Vue.js]Vue.js的三大特点：
- - 响应式（数据双向绑定）
- - 组件化（模块化）
- - 单文件组件（.vue）
-    - 将html/js/css存在于一个文件内，然后得益于`webpack + vue-loader`来让浏览器识别
-    - 好处1：Style的作用域
-    - 好处2：预加载器（在template、style中的lang属性）
+### [Vue.js]Vue.js的特点及优势：
+ - 三大特点
+
+ - 优势
+    - 从React那里借鉴了`组件化`、`prop`、`单向数据流`、`性能`、`虚拟DOM`、`状态管理`
+    - 从Angular那里借鉴了`模板`、`双向数据绑定`
+    - 单文件组件（.vue）
+        - 将html/js/css存在于一个文件内，然后得益于`webpack + vue-loader`来让浏览器识别
+        - 好处1：Style的作用域
+        - 好处2：预加载器（在template、style中的lang属性）
+ - 不足
+    - 模板的`运行时错误`描述不够直观（**异常堆栈信息**总是指向Vue.js的内部方法）
 
 ### [Vue.js]$attrs 和 $listeners
 $attrs是一个对象，存着由父组件传递给子组件、但是没有在子组件里prop的特性

@@ -482,17 +482,6 @@ html {
 }
 ```
 
-### [css]清除浮动
- - 在父容器里最后一个子节点设为`clear: both`
- - 对父容器添加伪类`after`
-    ```css
-    .container :after {
-        content: ' ',
-        clear: both
-    }
-    ```
- - 对父容器设为`overflow: hidden`
-
 ### [css]css hack
 `css hack`，指的是当不同浏览器对某些css属性做解析的时候，出现差异；然后去弥补这些差异的过程。
 
@@ -969,7 +958,7 @@ IE10 及以上
 ### [css]浮动是什么？
 浮动的目的：**一行显示多个div元素**
 
-规则：若元素A是浮动的：
+ 规则：若元素A是浮动的：
  - 若他前一个元素也是浮动的，那会跟随前一个元素的**后边**
  - 若他前一个元素是在标准流的，那会和前一个元素的**底部对齐**
 
@@ -986,6 +975,11 @@ IE10 及以上
  }
  ```
  ![alt](././img/img-4.png)
+ 
+ #### 浮动会带来什么问题？
+  - 多个浮动元素可能导致父元素高度无法撑开
+  - 浮动元素后面的非浮动元素（内联元素），会跟随其后
+  - 浮动元素前面的非浮动元素，会影响页面的结构
 
  #### 清除浮动
   - 在父元素最后一个子元素后，再加一个子元素，属性为`clear: both;`
@@ -997,7 +991,8 @@ IE10 及以上
      clear: both;
   }
   ```
-  - 给父元素`overflow: hidden;`（利用BFC的原理）
+  - 给父元素设为`overflow: hidden;`（利用BFC的原理）
+  - 给父容器设为`float: left;`（利用BFC的原理）
 
 ### [css] BFC是什么？
 `BFC`指的是`块级格式化上下文`，可以把BFC理解为一个封闭的大箱子，箱子内部的元素无论如何都不会影响到外部。
@@ -1069,7 +1064,7 @@ IE10 及以上
 
  ![alt](././img/img-7.png)
 
- - `BFC`可以包含浮动的元素（即通常说的清除浮动）
+ - `BFC`可以包含浮动的元素（即通常说的`清除浮动`）
 ```html
 <style>
    .parent {
@@ -1122,3 +1117,51 @@ for (let i = 0; i < 10; i++) {
  - `setTimeout`是在`下一轮事件循环开始时`触发
  - `let`在循环里`每次迭代`都会创建一个新的作用域
 
+### [css]margin重叠问题
+在css中，`同一个BFC`下相邻的两个盒子的外边距（margin）可以结合成一个单独的外边距，这种合并的方式叫`折叠`
+ - 若两个相邻的外边距`都是正数（+）`，结果是`最大值`
+ - 若两个相邻的外边距`都是负数（-）`，结果是`两者绝对值较大的那个数`
+ - 若两个相邻的外边距`一正（+）一负（-）`，结果是`两者之和`
+
+### [js]DOM操作：获取、增、删、查、改等操作
+[DOM节点](./../Basics/JS/DOM.md)
+
+### [js]JS交换两个节点如何实现？
+```html
+<div id="a">啊</div>
+<div id="b">波</div>
+```
+```js
+ var obj = document.createElement('a')
+ var div1 = document.getElementById('a')
+ var div2 = document.getElementById('b')
+
+ div2.parentNode.appendChild(obj)
+ div2.parentNode.replaceChild(div1, obj) // (newElement, oldElement)，newElement在替换后会从原位置中被删除
+```
+
+### [css]z-index和position的关系
+`z-index`用于设置元素的堆叠顺序，堆叠顺序高的会处于堆叠顺序底的前面
+
+它只在`position`为`absolute`、`relative`或`fixed`的元素上有效
+
+### [js]cookie和session的区别
+`cookie`
+ - `保存在客户端`的小文本
+ - 可保存sessionID
+ - 不安全
+ 
+`session`
+ - `保存在服务端`的有关浏览器会话的信息
+ - 运行依赖sessionID
+    - 创建前，服务端会先检查请求头里是否包含session id。若有，且未过期，则直接用旧的）
+ - 有失效时间
+ - 安全
+
+ 一句话：`session`的实现一般需要借助`cookie`来发送`sessionID`
+
+ ### [js]jquery实现ajax的源码
+
+ ### HTTP协议相关：请求头、响应头、状态码（5大类）、报文格式，一次http完整的过程，详细说一下Accept - Encoding的作用，和性能有关系？http有哪些请求方式？Get和post的区别？
+
+ 
