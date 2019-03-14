@@ -1,5 +1,4 @@
-# 复习2019
-## 2019-03-03
+# 基础（一面）
 ### [HTML 5]Web worker
 Web Worker是HTML5的新功能。Web Worker标准包含两部分：**Worker对象**（该对象暴露给创建该线程 的线程用的）、**WorkerGlobalScope**（这是一个用来表示新创建的Worker的全局对象，也是Worker线程内部使用的对象）
 
@@ -28,130 +27,8 @@ worker内部
      postMessage(123)
  }
  ```
-
-### [Vue.js]如何实现Vue.js的响应式数据绑定？
-Vue实例初始化的过程中，实现依赖管理。大致总结如下：
-
- - `initState`过程中，把`props、computed、data`等属性通过`Object.defineProperty`来改造其`getter/setter`属性，并为每一个响应式属性去实例化一个`observer`观察者；
- - `observer`观察者内部的`dep`对象记录了这个响应式属性的所有依赖；
- - 当响应式属性调用`setter`函数时，通过`dep.notify()`方法去遍历所有依赖，然后调用`watcher.update()`去完成数据的动态响应
-
-
-## 2019-03-04
-### [工具]gulp与webpack的区别
-gulp：强调的是前端开发流程。通过定义一系列的task，再定义task处理的事物、顺序，最后让gulp执行task，从而构建前端项目；
-
-4个常用的方法：
- - src（）：获取流
- - dest（）：写文件
- - task（）：定义任务
- - watch（）：用来监听事件
-
-webpack：是一个前端模块化的方案，侧重模块打包。把开发的资源看成模块，通过`loader`、`plugins`对资源进行处理，最后打包成符合生产环境部署的前端资源。
-
-使用方法：
- - 不同环境下全局安装的webpack版本可能不符合这个项目，所以还是用局部依赖
- - ./node_modules/.bin/webpack input.js output.js
- - 从入口文件`input.js`开始，找出所有依赖的文件，然后用对应的loaders去处理它们
- - 最后打包成为一个浏览器可识别的js文件`output.js`
-
-### [Vue.js]Vue.js的三大特点：
- - 响应式（数据双向绑定）
- - 组件化（模块化）
- - 单文件组件（.vue）
-    - 将html/js/css存在于一个文件内，然后得益于`webpack + vue-loader`来让浏览器识别
-    - 好处1：Style的作用域
-    - 好处2：预加载器（在template、style中的lang属性）
-
-### [Vue.js]$attrs 和 $listeners
-$attrs是一个对象，存着由父组件传递给子组件、但是没有在子组件里prop的特性
-
-$listeners也是一个对象，存着由父组件传递给子组件定义的所有方法的集合（即，一些@emit）
- - 通过`$listeners`可以向孙组件去传递那些emit事件，由孙组件去触发“爷组件”的方法
-
-### [Vue.js]改变prop值的方法
-> Vue一般防止子组件改变父组件的状态，所以不应该在子组件内部改变prop
-
-#### 不改变父组件
- - data（利用prop作为初始值，后续修改本地data）
- - computed（“听父从命”，当父通知prop值改变，子组件computed）
-
-#### 改变父组件（.sync）
- - .sync（当子组件改变了prop值，这个变化也同步到父组件中）
- ```js
- // parent.vue
- <child :inputValue="name"></child>
-
- // child.vue
- props: {
-     inputValue: { type: 'String', default: '' }
- },
- data() {
-     return {
-         iValue: this.inputValue
-     }
- },
- watch: {
-     iValue(val) {
-         this.$emit('update:inputValue', val) // 当子组件需要更新inputValue时，
-     },
-     inputValue(val) {
-         this.iValue = val
-     }
- }
- ```
- 实际上，`.sync`代表的是
-
- ```js
- model: {
-     prop: 'inputValue', // 子组件的prop值
-     event: 'update' // 子组件的prop值绑定的事件
- }
- ```
- `v-model`代表的是
- ```js
- model: {
-     prop: 'value',
-     event: 'input'
- }
- ```
-### [Vue.js]Vue里面的继承
-#### extend（单继承）
- - Vue的全局方法
- ```js
- Vue.extend(...) // 传递Vue实例选项
- ```
- - Vue的实例选项
- ```js
- export default {
-     extends: myExtend
- }
- ```
-#### mixin（多继承）
-混入 可以接受 对象数组，所以类似多继承。
-
-当使用“混入对象”时，所有“混入对象”的选项，都将适当地 **合并** 到该组件本身的选项
- - Vue的全局方法
- ```js
- Vue.mixin({
-     created() {
-         // ...
-     }
- })
- ```
- - Vue的实例选项
- ```js
- export default {
-    mixins: [ ... ]
- }
- ```
-
- #### 继承的合并规则
-  - 对象（覆盖冲突）
-    - （覆盖顺序优先）组件内部 > 混入对象（数组最右最优） > Extend对象
-
-  - 钩子函数
-    - （调用顺序优先）Extend对象 > 混入对象（数组最右最优） > 组件内部
+### WebWorker 会用在哪些场景？
+ - 完成轮询，以便第一时间得知状态改变
 
 ### [HTML5]HTML5的新语法
 #### 语法优化
@@ -261,7 +138,6 @@ inner() // 'heshiyu'
 #### video里的子标签的track
 在不同的手机系统、不同的浏览器都不兼容
 
-## 2019-03-05
 ### [JS]回调函数
 把函数作为参数传递，等待请求完成之后执行callback函数
 
@@ -299,7 +175,6 @@ appendDiv(function(node) {
 ```
 把`“隐藏节点”`的逻辑放在回调函数中，委托给appendDiv方法，在指定时刻执行这个“客户定义的”回调函数。
 
-### vuex、redux
 
 ### 设计模式
 #### 发布-订阅模式
@@ -309,9 +184,6 @@ appendDiv(function(node) {
  - 时间上（广泛应用于异步编程，是一种代替传递回调函数的方案）
  - 对象间（不需强耦合再一起。虽然不清楚彼此细节，但不影响它们之间通信）
 
- ### [HTTP]HTTP、HTTPS
-
-## 2019-03-06
  ### [浏览器]内核
  - Trident （IE内核）
  - Gecko （Firefox内核）
@@ -408,8 +280,6 @@ appendDiv(function(node) {
 优雅降级是指，一开始就构建`完整的功能`，然后再针对`低版本浏览器`进行兼容。
 
 
-### [VueConf]Make Your Vue App Accessible
-
 ### [js]原型对象、原型指针与原型链
 `prototype`是指原型对象。
  - 作用：
@@ -425,70 +295,8 @@ appendDiv(function(node) {
 
  > 原型链实际上是`__proto__连起来的链条`
 
- ### URS
-
- ### NOS
-
  ### 单例模式
 
- ### [vuelidate]表单校验
- #### 调研思路：
-  - 基于数据模型
-  - 支持自定义函数
-  - 支持嵌套
-  - 支持Promise
-  - 引入方式（可全局、可局部）
- 
- #### 源码实现（数据响应）
-  - 先获取Vue实例中的`validations`选项（通过`this.$options`）
-  - 再把选项里的配置规则转化为`$v`属性
-  - 将`$v`的代理通过`mixin`的方式，加入到Vue实例中的`computed选项`
-  - 默认是通过`input`事件进行校验。作者也推荐开发者可以通过给`v-model`定义`.lazy`修饰符，使得校验器可以进行懒校验
- 
-
- ### [Vue]生命周期
-首先，从`new Vue()`开始
- - 初始化生命周期、初始化事件系统
- - `beforeCreate`
- - 初始化State（props、data、computed...）、watcher
- - `Created`
- - 有el选项吗？
-    - 没有的话，等待 **vm.$mount(el)** 被执行时，才开始编辑
- - 有template选项吗？
-    - 有，将template里的内容编译为render函数
-    - 没有，将el的outerHTML整个内容编译为render函数
- - `beforeMount`（此时已准备好render函数了）
- - 将render函数返回的VNode树渲染到真实DOM上
- - `mounted`（挂载成功！）
-
-----
- - 当data发生变化（未重绘）
- - `beforeUpdate`
- - 执行diff算法，并将变化的部分patch到真实DOM
- - `updated`
-----
- - 当this.$destroy()被执行
- - `beforeDestroy`
- - 摧毁watcher、子组件、事件绑定
- - `destroyed`（摧毁成功！）
-
-
-### vuex
-
-### [jQuery]源码
- - 首先，是从`闭包` + `立即执行函数`开始的（传入了window对象）
-    - 目的：避免变量冲突
- - 然后，`重载`很常用
-    - 原因：单单为了实例化一个jQuery对象，就有9种不同的方法
- - 最后，`链式调用`实现原理
-    - 原因：实现很简单。只需在实现链式调用的方法的返回结果里，返回this即可解决
-
-### [babel]
-在vue-cli 3.0根目录下，有`babel.config.js`（采用babel7的新配置格式）。
- - 里面预先配置了`preset`，它的值是`['@vue/app']`
- - 也可以配置`plugins`（引用插件来处理代码的转换。和`preset`平级。）
-
-### [npm]和yarn的区别
 
 ### [Node.js]
 Node.js 采用了`单线程`、`异步式I/O`、`事件驱动`的程序设计模型，实现了：`包和模块`、`文件系统`、`网络通信`、`操作系统API`等功能
@@ -521,98 +329,6 @@ emitter.emit('someEvent', 'name')
 缺点：
  - 需要维护`WebSocket`连接
  - 消息推送比较复杂
-
-
- ### [BOT]
- #### 个人职责
-  - 项目重构（Regular.js -> Vue.js）
-  - 高阶组件库开发
-  - 校验框架调研
-  - 引入 登录功能、对象存储组件
-
- #### 项目亮点
-  - 重components、轻pages
-    - 页面结构清晰
-  - 原生组件可复用
-    - 尤其u-icon，可直接传svg、图片url
-  - 资源模块化
-    - vuex
-        - 将vuex实例按模块归类，引入命名空间
-        - 通过index.js将各模块导入，封装到modules对象里，再传入Vuex的构造函数中
-    - api
-        - 将接口按模块归类。利用index.js进行“导入再导出”
-
- #### 难点
- 无分页列表数据庞大，无法正常显示。
- 
- 主要问题：
- - 数据加载慢
- - 校验（去重、字符规则）
- - 全量保存
-
- 解决方案：
- - 真分页 + 增量保存
-    - 将校验交给后台。劣势：1、后台工作量增多；2、请求频繁，且耗时；
- - 假分页 + 全量保存
-    - 将校验交给前端。
-- vue-virtual-scroller
-    - 第三方库分页工具。
-    - 两种模式：
-        - RecycleScroller
-            - 只加载当前可视窗口的图片
-            - 复用组件、DOM元素
-        - DynamicScroller
-            - 利用RecycleScroller
-            - 外加了一个：动态尺寸管理
-    - 大致思路：把刷新`可视区域的item`这个事件，放到用户滚动时触发；通过记录上次加载的startIndex、以及endIndex来记住buffer（？）
-
-
- ### [觅见日记]
- #### 个人职责
-  - 调研并引入fly.js
-  - 开发登录、图片上传部分
-  - 前端资源模块化
-  - 视觉UI设计
-
- #### 项目亮点
-  - 请求响应统一拦截配置
-    - 根据不同的code对响应进行不同的逻辑处理
-  - LS以及Vuex巧妙搭配
-    - LS作为存储方、Vuex作为提供方
-  - 资源模块化
-    - vuex
-        - 将vuex实例按模块归类，引入命名空间
-        - 通过index.js将各模块导入，封装到modules对象里，再传入Vuex的构造函数中
-    - api
-        - 将接口按模块归类。利用index.js进行“导入再导出”
-
- #### 难点
- 1、登录态、userInfo的获取与存储
- 
- 主要问题：
- - 判断过程需要微信服务端的加入（需判断微信端中的session_key是否过期）
- - 登录态、userInfo在前端的存储（减少HTTP请求）
- - 为已授权的用户的userInfo存储到后端（减少重新授权操作）
-
- 解决方案：
-  - 采用了`LS（存储方）` + `Vuex（提供方）`搭配。
-    - 小程序加载，检查`LS`里的登录态：
-        - 若有，将`登录态`配进请求头；将`userInfo`存到`vuex`。（`LS`在，则证明`userInfo`也在）
-        - 若没有，发起`wx.login()`，利用`code`和服务端换取新的`登录态`。随后将`登录态`存到`LS`，并配进请求头；通过与后端拉取`userInfo`，存到`LS`、`vuex`
-    - 用户授权时，微信会返回最新`userInfo`，再更新`userInfo`到后端
-
- 2、登录态的统一拦截判断
-
- 主要问题：请求具有登录权限的接口时，根据返回的登录态进行统一响应拦截处理
-
- 解决方案：
-   - 在`请求拦截器`中统一加入与后端约定好的`登录态`自定义属性
-   - 在`响应拦截器`进行判断：
-        - 判断后端返回的`data.code`：
-            - 3 - 记录`登录态`；
-            - 2 - `登录态`失效了、发起`wx.login()`，自动完成登录然后继续发起这个请求；
-            - 1 - 表明500，统一出现报错提示
-            - 0 - 表明正常，这时候才返回响应结果
 
 
 ### [HTTP]状态码
@@ -688,39 +404,8 @@ dev: {
 
  ### TypeScript接口用途
 
- ### [小程序]登录过程
-  - 小程序端调用`wx.login()`获取`code`
-  - 带着`code`，传递给开发者后端
-  - 开发者后端带着`code + appid + appsecret`跟微信后端换取`session_key + openid`
-  - 开发者后端将自定义登录态与`session_key + openid`关联，并响应给小程序`登录态`
-  - 小程序把`登录态`写入Storage，等到下次有需要登录权限时，从Storage获取
-  - 开发者后端通过`自定义登录态`去查询`session_key + openid`，返回业务数据
 
- ### [小程序]生命周期
-  - beforeCreate
-  - created
-    - 所有页面created会在项目加载的时候一起被调用，进入页面不会被调用，一般用onLoad代替
---------
-  - onLoad，页面加载
-  - onShow，页面显示
-  - onReady，页面初次渲染完成
-  - onHide，页面隐藏
-  - onUnload，页面卸载
---------
-  - beforeMount
-  - mounted
-    - 从B返回到A，A的mounted不会被触发，因为页面没有被重新加载，一般用onShow代替
-  - beforeDestroy
-  - destroyed
-
- ### [小程序]跳转区别
- `redirectTo`，跳转到指定页，并关闭当前页
-
- `navigateTo`，跳转到指定页，并保留当前页
- 
- `switchTab`，跳转到tab bar页面，并关闭其他非tab bar页
-
- ### [ES7] callback、Async/Await和Promise
+ ### [ES8] callback、Async/Await和Promise
  #### 回调函数
  如果是以前，可以用`回调函数`实现：
  ```js
@@ -783,53 +468,6 @@ dev: {
     - 可以被`try-catch`捕捉到
   - 方便调试。
 
- ### [mpVue]mpVue的源码
- 开发微信小程序，如果使用mpVue会带来一些好处：
-  - 提高代码复用性
-  - 减少学习成本
-  - 组件化
-  - 状态的统一管理
-
-#### mpVue的实现原理
- - 将`Vue.js实例`与`小程序Page实例`进行关联
- - 【生命周期关联】小程序和Vue.js的生命周期建立映射关系
-    - 能在小程序生命周期中触发Vue.js的生命周期
- - 【事件代理机制】小程序建立事件代理机制，能在 **事件代理函数** 中触发对应的Vue.js组件事件响应
- - 【数据同步机制】vue和小程序的数据同步
-    - 在实例化vue的时候，会执行`initState`，将props、data、computed通过`Object.defineProperty`转化成`getter/setter`的形式
-    - 给每一个响应式属性实例化一个`observer`对象，对象里面也有一个`dep`对象，用来存储所有依赖的数据
-    - 当`setter`触发时，会触发`dep.notify()`方法，通知`dep`中所依赖的数据
-    - 最后再通过`diff算法`，patch到真实DOM中
-
-### IE8兼容性
- - 兼容`addEventListener`和`attachEvent`
-    - 解决方法：
-        - 新增一个`EventUtils`对象
-        - 里面封装一个`add`方法
-        ```js
-            vae EventUtils = {
-                add: function(elem, type, listener) {
-                    if (elem.addEventListener) {
-                        elem.addEventListener(type, listener, false)
-                    } else if (elem.attachEvent) {
-                        elem.attachEvent('on' + type, listener)
-                    } else {
-                        elem['on' + type] = listener
-                    }
-                }
-            }
-        ```
-
- - IE8不支持`placeholder`
-    - 解决方法：
-        - 读取input里面的`placeholder`属性；
-        - 在input表面覆盖一个`label`节点，并在页面加载时将`placeholder`的内容赋值进去；
-        - 当：`label`被点击、`input`聚焦时，label隐藏；
-        - 当：`input`失焦时，判断输入框中value长度，来控制`label`显示隐藏
-
- - IE8不支持`rem`
-    - 解决办法：
-        - 引入rem.js库（在body末尾）
 
 ### [css]rem
 `rem`是相对于（相对于`html`的字体大小）
@@ -843,10 +481,6 @@ html {
     font-size: 62.5% /* 10 / 16 * 100% */
 }
 ```
-
-
-
-### [H5]兼容性
 
 ### [css]清除浮动
  - 在父容器里最后一个子节点设为`clear: both`
@@ -901,41 +535,6 @@ html {
  }
  ```
 
- ### [Axios] 源码解析
- `Axios`是一个基于`Promise`的http请求库。
-
- ```js
- function Axios() {
-     this.interceptors = {
-         request: new InterceptorManager(), // 请求拦截器
-         response: new InterceptorManager() // 响应拦截器
-     }
- }
- ```
- 每个axios实例都有一个`interceptors`实例属性，同时这个`interceptors`对象上有两个属性`request`、`response`，它们都是`InterceptorManager`的实例。`InterceptorManager`构造函数时用来实现拦截器的，且这个构造函数原型上有3个方法：`use`、`eject`、`forEach`。
-
- 一般我们最常用的是`use`，
-  - 对于`request`，我们就在`use`里对`config`进行修改，随后会覆盖掉默认配置
-  - 对于`response`，我们就在`use`里对后端返回的数据进行一个预处理再返回
-
- ### [MVC] 什么是MVC？
- `M`：Model层，存放数据
- 
- `V`：View层，视图层
- 
- `C`：Controller层，控制层
-
- 本质：所有通信都是单向的；
- 本质是：将**数据展示** 和 **数据** 进行隔离，提高代码的复用性和扩展性；
-
- 特点：职责明确、相互分离；
- 
- ### [MVVM] 什么是MVVM？
- `M`：Model层，存放数据
- `V`：View层，视图层
- `VM`：ViewModel层，负责：
-   - 将Model层的数据`同步`到View层，进行呈现
-   - 将View层的修改`同步`到Model层，进行存储
 
  ### [js] 函数防抖与函数节流
  `函数防抖`（debounce），指的是在上次触发之后、再过N毫秒，才能执行该动作
@@ -956,6 +555,13 @@ html {
          }, delay)
      }
  }
+
+var func1 = function(y) {
+    console.log(y)
+}
+
+var myFunc1 = debounce(func1, -2)
+myFunc1('caozuoxiao')
  ```
 
  `函数节流`（throttle），指的是函数按照一个周期N毫秒执行
@@ -975,9 +581,15 @@ html {
          }
      }
  }
+
+var func = function(x) {
+    console.log(x)
+}
+
+var myFunc = throttle(func, -1) // 为了test，delay设为-1
+myFunc('heshiyu') // 'hehsiyu'
  ```
 
- ### [js] let/var
 
  ### [js] call、apply、bind
  3个方法的作用：
@@ -1071,6 +683,7 @@ html {
 
  `document`对象表示：当前页面；它是`window`的一个对象属性
 
+
  ### [算法] 八大算法
  不稳定：
  - 简单选择排序
@@ -1091,18 +704,7 @@ html {
   - 如果是稳定性的算法，结果是相同的（体重相同者，ID小的在前面）
   - 如果是不稳定的算法，结果可能是（体重相同者，ID小的在后面）
  
- ### [css]sticky
- `sticky`是position的粘性属性。它是在`relative`和`fixed`中切换，具体看是否要移出`viewPort`。
- ```css
- div.sticky {
-     position: sticky;
-     top: 10px;
- }
- ```
- 也就是说：当滚动时，这个元素有移出的倾向，则切换为`fixed`（通过阈值来进行一些buff的作用）
- - 阈值是：`top`、`bottom`、`left`、`right`，必须设置四者之一
- - 若设定了阈值为`top: 10px`，则表示：当距离`viewPort的顶部`提前到`10px`的位置就切换`fixed`
- - 该元素并不脱离文档流，仍然保留元素原本在文档流中的位置
+ ### [js] let/var
 
  ### [浏览器]CORS跨域资源共享
  `CORS`是W3C标准，叫“跨域资源共享”。它允许`浏览器`向`跨源服务器`发出`XMLHttpRequest`请求，从而克服AJAX只能`同源使用`的限制。
@@ -1162,3 +764,361 @@ html {
  只要通过了“预检请求”，以后每次正常的CORS请求，都会跟`简单请求`一样了：
   - 对于请求头部，会有一个`Origin`字段
   - 对于响应头部，也会有`Access-Control-Allow-Origin`
+  
+
+### CSS面试题
+一个页面中，有Header、Content、Footer三部分。其中，Footer高度固定，但Content内容的高度不定。当Content内容小于多于一屏，Footer紧跟在Content的实际位置下方；当Content内容多于一屏，Footer固定在浏览器下方
+
+ ### [css]sticky
+ `sticky`是position的粘性属性。它是在`relative`和`fixed`中切换，具体看是否要移出`viewPort`。
+ ```css
+ div.sticky {
+     position: sticky;
+     top: 10px;
+ }
+ ```
+ 也就是说：当滚动时，这个元素有移出的倾向，则切换为`fixed`（通过阈值来进行一些buff的作用）
+ - 阈值是：`top`、`bottom`、`left`、`right`，必须设置四者之一
+ - 若设定了阈值为`top: 10px`，则表示：当距离`viewPort的顶部`提前到`10px`的位置就切换`fixed`
+ - 该元素并不脱离文档流，仍然保留元素原本在文档流中的位置
+
+
+### Promise.all()的用法，以及它的异常处理
+#### `Promise.all([])`接收一个数组，数组中每个元素都是`Promise的实例`。
+例如：
+```js
+var p1 = new Promise(function(resolve, reject) {
+    setTimeout(resolve, 3000, 'first')
+})
+var p2 = new Promise(function(resolve, reject) {
+    setTimeout('second')
+})
+var p3 = new Promise(function(resolve, reject) {
+    setTimeout(resolve, 1000, 'third')
+})
+
+var p = Promise.all([p1, p2, p3])
+p.then(data => console.log(data)) // ['first', 'second', 'third']
+```
+
+ - 当`p1、p2、p3`都为fulFilled，按`参数的顺序`传给p的回调函数（then）
+ - 当`p1、p2、p3`其中一个为rejected，会把`第一个变rejected`的值传给p的回调函数（catch）
+
+#### 异常处理
+因为`Promise.all()`方法是**一旦抛出其中一个异常**，那其他正常返回的数据也无法使用了
+
+ ![alt](././img/img-2.png)
+
+解决办法：
+ - 方法一：改为串行调用（失去了并发优势）
+ - 方法二：在Promise内，先用try-catch吃掉这个异常。在其catch内再调用resolve(err)，让外面的Promise“感觉”像是调用成功
+ ```js
+ // 方法二：
+ var p2 = new Promise(function(resolve, reject) {
+     setTimeout(() => {
+         try {
+             console.log(xxx) // xxx未声明，会抛出异常给下面的catch块
+         } catch(err) {
+             resolve(err) // 在内部的catch里调用resolve(err)
+         }
+     })
+ })
+ ```
+ ![alt](./img/img-1.png)
+
+
+### 对于行内元素、块级元素的水平/垂直居中如何实现？
+#### `行内元素`：
+ - 水平居中：
+```css
+/* A1 */
+.parent {
+    text-align: center;
+}
+```
+ - 垂直居中：
+```css
+/* B1 */
+.parent {
+    height: 100px;
+    line-height: 100px;
+}
+
+/* B2 */
+.parent {
+    display: table-cell;
+    vertical-align: middle;
+}
+```
+ - 水平垂直居中：
+ ```css
+ /* 不兼容flexbox */
+    /* `A1` 与 `B1/B2`混合搭配  */
+ 
+ /* 兼容flexbox */
+    .parent {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+ ```
+
+#### 块级元素：
+ - 水平居中：
+ ```css
+ /* C1 */
+ .child {
+     margin: 0 auto;
+ }
+ /* C2 */
+ .child {
+     position: relative;
+     margin: auto;
+     left: 0;
+     right: 0;
+ }
+ /* C3 */
+ .parent {
+     display: flex;
+     justify-content: center;
+ }
+ ```
+ - 垂直居中：
+ ```css
+ /* D1 */
+ .parent {
+     display: table-cell;
+     vertical-align: middle;
+ }
+ ```
+ - 水平垂直居中：
+ ```css
+ /* 不兼容flexbox */
+    /* `C1/C2/C3` 与 `D1`混合搭配  */
+ 
+ /* 兼容flexbox */
+    .parent {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+ ```
+
+### 行内元素有哪些？为什么img不是？
+行内替换元素。height/width/padding/margin均可用。效果等于块元素。
+
+
+
+### Flexbox的兼容性
+IE10 及以上
+
+
+### ES6、ES7和ES8有哪些不同的地方吗？
+#### ES7
+ - 求幂运算符（`**`）
+ - Array.prototype.includes()
+
+#### ES8
+ - async/await
+ - Object.entries()和Object.values()
+    - 将对象按照key/value返回一个二维数组
+ - padEnd和padStart
+    - 填充目标字符串到目标长度
+ - Object.getOwnPropertyDescriptors
+    - 返回目标对象中所有属性的属性描述符
+ - 共享内存和原子
+
+
+### 有哪些可以和后台保持不断的通信？
+ - 不断轮询
+ - 长时间连接
+ - WebSocket
+
+ ### [css]设置元素不可见的方法
+```css
+/* 1 */
+.child {
+   display: none;
+}
+
+/* 2 */
+.child {
+   visibility: hidden;
+}
+
+/* 3 */
+.child {
+   position: absolute;
+   top: -999999px;
+}
+
+/* 4 */
+.child {
+   opacity: 0;
+}
+```
+
+### [css]网页中的布局格式
+ - 标准流
+   - 行内元素在同一行，块级元素上下显示
+ - 浮动流
+   - 脱离标准流的第一种方式，但 **会影响** 标准流的排列
+ - 定位流
+   - 脱离标准流的第二种方式，**不会影响** 标准流的排列
+
+### [css]浮动是什么？
+浮动的目的：**一行显示多个div元素**
+
+规则：若元素A是浮动的：
+ - 若他前一个元素也是浮动的，那会跟随前一个元素的**后边**
+ - 若他前一个元素是在标准流的，那会和前一个元素的**底部对齐**
+
+ 牢记：`clear`规则只能影响`使用清除的元素本身`（**可以使xx元素的左/右边不允许出现浮动元素**）
+ 
+ 例子：
+ `div1`、`div2`都是浮动的，希望做到`div2`紧跟`div1`底部对齐
+ ![alt](././img/img-3.png)
+
+ 解决方法：
+ ```css
+ .div2 {
+    clear: left; /* 指定 div2元素左边 不允许出现浮动元素 */
+ }
+ ```
+ ![alt](././img/img-4.png)
+
+ #### 清除浮动
+  - 在父元素最后一个子元素后，再加一个子元素，属性为`clear: both;`
+  - 在父元素新增伪类：
+  ```css
+  .parent:after {
+     display: block;
+     content: ' ';
+     clear: both;
+  }
+  ```
+  - 给父元素`overflow: hidden;`（利用BFC的原理）
+
+### [css] BFC是什么？
+`BFC`指的是`块级格式化上下文`，可以把BFC理解为一个封闭的大箱子，箱子内部的元素无论如何都不会影响到外部。
+
+#### 触发BFC的条件
+ - 根元素（body）
+ - 浮动元素
+ - 绝对定位元素（absolute、fixed）
+ - display为`inline-block`、`table-cell`、`flex`
+ - overflow为`hidden`、`scroll`、`auto`
+
+ 触发某元素的BFC特性 = 将某元素放到BFC容器中
+
+#### BFC的特性及应用
+ - `在同一个BFC里`的元素的`外边距`会发生重叠
+ ```html
+ <style>
+    div {
+       width: 100px;
+       height: 100px;
+       background: blue;
+       margin: 100px;
+    }
+ </style>
+ <body>
+    <div></div>
+    <div></div>
+ </body>
+ ```
+ 由下图可知，两个div元素都`处于同一个BFC容器下`（指body元素）。
+ 
+ 上一个div的`margin-bottom: 100px;`，下一个div的`margin-top: 100px;`，可看出margin是重叠过的（即两个100px只算一个）
+
+ ![alt](././img/img-5.png)
+
+ > 解决方法：为了 避免外边距（margin）重叠，可以将它们放到 `不同的BFC容器`中（每个div外包一个`overflow: hidden;`的父容器）
+
+- `BFC`可以阻止元素`被浮动元素覆盖`
+```html
+ <style>
+    .first {
+       float: left;
+       width: 100px;
+       height: 100px;
+       background: blue;
+    }
+    .second {
+       width: 200px; /* 不设定宽度可以实现 两列自适应布局 */
+       height: 200px;
+       background: red;
+
+       overflow: hidden; /* 该元素放在一个新的BFC容器 */
+    }
+ </style>
+ <body>
+    <div class="first">我是第一个</div>
+    <div class="second">我是第二个</div>
+ </body>
+```
+由下图可知，第一个div元素有自己的BFC容器，但是对于第二个div元素处于标准流会被覆盖。
+
+> 解决办法：为了 阻止浮动元素（float）的覆盖，可以触发该元素的BFC特性。
+
+ - before
+
+ ![alt](././img/img-6.png)
+ 
+ - after
+
+ ![alt](././img/img-7.png)
+
+ - `BFC`可以包含浮动的元素（即通常说的清除浮动）
+```html
+<style>
+   .parent {
+      border: 1px solid gray;
+   }
+   .child {
+      float: left;
+      width: 100px;
+      height: 100px;
+      background: orange;
+   }
+</style>
+<body>
+    <div class="parent">
+        <div class="child"></div>
+    </div>
+</body>
+```
+ 由下图可知，BFC容器内的浮动元素脱离标准流后，容器只剩下2px的边距高度。
+
+ > 解决办法：为了 包含浮动元素（float），可以触发父元素的BFC特性（overflow: hidden;）
+
+ - before
+
+ ![alt](././img/img-8.png)
+
+ - after
+
+ ![alt](././img/img-9.png)
+ 
+### setTimeout与var/let
+
+```js
+for (var i = 0; i < 10; i++) {
+    setTimeout(function() {
+        console.log(i) // 10 10 10 10 10
+    }, 100 * i)
+}
+```
+
+```js
+for (let i = 0; i < 10; i++) {
+    setTimeout(function() {
+        console.log(i) // 0 1 2 3 4 ...
+    }, 100 * i)
+}
+```
+
+原因：
+ - `setTimeout`是在`下一轮事件循环开始时`触发
+ - `let`在循环里`每次迭代`都会创建一个新的作用域
+
