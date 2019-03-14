@@ -3,12 +3,14 @@
 ### [Vue.js]如何实现Vue.js的响应式数据绑定？
 Vue实例初始化的过程中，实现依赖管理。大致总结如下：
 
- - `initState`过程中，把`props、computed、data`等属性通过`Object.defineProperty`来改造其`getter/setter`属性，并为每一个响应式属性去实例化一个`observer`观察者；
- - `observer`观察者内部的`dep`对象记录了这个响应式属性的所有依赖；
+ - `initState`过程中，把`props、data、computed`等属性通过`Object.defineProperty`来改造其`getter/setter`属性，并为每一个响应式属性去实例化一个`observer`观察者；
+ - `observer`观察者内部的`dep`对象会记录这个响应式属性的所有依赖；
  - 当响应式属性调用`setter`函数时，通过`dep.notify()`方法去遍历所有依赖，然后调用`watcher.update()`去完成数据的动态响应
 
 ### [工具]gulp与webpack的区别
-gulp：强调的是前端开发流程。通过定义一系列的task，再定义task处理的事物、顺序，最后让gulp执行task，从而构建前端项目；
+`gulp`强调的是前端开发流程。
+
+用法：通过定义一系列的task，再定义task处理的事物、顺序，最后让gulp执行task，从而构建前端项目。
 
 4个常用的方法：
  - src（）：获取流
@@ -16,21 +18,20 @@ gulp：强调的是前端开发流程。通过定义一系列的task，再定义
  - task（）：定义任务
  - watch（）：用来监听事件
 
-webpack：是一个前端模块化的方案，侧重模块打包。把开发的资源看成模块，通过`loader`、`plugins`对资源进行处理，最后打包成符合生产环境部署的前端资源。
+`webpack`是一个前端模块化的方案，侧重模块打包。
+
+用法：把开发的资源看成`模块`，通过`loader`、`plugins`对资源进行处理，最后打包成浏览器成识别的js等文件。
 
 使用方法：
- - 不同环境下全局安装的webpack版本可能不符合这个项目，所以还是用局部依赖
- - ./node_modules/.bin/webpack input.js output.js
- - 从入口文件`input.js`开始，找出所有依赖的文件，然后用对应的loaders去处理它们
+ - ./node_modules/.bin/webpack `input.js` `output.js`
+    - 不同环境下全局安装的webpack版本可能不符合这个项目，所以还是用局部依赖
+ - 从入口文件`input.js`开始，找出`所有依赖`的文件，然后用对应的`loaders`去处理它们
  - 最后打包成为一个浏览器可识别的js文件`output.js`
 
-
-### [Vue.js]Vue.js的特点及优势：
- - 三大特点
-
- - 优势
-    - 从React那里借鉴了`组件化`、`prop`、`单向数据流`、`性能`、`虚拟DOM`、`状态管理`
-    - 从Angular那里借鉴了`模板`、`双向数据绑定`
+### [Vue.js]Vue.js的优势与不足：
+ - 优势（特点）
+    - 从`React`那里借鉴了`组件化`、`prop`、`单向数据流`、`性能`、`虚拟DOM`、`状态管理`
+    - 从`Angular`那里借鉴了`模板`、`双向数据绑定`
     - 单文件组件（.vue）
         - 将html/js/css存在于一个文件内，然后得益于`webpack + vue-loader`来让浏览器识别
         - 好处1：Style的作用域
@@ -189,7 +190,21 @@ $listeners也是一个对象，存着由父组件传递给子组件定义的所�
  - 里面预先配置了`preset`，它的值是`['@vue/app']`
  - 也可以配置`plugins`（引用插件来处理代码的转换。和`preset`平级。）
 
-### [npm]和yarn的区别
+### [工具]npm和和yarn的区别
+`yarn`是Facebook和Google联合推出的`新的JS包管理工具`
+
+有以下优点：
+ - 速度快
+    - 并行安装、离线模式
+ - 版本锁定
+    - yarn.lock
+ - 更简洁的输出
+ - 语义化的命令
+
+`npm`是Node.js中`默认的包管理工具`
+
+
+
 
 
  ### [BOT]
