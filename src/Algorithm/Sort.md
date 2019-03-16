@@ -4,15 +4,15 @@
  ### 八大排序
  不稳定：
  - [选择排序](#选择排序)
- - 希尔排序
- - 快速排序
- - 堆排序
+ - [希尔排序](#希尔排序)
+ - [快速排序](#快速排序)
+ - [堆排序](#堆排序)
 
  稳定：
  - [冒泡排序](#冒泡排序)
  - [归并排序](#归并排序)
  - [插入排序](#插入排序)
- - 基数排序
+ - [基数排序](#基数排序)
 
  ### 稳定性的意义
  目的：`保证两次排序的结果相同`
@@ -22,12 +22,24 @@
   - 如果是不稳定的算法，结果可能是（体重相同者，ID小的在后面）
  
  ### 冒泡排序
- 复杂度：O(n²)
+ 时间复杂度：O(n²)
 
- 大致思想：
-  - 一共比较`length - 1`轮，当前`第i轮`
-  - 每轮会通过两两比较，把符合条件的交换位置
-  - 第i轮结束时，会把第i大的数推到最后
+ 思想：重复遍历带排序列，一次比较两个元素。如果顺序错误就交换。
+
+```js
+function bubbleSort(arr) {
+  for (let i = 0; i < arr.length; i++) { // i代表轮次
+    // -1代表要保证后面有数和他比较，-i表示最后已排好了 i 个
+    for (let j = 0; j < arr.length - 1 - i; j++) {
+      if (arr[j] > arr[j+1]) {
+        [arr[j], arr[j+1]] = [arr[j+1], arr[j]]
+      }
+    }
+  }
+  return arr
+}
+
+```
  
  例子：[1, 9, 7, 6]
   - 一共比较`3`轮，当前`第1轮`
@@ -38,14 +50,31 @@
   - 第`1`轮结束，第`1`大的数（9）推到了最后
 
  ### 归并排序
- 复杂度：O(nlog2n)
+ 时间复杂度：O(nlog2n)
 
- 大致思想：
-  - 利用分治策略（先划分，后合并）
-  - 把大数组C划分为两个数组A、B（从C中间分开）
-  - 对于数组A、B分别重复步骤1，进行递归划分（直到每个子数组只剩下1个元素）
-  - 合并前，会将两个子数组中的元素进行排序，然后排序并组成一个新的数组返回给下一轮的合并
-  - 需保证即将合并的两个子数组内，是排好序的
+ 思想：利用`分治策略`，把待排序列递归划分为多个子序列，再将子序列的各项进行比较、合并，从而得到有序子序列。以此类推，直至得到最终有序序列。
+
+ ```js
+ function mergeSort(arr) {
+   if (arr.length < 2) return arr
+
+   let middle = Math.floor(arr.length / 2),
+       left = arr.slice(0, middle),
+       right = arr.slice(middle)
+
+    return merge(mergeSort(left), mergeSort(right))
+ }
+
+ function merge(left, right) {
+   let result = []
+
+   while(left.length > 0 && right.length > 0) {
+     result.push(left[0] <= right[0] ? left.shift() : right.shift())
+   }
+
+   return result.concat(left).concat(right) // left、right长度不等，连接即可
+ }
+ ```
 
  例子：[1, 9, 7, 6]
   - 把数组[1, 9, 7, 6]划分为[1, 9]、[7, 6]
@@ -65,7 +94,25 @@
  ### 插入排序
  时间复杂度：O(n²)
 
- 思路：依次将`无序序列`中的一个记录，按它的大小插入到一个`已排好序的子序列中的适当位置`，直到所有的记录都插入为止。
+ 思路：依次将`无序序列`中的一个记录，按它的大小在`已排序列`中**从后向前扫描**，插入到相应位置。直到所有的记录都插入为止。
+
+ ```js
+ function insertionSort(arr) {
+   let preIndex, curValue
+
+   for (let i = 1; i < arr.length; i++) {
+     preIndex = i - 1
+     curValue = arr[i]
+     while (preIndex >=0 && arr[preIndex] > curValue) {
+       arr[preIndex + 1] = arr[preIndex]
+       preIndex--
+     }
+     arr[preIndex + 1] = curValue
+   }
+
+   return arr
+ }
+ ```
 
  大致思想：
   - 一共比较`length - 1`轮，从下标为`1`开始
@@ -104,7 +151,23 @@
  ### 选择排序
  时间复杂度：O(n²)
  
- 思想：利用“分治策略”不断把`待排序列`的`有序子序列`进行合并，直到合并为一个有序序列为止。
+ 思想：在待排序列中找到最小元素，存放到已排序序列的起始位置；然后再从剩余未排序元素中，继续寻找最小元素，放到已排序列的末尾。
+
+ ```js
+ function selectionSort(arr) {
+   var minIndex
+   for (let i = 0; i < arr.length; i++) {
+     minIndex = i
+     for (let j = i + 1; j < arr.length; j++) {
+       if (arr[j] < arr[minIndex]) {
+         minIndex = j // 在循环后面数的时候发现比我初始定的min还小
+       }
+     }
+     [arr[i], arr[minIndex]] = [arr[minIndex], arr[i]]
+   }
+   return arr
+ }
+ ```
 
  大致思想：
   - 一共比较`length - 1`轮，当前`第i轮`（i代表的是第i个位置应该放什么数）
@@ -125,3 +188,56 @@
   - 把`第三个`位置的数（9）拷贝到min
   - 将`7`和`9`比较，换。此时min=7，数组为[1, 6, 9, 9]，本轮结束，将min赋值到`第三个`位置上，数组为[1, 6, 7, 9]
   - 最终数组[1, 6, 7, 9]
+
+ ### 希尔排序
+ 时间复杂度：O(nlog2n) ~ O(n²)
+
+ 思想：是简单插入排序的改进版。会优先比较距离较远的元素，又叫缩小增量排序
+
+ ```js
+ function shellSort(arr) {
+    let temp,
+       gap = 1
+    while (gap < arr.length / 3) {
+      gap = gap * 3 + 1
+    }
+    for(gap; gap > 0; gap = Math.floor(gap / 3)) {
+      for (let i = gap; i < arr.length; i++) {
+        temp = arr[i]
+        // 注意，对于j是var
+        for(var j = i - gap; j > 0 && arr[j] > temp; j -= gap) {
+          arr[j + gap] = arr[j]
+        }
+        arr[j + gap] = temp
+      }
+    }
+    return arr
+ }
+ ```
+
+
+ ### 快速排序
+ 时间复杂度：O(nlog2n)
+
+ 思想：
+  - 选择一个元素作为“基准”（pivot），记录其值、下标
+  - 所有小于“基准”的元素，移到“基准”的左边；所有大于“基准”的元素，都移到“基准”的右边
+  - 对“基准”左、右两个子集，不断重复第一、二步，直到所有子集`只剩下一个元素`为止
+ 
+ 代码：
+ ```js
+const quickSort = arr => arr.length <= 1 ? arr :
+      quickSort(arr.filter(x => x < arr[0]))
+      .concat(arr.filter(x => x == arr[0]))
+      .concat(quickSort(arr.filter(x => x > arr[0])))
+ ```
+
+ ### 基数排序
+ 时间复杂度：O(nlog(r)m)，其中r为所采取的基数，m为堆数
+
+ 思想：按照个位先排序，然后收集；再按照高位排序，然后再收集；以此类推，直到最高位。
+
+ ### 堆排序
+ 时间复杂度：O(nlog2n)
+
+ 思想：把数组看成一个完全二叉树
