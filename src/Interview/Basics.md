@@ -367,24 +367,6 @@ emitter.emit('someEvent', 'name')
  - 需要维护`WebSocket`连接
  - 消息推送比较复杂
 
-
-### [HTTP]状态码
- - 200：ok，正常返回
-----
- - 301：永久性重定向
- - 302：临时性重定向
-    - 相同点：以上两个都会跳转，搜索引擎会抓取最新内容
-    - 不同点：搜索引擎会保存 `新地址（301）` / `旧地址（302）`
- - 304：Not Modified，响应内容没有改变（在协商缓存 - 有效后触发）
-----
- - 400：Bad Request，服务器无法理解请求格式
- - 401：Unauthorized，请求未授权
- - 403：Forbidden，禁止访问
- - 404：Not Found，找不到匹配资源
-----
- - 500：常见服务端错误
- - 503：服务端暂时无法处理请求
-
 ### 正向代理 和 反向代理
 #### 正向代理
 一般说的 **代理** 指的是**正向代理**（如：VPN）
@@ -435,7 +417,6 @@ dev: {
  }
  ```
 
- ### [HTTP]请求头
 
 
 
@@ -770,7 +751,7 @@ myFunc('heshiyu') // 'hehsiyu'
  - 不允许跨域
     - 响应头信息没有任何CORS相关头信息字段(能被`XMLHttpRequest`的`onerror`捕获)
 
- 只要通过了“预检请求”，以后每次正常的CORS请求，都会跟`简单请求`一样了：
+ 注意：只要通过了“预检请求”，以后每次正常的CORS请求，都会跟`简单请求`一样了：
   - 对于请求头部，会有一个`Origin`字段
   - 对于响应头部，也会有`Access-Control-Allow-Origin`
   
@@ -1404,3 +1385,185 @@ console.log(ret)
  - dest（）：写文件
  - task（）：定义任务
  - watch（）：用来监听事件
+
+ IE8下最好用`gulp`，IE9用`webpack`
+
+### [js]js数组的方法
+#### 变异方法
+ - push()
+ - pop()
+ - shift()
+ - unshift()
+ - splice()
+    - 参数1：要操作的下标
+    - 参数2：要`删除`的项目数量
+    - 参数3：要新加入的项目
+    - 返回：被移除掉的项（array）
+ - sort()
+    - 参数：比较函数（function）
+ - reverse()
+
+#### 非变异方法
+ - slice()
+    - 参数1：截取的起始下标，闭区间
+    - 参数2：截取的终止下标，开区间（不指定，就是后面所有）
+    - 返回：被截走的数组（array）
+
+ - concat()
+    - 参数：要收录进数组的项（也可以是数组）
+    - 返回：合并后的数组
+
+ - filter()
+    - 参数：当前值为true，则会被返回
+    - 返回：符合条件的数组
+    ```js
+    var arr = [1, 3, 5]
+    arr.filter(item => item === 5) // [5]
+    ```
+
+ - join()
+    - 参数：分隔符
+    - 返回：字符串
+
+ - forEach()
+    - 参数1：当前项
+    - 参数2：当前项索引
+    - 参数3：数组本身
+    - 返回：undefined
+
+ - map()
+    - 参数1：当前项
+    - 参数2：当前项索引
+    - 参数3：数组本身
+    - 返回：一个新数组，旧数组不变
+
+### [js]去重
+```js
+function func1(arr) {
+    let map = {}
+    for (let i = arr.length - 1; i >= 0; i--) {
+        arr[i] in map ? arr.splice(i, 1) : (map[arr[i]] = true)
+    }
+    return arr
+}
+```
+
+### [js]for...in/for...of
+ - for...in
+    ```js
+        var arr = [1, 9, 6, 7]
+        var obj = {
+            name: 'heshiyu'
+        }
+
+        for (var i in arr) {
+            console.log(i)
+        }
+        // 依次输出：0 1 2 3
+
+        for (var i in obj) {
+            console.log(i)
+        }
+        // name
+    ```
+ - for...of
+    ```js
+        var arr = [1, 9, 6, 7]
+        var obj = {
+            name: 'heshiyu'
+        }
+
+        for (var i of arr) {
+            console.log(i)
+        }
+        // 依次输出：1 9 6 7
+
+        for (var i of obj) {
+            console.log(i)
+        }
+        // error
+    ```
+注意：`for...of`只适用于`拥有迭代器对象`的集合（例如：数字、字符串、map、set等），`不能遍历对象`
+ 
+ ### [js]迭代器
+ 迭代器对象可以任意具有.next方法的对象
+
+ ### [算法]二分查找
+ 思想：在一个`有序序列`当中，把要`查找的值`，与`中间值`比较：
+ 
+ 若大于中间值，则在右边进行`相同查找`；否则在左边进行查找。找到后返回索引值，否则返回`-1`
+
+  - 利用递归（数据量较少时）
+  ```js
+  function binary_search(arr, key) {
+      var low = 0 // 最左端
+      var high = arr.length - 1 // 最右端
+      
+      while(low < high) {
+          var mid = Math.floor((low + high) / 2)
+          if (key === arr[mid]) {
+              return mid
+          } else if (key > arr[mid]) {
+              low = mid + 1
+          } else if (key < arr[mid]) {
+              high = mid - 1
+          } else {
+              return - 1
+          }
+      }
+  }
+
+  var arr = [1, 9, 7, 6]
+  binary_search(arr, 7)
+  ```
+
+  - 非递归（数据量较多时，性能有所提高）
+
+ ### [js]Math.floor和parseInt
+ 相同：都能实现数字的向下取整
+
+ 不同：
+ ```js
+    // Math.floor 不能解析（非纯数字的）字符串
+    Math.floor(0.89) // 0
+    Math.floor("3") // 3
+    Math.floor("760px") // NaN
+
+    // parseInt不能解析（非数字开头的）字符串
+    parseInt(0.89) // 0
+    parseInt("3") // 3
+    parseInt("760px") // 760
+ ```
+
+ ### [Web]HTTP
+ #### 请求头（常用）
+ - Accept：可接受的响应内容类型
+ - Accept-Charset：可接受的字符集
+ - Accept-Encoding：可接受的响应内容的编码方式
+ - Cache-Control：用来指定当前的请求是否会使用到缓存机制
+ - Connection：浏览器想要优先使用的连接类型（例：keep-alive、Upgrade）
+ - Cookie：由之前服务器通过Set-Cookie设置的Cookie
+ - Content-Type：请求体的MIME类型（用于POST、PUT请求）
+ - Host：表示服务器的域名、端口号
+ - Origin：表示该请求是一个CORS（跨域资源共享）请求
+    - 该请求要求服务器在响应中，加入一个`Access-Control-Allow-Origin`的属性，表示`允许访问的请求地址`
+ - User-Agent：表示浏览器的身份标识字符串
+ 
+
+
+ #### 状态码
+ - 200：ok，正常返回
+----
+ - 301：永久性重定向
+ - 302：临时性重定向
+    - 相同点：以上两个都会跳转，搜索引擎会抓取最新内容
+    - 不同点：搜索引擎会保存 `新地址（301）` / `旧地址（302）`
+ - 304：Not Modified，响应内容没有改变（在协商缓存 - 有效后触发）
+----
+ - 400：Bad Request，服务器无法理解请求格式
+ - 401：Unauthorized，请求未授权
+ - 403：Forbidden，禁止访问
+ - 404：Not Found，找不到匹配资源
+----
+ - 500：常见服务端错误
+ - 503：服务端暂时无法处理请求
