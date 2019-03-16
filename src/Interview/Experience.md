@@ -18,27 +18,6 @@ Vue实例初始化的过程中，实现依赖管理。大致总结如下：
  - `observer`观察者内部的`dep`对象会记录这个响应式属性的所有依赖；
  - 当响应式属性调用`setter`函数时，通过`dep.notify()`方法去通知所有依赖进行改变，然后会通过diff算法来计算出更新了的虚拟节点，最后patch到真实dom上
 
-### [工具]gulp与webpack的区别
-`gulp`强调的是前端开发流程。
-
-用法：通过定义一系列的task，再定义task处理的事物、顺序，最后让gulp执行task，从而构建前端项目。
-
-4个常用的方法：
- - src（）：获取流
- - dest（）：写文件
- - task（）：定义任务
- - watch（）：用来监听事件
-
-`webpack`是一个前端模块化的方案，他侧重模块打包。
-
-用法：通过`loader`、`plugins`对资源进行处理，最后打包成浏览器成识别的js等文件。
-
-使用方法：
- - ./node_modules/.bin/webpack `input.js` `output.js`
-    - 不同环境下全局安装的webpack版本可能不符合这个项目，所以还是用局部依赖
- - 从入口文件`input.js`开始，找出`所有依赖`的文件，然后用对应的`loaders`去处理它们
- - 最后打包成为一个浏览器可识别的js文件`output.js`
-
 ### [Vue.js]$attrs 和 $listeners
 $attrs是一个对象，存着由父组件传递给子组件、但是没有在子组件里prop的特性
 
