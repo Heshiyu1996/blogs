@@ -1,11 +1,22 @@
 # 项目经验（二面）
 
+### [Vue.js]Vue.js的优势与不足：
+ - 优势（特点）
+    - 从`React`那里借鉴了`组件化`、`prop`、`单向数据流`、`性能`、`虚拟DOM`、`状态管理`
+    - 从`Angular`那里借鉴了`模板`、`双向数据绑定`
+    - 单文件组件（.vue）
+        - 将html/js/css存在于一个文件内，然后得益于`webpack + vue-loader`来让浏览器识别
+        - 好处1：Style的作用域
+        - 好处2：预加载器（在template、style中的lang属性）
+ - 不足
+    - 模板的`运行时错误`描述不够直观（**异常堆栈信息**总是指向Vue.js的内部方法）
+
 ### [Vue.js]如何实现Vue.js的响应式数据绑定？
 Vue实例初始化的过程中，实现依赖管理。大致总结如下：
 
  - `initState`过程中，把`props、data、computed`等属性通过`Object.defineProperty`来改造其`getter/setter`属性，并为每一个响应式属性去实例化一个`observer`观察者；
  - `observer`观察者内部的`dep`对象会记录这个响应式属性的所有依赖；
- - 当响应式属性调用`setter`函数时，通过`dep.notify()`方法去遍历所有依赖，然后调用`watcher.update()`去完成数据的动态响应
+ - 当响应式属性调用`setter`函数时，通过`dep.notify()`方法去通知所有依赖进行改变，然后会通过diff算法来计算出更新了的虚拟节点，最后patch到真实dom上
 
 ### [工具]gulp与webpack的区别
 `gulp`强调的是前端开发流程。
@@ -18,26 +29,15 @@ Vue实例初始化的过程中，实现依赖管理。大致总结如下：
  - task（）：定义任务
  - watch（）：用来监听事件
 
-`webpack`是一个前端模块化的方案，侧重模块打包。
+`webpack`是一个前端模块化的方案，他侧重模块打包。
 
-用法：把开发的资源看成`模块`，通过`loader`、`plugins`对资源进行处理，最后打包成浏览器成识别的js等文件。
+用法：通过`loader`、`plugins`对资源进行处理，最后打包成浏览器成识别的js等文件。
 
 使用方法：
  - ./node_modules/.bin/webpack `input.js` `output.js`
     - 不同环境下全局安装的webpack版本可能不符合这个项目，所以还是用局部依赖
  - 从入口文件`input.js`开始，找出`所有依赖`的文件，然后用对应的`loaders`去处理它们
  - 最后打包成为一个浏览器可识别的js文件`output.js`
-
-### [Vue.js]Vue.js的优势与不足：
- - 优势（特点）
-    - 从`React`那里借鉴了`组件化`、`prop`、`单向数据流`、`性能`、`虚拟DOM`、`状态管理`
-    - 从`Angular`那里借鉴了`模板`、`双向数据绑定`
-    - 单文件组件（.vue）
-        - 将html/js/css存在于一个文件内，然后得益于`webpack + vue-loader`来让浏览器识别
-        - 好处1：Style的作用域
-        - 好处2：预加载器（在template、style中的lang属性）
- - 不足
-    - 模板的`运行时错误`描述不够直观（**异常堆栈信息**总是指向Vue.js的内部方法）
 
 ### [Vue.js]$attrs 和 $listeners
 $attrs是一个对象，存着由父组件传递给子组件、但是没有在子组件里prop的特性
@@ -104,7 +104,7 @@ $listeners也是一个对象，存着由父组件传递给子组件定义的所�
  }
  ```
 #### mixin（多继承）
-混入 可以接受 对象数组，所以类似多继承。
+`混入` 可以接受 对象数组，所以类似多继承。
 
 当使用“混入对象”时，所有“混入对象”的选项，都将适当地 **合并** 到该组件本身的选项
  - Vue的全局方法
@@ -123,15 +123,40 @@ $listeners也是一个对象，存着由父组件传递给子组件定义的所�
  ```
 
  #### 继承的合并规则
-  - 对象（覆盖冲突）
-    - （覆盖顺序优先）组件内部 > 混入对象（数组最右最优） > Extend对象
+  - 对象（只覆盖掉冲突的属性，`不冲突的属性会保留下来，且合并`）
+    - 覆盖顺序：组件内部 > 混入对象（数组最右最优） > Extend对象
 
   - 钩子函数
-    - （调用顺序优先）Extend对象 > 混入对象（数组最右最优） > 组件内部
+    - 调用顺序：Extend对象 > 混入对象（数组最右最优） > 组件内部
 
+```js
+var mixin = {
+  data: function () {
+    return {
+      person: {
+        age: 22
+      }
+    }
+  }
+}
+
+new Vue({
+  mixins: [mixin],
+  data: function () {
+    return {
+      person: {
+        name: 'heshiyu'
+      }
+    }
+  },
+  created: function () {
+    console.log(this.person)
+    // => { name: 'heshiyu', age: 22 }
+  }
+})
+```
 
 ### [VueConf]Make Your Vue App Accessible
-
 
  ### [vuelidate]表单校验
  #### 调研思路：
@@ -142,9 +167,9 @@ $listeners也是一个对象，存着由父组件传递给子组件定义的所�
   - 引入方式（可全局、可局部）
  
  #### 源码实现（数据响应）
-  - 先获取Vue实例中的`validations`选项（通过`this.$options`）
-  - 再把选项里的配置规则转化为`$v`属性
-  - 将`$v`的代理通过`mixin`的方式，加入到Vue实例中的`computed选项`
+  - 当实例化一个vue时，会通过`this.$options`获取该vue实例选项里的`validations`
+  - 再把选项里的`配置规则`转化为`$v`属性
+  - 将`$v`的代理通过`mixin`的方式，加入到Vue实例中的`computed`选项
   - 默认是通过`input`事件进行校验。作者也推荐开发者可以通过给`v-model`定义`.lazy`修饰符，使得校验器可以进行懒校验
  
  ### [Vue]生命周期
@@ -170,7 +195,7 @@ $listeners也是一个对象，存着由父组件传递给子组件定义的所�
 ----
  - 当this.$destroy()被执行
  - `beforeDestroy`
- - 摧毁watcher、子组件、事件绑定
+ - 摧毁子组件、事件绑定、数据监听
  - `destroyed`（摧毁成功！）
 
 
@@ -204,9 +229,6 @@ $listeners也是一个对象，存着由父组件传递给子组件定义的所�
 `npm`是Node.js中`默认的包管理工具`
 
 
-
-
-
  ### [BOT]
  #### 个人职责
   - 项目重构（Regular.js -> Vue.js）
@@ -221,7 +243,7 @@ $listeners也是一个对象，存着由父组件传递给子组件定义的所�
     - 尤其u-icon，可直接传svg、图片url
   - 资源模块化
     - vuex
-        - 将vuex实例按模块归类，引入命名空间
+        - 将vuex实例选项按模块划分，引入命名空间
         - 通过index.js将各模块导入，封装到modules对象里，再传入Vuex的构造函数中
     - api
         - 将接口按模块归类。利用index.js进行“导入再导出”
@@ -254,7 +276,7 @@ $listeners也是一个对象，存着由父组件传递给子组件定义的所�
  ### [觅见日记]
  #### 个人职责
   - 调研并引入fly.js
-  - 开发登录、图片上传部分
+  - 开发登录部分
   - 前端资源模块化
   - 视觉UI设计
 
