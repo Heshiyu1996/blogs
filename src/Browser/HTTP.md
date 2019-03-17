@@ -25,19 +25,8 @@
     - 该请求要求服务器在响应中，加入一个`Access-Control-Allow-Origin`的属性，表示`允许访问的请求地址`
  - `Referer`：表示该请求是从哪里链接过来的
  - `User-Agent`：表示浏览器的身份标识字符串
- ```
-    Accept: application/json, text/plain, */*
-    Accept-Encoding: gzip, deflate
-    Accept-Language: zh-CN,zh;q=0.9
-    botid: 000001
-    Cache-Control: no-cache
-    Connection: keep-alive
-    Cookie: name=heshiyu; BOT_INFO=bxTb+Om47mj7vn1NPmYyry7y76BYjvox
-    Host: www.baidu.com
-    Pragma: no-cache
-    Referer: http://www.baidu.com/
-    User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36
- ```
+
+![alt](./img/http-2.png)
  ##### Origin和Referer的区别
   - Origin
     - 表明该请求从哪里发起（协议、域名）
@@ -46,6 +35,21 @@
     - 请求的原始资源的URI（协议、域名、参数）
     - 可以用来预防`CSRF攻击`
 
+ #### 响应头（常用）
+ - `Access-Control-Allow-Origin`：指定哪些网站可以跨域资源共享
+ - `Access-Contol-Allow-Credentials`：指定请求可以携带Cookie
+ - `Cache-Control`：浏览器缓存机制
+ - `Connect`：针对该连接所预期的选项
+ - `Content-Encoding`：服务端压缩资源的方式
+ - `ETag`：浏览器缓存机制
+ - `Expires`：浏览器缓存机制
+ - `Last-Modified`：浏览器缓存机制
+ - `Location`：重定向
+ - `Server`：服务器的名称（nginx）
+ - `Set-Cookie`：设置HTTP cookie
+ - `Vary`：进行一些缓存判断（**在执行 浏览器缓存机制 时会读取**）
+
+![alt](./img/http-3.png)
 
  #### 状态码
  - 100：continue，让浏览器继续发送请求体
@@ -73,6 +77,7 @@
  - 空行
  - 请求体
 ![alt](./img/http-1.png)
+
  #### 请求方式
  `HEAD`、`GET`、`POST`、`PUT`、`DELETE`、`OPTIONS`
 
@@ -111,3 +116,24 @@
   - `被动方`收到FIN后，会发送ack给`主动方`
   - `被动方`再发送FIN给`主动方`
   - `主动方`收到FIN，发送ack给`被动方`
+
+ ### [浏览器]输入URL，会发生什么？（完整的http过程）
+ 1、浏览器输入url
+
+ 2、浏览器检查`强缓存`（Expires、Cache-control）
+
+ 3、DNS解析url，获取主机ip
+
+ 4、组装HTTP报文
+
+ 5、发起TCP的3次握手
+
+ 6、TCP连接建立后，发送HTTP请求
+
+ 7、服务器接收并解析，检查`协商缓存`（ETag、Last-Modified）
+
+ 8、通过TCP返回响应报文
+
+ 9、浏览器缓存响应
+
+ 10、浏览器进行`解析HTML（构造DOM树）`、`下载资源`、`构造CSSOM树`、`执行JS脚本`

@@ -46,6 +46,7 @@
   * [兼容性在线查询](https://caniuse.com/)
 
 * 浏览器
+  * [HTTP（2019-03-17）](/src/Browser/HTTP.md)
   * [sessionStorage、localStorage、cookies的区别（2019-01-13）](/src/Browser/webStorage.md)
 
 * 性能提升

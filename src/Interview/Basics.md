@@ -229,27 +229,6 @@ appendDiv(function(node) {
 
 解决方法：对用户的输入进行检查
 
-### [浏览器]输入URL，会发生什么？
-1、浏览器输入url
-
-2、浏览器检查`强缓存`（Expires、Cache-control）
-
-3、解析url、获取主机ip
-
-4、组装Http报文
-
-5、打开socket与目标ip，端口建立TCP连接
-
-6、TCP连接建立后，发送HTTP请求
-
-7、服务器接收并解析，检查`协商缓存`（ETag、Last-Modified）
-
-8、通过TCP返回响应报文
-
-9、浏览器缓存响应
-
-10、浏览器进行`解析HTML（构造DOM树）`、`下载资源`、`构造CSSOM树`、`执行JS脚本`
-
 ### [Web]性能优化
  - content方面
     - 减少DOM元素数量
