@@ -211,23 +211,23 @@ appendDiv(function(node) {
 
 攻击者向某个web页面插入恶意的js脚本。当普通用户访问时，恶意脚本会自动执行，然后盗取用户cookie
 
-解决方法：
- - 对于`输入点`，前端将`特殊字符进行编码`（例如Html标记的<>）
- - 对于`输出点`，后端将`关键字符进行过滤`
+防止：
+ - `编码`，把用户的输入`转化为数据`，而不是代码
+ - `校验`，对用户的输入和请求都进行`关键字过滤`
  - 对于`cookie`设置为`httpOnly`（防止客户端通过document.cookie读取cookie）
 
 #### CSRF（跨站请求伪造）
 攻击者盗用你的身份，以你的名义发送恶意请求。
 
-解决方法：
- - 验证`HTTP Referer`字段
- - 在请求地址中`添加token并验证`
+防止：
+ - 检查`HTTP请求头的Referer`字段
+ - 设置`token`并验证
  - 在HTTP头中`添加自定义属性并验证`
 
 #### SQL注入
 攻击者把SQL命令插入到web表单的输入框，欺骗服务器执行恶意的SQL命令。
 
-解决方法：对用户的输入进行检查
+防止：对用户的输入进行检查、过滤
 
 ### [Web]性能优化
  - content方面
@@ -297,21 +297,19 @@ appendDiv(function(node) {
 优雅降级是指，一开始就构建`完整的功能`，然后再针对`低版本浏览器`进行兼容。
 
 
-### [js]原型对象、原型指针与原型链
-`prototype`是指原型对象。
- - 作用：
-    存放着所有实例对象的公用属性和方法（即原型属性和方法）
- - 原理：
-     - 因为每个构造函数都有`prototype`属性，它指向的是该构造函数的原型对象；
-     - 再者，原型对象也有一个`constructor`属性，它指向的是该构造函数本身
-     - 也就是说，当实例化一个对象的时候，我们不仅可以获得这个`对象的实例属性（和方法）`，还可以获得`原型对象上的原型属性（和方法）`
+### [js]原型、构造函数、对象和原型链
+ - `原型`（prototype）包含着：`某一种特定类型`（如Person类型）中**所有实例共享的属性**和**方法**。
+每个`原型`都有一个`.constructor`属性，它指向的是构造函数本身（constructor）
 
-`原型链`是作为 **实现继承** 的主要方法，其基本思想是：`利用原型，让一个引用类型继承另一个引用类型的属性和方法`。
+ - `构造函数`都有一个`.prototype`属性，它指向的是该构造函数的原型（prototype）
 
-`__proto__`是原型指针，指向原型。（每个对象有都有的属性）
+ - `对象`是通过`构造函数`实例化new出来的，每个对象都有`__proto__`属性，指向它的原型（prototype）
 
- > 原型链实际上是`__proto__连起来的链条`
+ - `原型链`是作为 **实现继承** 的主要方法，它基本思想是：`利用原型，让一个引用类型继承另一个引用类型的属性和方法`。**（实际上是`__proto__连起来的链条`）**
 
+ > 当实例化一个对象的时候，我们不仅可以获得这个`对象的实例属性（和方法）`，还可以获得`原型对象上的原型属性（和方法）`
+
+![alt](./img/img-12.png)
  ### 单例模式
 
 
@@ -656,7 +654,7 @@ myFunc('heshiyu') // 'hehsiyu'
  ### [浏览器]CORS跨域资源共享
  `CORS`是W3C标准，叫“跨域资源共享”。它允许`浏览器`向`跨源服务器`发出`XMLHttpRequest`请求，从而克服AJAX只能`同源使用`的限制。
 
- 需要`浏览器`+`服务端`同时支持（IE10+）
+ 需要`浏览器`+`服务端`同时支持（IE10+），主要是在服务端增加一个 **过滤拦截器**。
 
  一共2类CORS请求：`简单请求`、`非简单请求`
 
@@ -712,6 +710,35 @@ myFunc('heshiyu') // 'hehsiyu'
   - 对于请求头部，会有一个`Origin`字段
   - 对于响应头部，也会有`Access-Control-Allow-Origin`
   
+ ### [Web]JSONP和CORS
+ `JSONP`的特点：
+  - 只支持`GET`
+  - 服务端返回的数据不能是标准的json格式，而是通过callback包裹（需要客户端和服务端定制开发）
+  - 安全问题
+  - 要确定jsonp请求是否失败并不容易
+  ```js
+  $.ajax({
+      url: 'http://www.baidu.com',
+      async: false,
+      type: 'get',
+      dataType: 'jsonp', // 1、请求类型设置`jsonp`
+      data: {
+          'id': 1
+      },
+      jsonp: 'callback', // 3、默认callback
+      jsonpCallback: 'fn', // 2、设置回调函数名称，要与服务器响应包含的callback名称相同
+      success: function(data) {
+          alert(data)
+      },
+      error: function(err) {
+          alert(err)
+      }
+  })
+  ```
+ 
+ `CORS`的特点：
+  - 支持所有请求类型
+  - 服务端只需将处理后的数据直接返回，不需特殊处理
 
 ### CSS面试题
 一个页面中，有Header、Content、Footer三部分。其中，Footer高度固定，但Content内容的高度不定。当Content内容小于多于一屏，Footer紧跟在Content的实际位置下方；当Content内容多于一屏，Footer固定在浏览器下方
@@ -1547,3 +1574,94 @@ function func1(arr) {
 
  ### [Web]HTTP
  [HTTP](./../Browser/HTTP.md)
+
+ ### [js]this
+ `this`是运行时基于函数的执行环境所决定的。
+  - 在全局函数中，this为window
+  - 当函数被作为某个对象的方法调用时，this为那个对象
+
+ #### 闭包里this的作用域
+
+ ### [js]Ajax
+ 原理：
+  - 实例化一个`XMLHttpRequest`对象
+  - 设置回调函数`onreadystatechange`
+  - 使用`open`、`setRequestHeader`、`send`结合发送请求
+
+  其中`xhr.readyState`有如下5种状态：
+   - 0：请求还未初始化
+   - 1：连接已建立
+   - 2：请求已接收
+   - 3：请求处理中
+   - 4：请求已完成，且响应已收到
+
+ ```js
+    var url = 'http://www.api.com/checkLogin'
+    var xhr = new XMLHttpRequest() // 或ActiveXObject
+
+    xhr.open('GET', url, true) // true表明该请求是异步的
+    xhr.setRequestHeader('x-from', 'pc')
+
+    xhr.onreadystatechange = function(res) {
+        if (xhr.readyState == 4) {
+            var response = JSON.parse(xhr.response)
+            if (response.success == false) {
+                alert('您的账号暂无权限，请先注册~')
+            } else if (response.success == true) {
+                location.href = '/index/0'
+            }
+        }
+    }
+
+    xhr.withCredentials = true
+    xhr.send()
+ ```
+
+ ### [js]DOM绑定事件的三种方式
+  - 【HTML 事件处理】在DOM元素上直接绑定
+    ```html
+    <div onclick="test()"></div>
+    ```
+
+  - 【DOM 0级事件处理】在JavaScript代码中绑定
+    ```js
+    document.getElementById('myID').onclick = function() {
+        // ...
+    }
+    ```
+  - 【DOM 2级事件处理】绑定事件监听函数
+    ```js
+    element.addEventListener(type, handle, useCapture)
+    // 第一个参数：事件名称
+    // 第二个参数：事件处理函数
+    // 第三个参数：是否使用捕获（默认false，即事件冒泡）
+    ```
+ ### [js]三种事件流模型
+  - IE的事件冒泡
+  - Netscape的事件捕获
+  - DOM的事件流
+    - DOM 2级事件规定，事件流包括三个阶段：`事件捕获`、`目标阶段`、`事件冒泡`
+
+ ### [js]target和currentTarget的区别
+  - event.target：返回的是`触发事件`的元素
+  - event.currentTarget：返回的是`绑定事件`的元素
+ 
+ ### [js]Babel将ES6转换成ES5的原理
+ `Babel`是一个转移器，它是将JavaScript的高版本规则转移成低版本规则的一个工具。
+
+ 它的原理分三个部分：
+  - parsing（解析）
+    - 通过`babylon`把ES6代码生成AST
+  - transforming（转义）
+    - 通过`babel-traverse`把AST遍历，转译成新的AST
+  - generating（生成）
+    - 通过`babel-generator`按照新的AST生成ES5代码
+
+ #### plugins和presets 
+ `plugins`应用于整个转译过程（尤其是`transforming`）
+ `presets`是官方提供的一些预设的插件集
+
+ #### polyfill
+ `Babel`默认只转换js的新语法，而不转换新的API。为了弥补这个不足，需提供一个`polyfill`
+
+ `babel-polyfill`

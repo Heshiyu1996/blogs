@@ -18,6 +18,9 @@ Vue实例初始化的过程中，实现依赖管理。大致总结如下：
  - `observer`观察者内部的`dep`对象会记录这个响应式属性的所有依赖；
  - 当响应式属性调用`setter`函数时，通过`dep.notify()`方法去通知所有依赖进行改变，然后会通过diff算法来计算出更新了的虚拟节点，最后patch到真实dom上
 
+### [Vue.js]render做了什么？
+`render`函数会返回一棵VNode树。在挂载之前，会通过`createElem`、`createChildren`的相互调用，遍历整棵VNode树，来生成真实DOM节点。
+
 ### [Vue.js]$attrs 和 $listeners
 $attrs是一个对象，存着由父组件传递给子组件、但是没有在子组件里prop的特性
 
