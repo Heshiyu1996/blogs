@@ -1661,7 +1661,25 @@ function func1(arr) {
  `plugins`应用于整个转译过程（尤其是`transforming`）
  `presets`是官方提供的一些预设的插件集
 
- #### polyfill
+ #### babel-polyfill和babel-runtime
  `Babel`默认只转换js的新语法，而不转换新的API。为了弥补这个不足，需提供一个`polyfill`
 
- `babel-polyfill`
+ `babel-polyfill`能够`加载整个polyfill库`
+
+ 引入方法：
+ ```js
+ // 第一种：在main.js里
+ import 'babel-polyfill'
+
+ // 第二种：在webpack.config.js中
+ module.exports = {
+     entry: ['babel-polyfill', './app/js']
+ }
+ ```
+
+ 问题：
+  - 导致污染全局环境
+  - 重复代码过多
+ 
+ 解决：使用`babel-runtime`（它可以提供一些`转译模块的工具函数`）
+
