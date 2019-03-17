@@ -4,24 +4,42 @@
     <meta charset="utf-8">
     <title>Test</title>
     <style>
-        .parent {
-            overflow: hidden;
-            border: 1px solid red;
-        }
-        .child {
-            float: left;
-            width: 100px;
-            height: 100px;
-            background: blue;
-            /* margin: 100px; */
-            /* overflow: auto; */
-        }
+    #a {
+        float: left;
+        background: red;
+        width: 100px;
+        height: 100px;
+    }
+    #b {
+        /* float: left; */
+        background: blue;
+        width: 100px;
+        height: 100px;
+    }
     </style>
 </head>
 <body>
-    <div class="parent">
-        <div class="child"></div>
-    </div>
-    <!-- <div class="child"></div> -->
+    <div id="a">啊</div>
+    <span id="b">波</span>
 </body>
+<script>
+    var url = 'http://www.api.com/checkLogin'
+    var xhr = new XMLHttpRequest()
+    xhr.open('GET', url, true)
+    xhr.setRequestHeader('x-from', 'pc')
+    xhr.onreadystatechange = function(res) {
+        console.log(456)
+        if (xhr.readyState == 4) {
+            var response = JSON.parse(xhr.response)
+            if (response.success == false) {
+                alert('您的账号暂无权限，请先注册~')
+            } else if (response.success == true) {
+                location.href = '/index/0'
+            }
+        }
+    }
+    console.log(123)
+    xhr.withCredentials = true
+    xhr.send()
+</script>
 </html>

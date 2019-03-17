@@ -39,7 +39,7 @@
  - `Access-Control-Allow-Origin`：指定哪些网站可以跨域资源共享
  - `Access-Contol-Allow-Credentials`：指定请求可以携带Cookie
  - `Cache-Control`：浏览器缓存机制
- - `Connect`：针对该连接所预期的选项
+ - `Connection`：针对该连接所预期的选项
  - `Content-Encoding`：服务端压缩资源的方式
  - `ETag`：浏览器缓存机制
  - `Expires`：浏览器缓存机制
