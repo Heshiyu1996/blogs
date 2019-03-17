@@ -26,7 +26,7 @@ function makeIterator(array) {
         next: function() {
             var done = index >= array.length;
             return {
-                value : done ? array[index++] : undefined,
+                value : done ? undefined : array[index++], // 注意，index++为“先人后己”，读取的是arr[index]，随后index++
                 done: done
             }
         }

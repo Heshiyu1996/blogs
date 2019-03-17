@@ -267,6 +267,7 @@ appendDiv(function(node) {
             2、CSS Sprites：把多张图片整合到一张图片中，再利用CSS的background属性进行定位
             3、合并CSS和JS文件：把多个js（css）合并为一个js（css）
             4、图片地图：允许在一张图片上关联多个URL，目标URL取决于点击的坐标
+            5、对HTTP传输内容进行压缩（配置`Accept-Encoding`）
         ```
  
  - Server方面
@@ -655,29 +656,6 @@ myFunc('heshiyu') // 'hehsiyu'
      }
  }
  ```
-
- ### [http]HTTP和HTTPS的区别
- `http`是无状态的超文本传输协议，是明文传输；
-  - 标准端口：80
-  - 不需要ca证书
-
- `https`是由SSL + http协议构建的加密传输协议
-  - 标准端口：443
-  - 需要ca证书
-  - 增加cpu、带宽消耗
-  - 首次连接比较慢
-
- ### [TCP]三次握手、四次挥手
- 三次握手：
-  - `客户端`发送syn给`服务端`
-  - `服务端`收到syn后，会给`客户端`发送syn + ack
-  - `客户端`收到syn + ack后，会给`服务端`发送ack表示已收到
-
- 四次挥手：
-  - `主动方`会发送FIN给`被动方`
-  - `被动方`收到FIN后，会发送ack给`主动方`
-  - `被动方`再发送FIN给`主动方`
-  - `主动方`收到FIN，发送ack给`被动方`
 
 ### [js]new操作符经历了哪些步骤？
  - 创建了一个`新的对象`
@@ -1485,7 +1463,64 @@ function func1(arr) {
     ```
 注意：`for...of`只适用于`拥有迭代器对象`的集合（例如：数字、字符串、map、set等），`不能遍历对象`
  
- ### [js]迭代器
+ ### [js]生成器、迭代器
+ `生成器（Generator）`是一个`能返回迭代器对象`的函数
+
+ `迭代器（Iterator）`是一个`拥有next方法`的对象，这个方法返回一个对象：
+ ```js
+ {
+     value: 2 , // 当前值
+     done: true // 表示当前迭代器是否迭代完成
+ }
+ ```
+
+ #### Generator的实现
+  - ES5
+  ```js
+  function makeIterator(arr) {
+      var index = 0
+
+      return {
+          next: function() {
+              var done = index >= arr.length
+              return {
+                  value: done ? undefined : arr[index++], // 注意，index++为“先人后己”，读取的是arr[index]，随后index++
+                  done: done
+              }
+          }
+      }
+  }
+
+  var iterator = makeIterator([1, 9, 7, 6])
+  // iterator是迭代器，makeIterator是生成器
+
+  iterator.next() // { value: 1, done: false }
+  iterator.next() // { value: 9, done: false }
+  iterator.next() // { value: 7, done: false }
+  iterator.next() // { value: 6, done: false }
+  iterator.next() // { value: undefined, done: true }
+  ```
+  - ES6
+  ```js
+  function* createIterator(arr) {
+      for(let i=0; i< arr.length; i++) {
+          yield arr[i]
+      }
+  }
+
+  var iterator2 = createIterator([1, 9, 7, 6])
+
+  iterator2.next() // { value: 1, done: false }
+  iterator2.next() // { value: 9, done: false }
+  iterator2.next() // { value: 7, done: false }
+  iterator2.next() // { value: 6, done: false }
+  iterator2.next() // { value: undefined, done: true }
+  ```
+ #### yield的特点
+  - 用来说明`next函数`返回的`value值`
+  - 每个`yield`调用后，后面的代码都会停止执行
+  - `yield`不能穿透函数（即`不能使用forEach`来遍历声明yield，`必须用for`！！）
+
  迭代器对象可以任意具有.next方法的对象
 
  ### [算法]二分查找
@@ -1517,8 +1552,6 @@ function func1(arr) {
   binary_search(arr, 7)
   ```
 
-  - 非递归（数据量较多时，性能有所提高）
-
  ### [js]Math.floor和parseInt
  相同：都能实现数字的向下取整
 
@@ -1536,34 +1569,4 @@ function func1(arr) {
  ```
 
  ### [Web]HTTP
- #### 请求头（常用）
- - Accept：可接受的响应内容类型
- - Accept-Charset：可接受的字符集
- - Accept-Encoding：可接受的响应内容的编码方式
- - Cache-Control：用来指定当前的请求是否会使用到缓存机制
- - Connection：浏览器想要优先使用的连接类型（例：keep-alive、Upgrade）
- - Cookie：由之前服务器通过Set-Cookie设置的Cookie
- - Content-Type：请求体的MIME类型（用于POST、PUT请求）
- - Host：表示服务器的域名、端口号
- - Origin：表示该请求是一个CORS（跨域资源共享）请求
-    - 该请求要求服务器在响应中，加入一个`Access-Control-Allow-Origin`的属性，表示`允许访问的请求地址`
- - User-Agent：表示浏览器的身份标识字符串
- 
-
-
- #### 状态码
- - 200：ok，正常返回
-----
- - 301：永久性重定向
- - 302：临时性重定向
-    - 相同点：以上两个都会跳转，搜索引擎会抓取最新内容
-    - 不同点：搜索引擎会保存 `新地址（301）` / `旧地址（302）`
- - 304：Not Modified，响应内容没有改变（在协商缓存 - 有效后触发）
-----
- - 400：Bad Request，服务器无法理解请求格式
- - 401：Unauthorized，请求未授权
- - 403：Forbidden，禁止访问
- - 404：Not Found，找不到匹配资源
-----
- - 500：常见服务端错误
- - 503：服务端暂时无法处理请求
+ [HTTP](./../Browser/HTTP.md)
