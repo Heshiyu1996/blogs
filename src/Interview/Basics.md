@@ -1659,6 +1659,7 @@ function func1(arr) {
 
  #### plugins和presets 
  `plugins`应用于整个转译过程（尤其是`transforming`）
+
  `presets`是官方提供的一些预设的插件集
 
  #### babel-polyfill和babel-runtime

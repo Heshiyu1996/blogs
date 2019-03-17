@@ -304,12 +304,22 @@ new Vue({
 
 
  ### [小程序]登录过程
-  - 小程序端调用`wx.login()`获取`code`
-  - 带着`code`，传递给开发者后端
-  - 开发者后端带着`code + appid + appsecret`跟微信后端换取`session_key + openid`
-  - 开发者后端将自定义登录态与`session_key + openid`关联，并响应给小程序`登录态`
-  - 小程序把`登录态`写入Storage，等到下次有需要登录权限时，从Storage获取
-  - 开发者后端通过`自定义登录态`去查询`session_key + openid`，返回业务数据
+  - 微信
+    - 小程序端调用`wx.login()`获取`code`
+    - 带着`code`，传递给开发者后端
+    - 开发者后端带着`code + appid + appsecret`跟微信后端换取`session_key + openid`
+    - 开发者后端将`自定义登录态`与`session_key + openid`关联，并响应给小程序`登录态`
+      - 并将session_key和openid存到redis里，过期后会重新请求
+    - 小程序把`登录态`写入Storage，等到下次有需要登录权限时，从Storage获取
+    - 开发者后端通过`自定义登录态`去查询`session_key + openid`，返回业务数据
+
+  - 支付宝
+    - 小程序端调用`getAuthCode`，向支付宝App获取`auth_code`
+    - 小程序端携带`auth_code`给开发者后端，发起登录验证请求
+    - 开发者后端通过`auth_code`与支付宝授权平台获取`token`和`uid`
+    - 开发者将`token`和`uid`种到session里，并响应给小程序端验证成功
+    - 在session有效期内，不需重复授权
+
 
  ### [小程序]生命周期
   - beforeCreate
@@ -472,7 +482,4 @@ new Vue({
 
 ### 对前后端分离的理解？
 
-
-### Vue.js的好处
- 
- 
+### [小程序]支付宝小程序登陆过程
