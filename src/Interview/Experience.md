@@ -192,7 +192,45 @@ new Vue({
  - 最后，`链式调用`实现原理
     - 原因：实现很简单。只需在实现链式调用的方法的返回结果里，返回this即可解决
 
-### [babel]
+### [js]Babel将ES6转换成ES5的原理
+ `Babel`是一个转移器，它是将JavaScript的高版本规则转移成低版本规则的一个工具。
+
+ 它的原理分三个部分：
+  - parsing（解析）
+    - 通过`babylon`把ES6代码生成AST
+  - transforming（转译）
+    - 通过`babel-traverse`把AST遍历，转译成新的AST
+  - generating（生成）
+    - 通过`babel-generator`按照新的AST生成ES5代码
+
+ #### plugins和presets 
+ `plugins`应用于整个转译过程（尤其是`transforming`）
+
+ `presets`是官方提供的一些预设的插件集
+
+ #### babel-polyfill和babel-runtime
+ `Babel`默认只转换js的新语法，而不转换新的API。为了弥补这个不足，需提供一个`polyfill`
+
+ `babel-polyfill`能够`加载整个polyfill库`
+
+ 引入方法：
+ ```js
+ // 第一种：在main.js里
+ import 'babel-polyfill'
+
+ // 第二种：在webpack.config.js中
+ module.exports = {
+     entry: ['babel-polyfill', './app/js']
+ }
+ ```
+
+ 问题：
+  - 导致污染全局环境
+  - 重复代码过多
+ 
+ 解决：使用`babel-runtime`（它可以提供一些`转译模块的工具函数`）
+
+#### vue-cli 3.0的babel
 在vue-cli 3.0根目录下，有`babel.config.js`（采用babel7的新配置格式）。
  - 里面预先配置了`preset`，它的值是`['@vue/app']`
  - 也可以配置`plugins`（引用插件来处理代码的转换。和`preset`平级。）
@@ -200,16 +238,15 @@ new Vue({
 ### [工具]npm和和yarn的区别
 `yarn`是Facebook和Google联合推出的`新的JS包管理工具`
 
-有以下优点：
+`npm`是Node.js中`默认的包管理工具`
+
+`yarn`有以下优点：
  - 速度快
     - 并行安装、离线模式
  - 版本锁定
     - yarn.lock
  - 更简洁的输出
  - 语义化的命令
-
-`npm`是Node.js中`默认的包管理工具`
-
 
  ### [BOT]
  #### 个人职责
@@ -302,6 +339,11 @@ new Vue({
             - 1 - 表明500，统一出现报错提示
             - 0 - 表明正常，这时候才返回响应结果
 
+ #### fly.js
+ 因为小程序是在jsCore环境下执行，在这个环境下并没有window，也没有XMLHttpRequest对象。
+
+而fly.js它是通过自定义http engine来实现不同的adapter，来支持不同环境的。
+
 
  ### [小程序]登录过程
   - 微信
@@ -346,8 +388,6 @@ new Vue({
  `switchTab`，跳转到tab bar页面，并关闭其他非tab bar页
 
 
-### [H5]兼容性
-
 
  ### [Axios] 源码解析
  `Axios`是一个基于`Promise`的http请求库。
@@ -376,14 +416,15 @@ new Vue({
 `C`指的是Controller层
    - 负责接收用户的操作，然后调用模型或视图去完成用户的操作
 
- 本质：所有通信都是单向的；
  本质是：将**数据展示** 和 **数据** 进行隔离，提高代码的复用性和扩展性；
 
  特点：职责明确、相互分离；
  
  ### [MVVM] 什么是MVVM？
  `M`：Model层，存放数据
+
  `V`：View层，视图层
+
  `VM`：ViewModel层，负责：
    - 将Model层的数据`同步`到View层，进行呈现
    - 将View层的修改`同步`到Model层，进行存储
@@ -481,5 +522,25 @@ new Vue({
 ### 如何限定只接收10个http响应？
 
 ### 对前后端分离的理解？
+![alt](./img/img-13.png)
 
-### [小程序]支付宝小程序登陆过程
+部署方式：前后端分开部署，利用中间件（如Nginx）进行代理转发
+
+意味着：
+  - 前端
+    - 存放css、js等静态资源，并使用CDN加速；
+    - 负责控制页面的跳转、异步请求数据
+
+  - 后端
+    - 返回数据
+
+优势：
+  - 提升开发效率
+  - 减少后端的负载压力
+  - 增强项目代码的可读性和维护性
+
+劣势：
+  - 部署顺序
+  - 文档重要性
+
+### [H5]兼容性
