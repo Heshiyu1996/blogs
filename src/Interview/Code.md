@@ -1,4 +1,27 @@
+# 代码（笔试）
+### [设计模式]单例模式
+```js
+var Singleton = function(name) {
+    this.name = name
+    this.instance = null
+}
 
+Singleton.getInstance = function(name) {
+    if (!this.instance) {
+        this.instance = new Singleton(name)
+    }
+    return this.instance
+}
+
+
+var person1 = Singleton.getInstance('heshiyu')
+var person2 = Singleton.getInstance('heshiyu')
+
+console.log(person1 === person2)
+```
+
+### [设计模式]观察者模式（发布订阅模式）
+```js
 var event = {
     clientList: {},
     listen: function(key, fn) {
@@ -45,15 +68,13 @@ var installEvent = function(obj) {
 var newsManager = {}
 installEvent(newsManager)
 
-newsManager.listen('sports', fn1 = function(content) {
+newsManager.listen('sports', function(content) {
     console.log('sports', content)
 })
-newsManager.listen('finance', fn2 = function(content) {
+newsManager.listen('finance', function(content) {
     console.log('finance', content)
 })
 
-newsManager.remove('finance', fn2)
-
-newsManager.trigger('finance', '这是一条财经消息') // 发布一则“财经消息”
 newsManager.trigger('finance', '这是一条财经消息') // 发布一则“财经消息”
 newsManager.trigger('sports', '这是一条体育消息') // 发布一则“体育消息”
+```

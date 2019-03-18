@@ -3,43 +3,28 @@
 <head>
     <meta charset="utf-8">
     <title>Test</title>
-    <style>
-    #a {
-        float: left;
-        background: red;
-        width: 100px;
-        height: 100px;
-    }
-    #b {
-        /* float: left; */
-        background: blue;
-        width: 100px;
-        height: 100px;
-    }
-    </style>
 </head>
 <body>
-    <div id="a">啊</div>
     <span id="b">波</span>
 </body>
 <script>
-    var url = 'http://www.api.com/checkLogin'
-    var xhr = new XMLHttpRequest()
-    xhr.open('GET', url, true)
-    xhr.setRequestHeader('x-from', 'pc')
-    xhr.onreadystatechange = function(res) {
-        console.log(456)
-        if (xhr.readyState == 4) {
-            var response = JSON.parse(xhr.response)
-            if (response.success == false) {
-                alert('您的账号暂无权限，请先注册~')
-            } else if (response.success == true) {
-                location.href = '/index/0'
-            }
-        }
+
+var Singleton = function(name){
+	this.name = name
+	this.instance = null
+}
+
+Singleton.getInstance = function(name) {
+    console.log(this)
+	if(!this.instance) {
+        this.instance = new Singleton(name)
     }
-    console.log(123)
-    xhr.withCredentials = true
-    xhr.send()
+    return this.instance
+}
+var test1 = Singleton.getInstance('heshiyu')
+var test2 = Singleton.getInstance('heshiyu')
+console.log(test1 === test2)
+
+
 </script>
 </html>
