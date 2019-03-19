@@ -1646,3 +1646,67 @@ function func1(arr) {
   - event.target：返回的是`触发事件`的元素
   - event.currentTarget：返回的是`绑定事件`的元素
  
+ ### 检测对象类型
+ `Object.prototype.toString.call(obj)`
+ 
+ 原因：`Array`、`function`是Object的实例，都重写了toString方法。根据原型链，调用的话，是对应的重写之后的toString方法，而不会去调用Object上原型的toString方法
+
+ ```js
+ Object.prototype.toString.call([]) // [object array]
+ ```
+
+ ### [js]正则匹配邮箱
+ `/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/`
+
+ ### [css]三角形
+ 原理：
+  - 1、看清`border`的四条边界
+  ```css
+  .child {
+    width: 50px;
+    height: 50px;
+    border-top: 50px solid red;
+    border-right: 50px solid green;
+    border-bottom: 50px solid blue;
+    border-left: 50px solid orange;
+  }
+  ```
+ ![alt](./img/img-14.png)
+
+  - 2、去除中间内容
+  ```css
+  .child {
+    width: 0;
+    height: 0;
+    border-top: 50px solid red;
+    border-right: 50px solid green;
+    border-bottom: 50px solid blue;
+    border-left: 50px solid orange;
+  }
+  ```
+ ![alt](./img/img-15.png)
+
+  - 3、再去除一部分（例如：左边）
+  ```css
+  .child {
+    width: 0;
+    height: 0;
+    border-top: 50px solid red;
+    border-right: 50px solid green;
+    border-bottom: 50px solid blue;
+    border-left: 50px solid transparent;
+  }
+  ```
+ ![alt](./img/img-16.png)
+
+  - 4、可以利用这个特性，画出`三角形`、`直角三角形`、`梯形`等等
+ ```css
+ .child {
+    width: 0;
+    height: 0;
+    /* border-top: 50px solid red; */
+    border-right: 50px solid transparent;
+    border-bottom: 50px solid blue;
+    border-left: 50px solid transparent;
+ }
+ ```

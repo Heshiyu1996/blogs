@@ -544,3 +544,45 @@ new Vue({
   - 文档重要性
 
 ### [H5]兼容性
+
+### [web]前端项目搭建
+ - 安装Node
+ - npm init -y
+  - 生成`package.json`
+ - npm install --save-dev webpack
+ - 安装插件（babel-core、loaders、vue...）
+ - 进入webpack.config.js进行配置
+  ```js
+  module.exports = {
+    entry: './index.js',
+    devServer: {
+      port: 8083,
+      hot: true
+    }
+  }
+  ```
+ - 新建index.js、index.html
+ - 进入package.json修改script
+ ```json
+ {
+   start: "webpack-dev-server"
+ }
+ ```
+ --------------
+ 以下是结合vue的
+ --------------
+ - 新建src
+  - 里面还有assets、pages、index.js、app.vue...
+ - 配置webpack.config.js（特别是output、loaders）
+ - 在index.html新增
+ ```js
+ <div id="root"></div>
+ ```
+ - 在app.vue新增
+ ```js
+ import vue from 'Vue'
+ new Vue({...})
+ ```
+ - npm start
+
+
