@@ -34,9 +34,7 @@ var event = {
         let key = Array.prototype.shift.call(arguments)
             fns = this.clientList[key]
         
-        if (!fns || fns.length === 0) {
-            return false
-        }
+        if (!fns || fns.length === 0) return
 
         for(let i=0; i<fns.length; i++) {
             fns[i].apply(this, arguments)
@@ -44,9 +42,7 @@ var event = {
     },
     remove: function(key, fn) {
         let fns = this.clientList[key]
-        if (fns.length === 0) {
-            return false
-        }
+        if (fns.length === 0) return
         if (!fn) {
             fns && (fns.length = 0)
         } else {

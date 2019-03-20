@@ -154,19 +154,19 @@ function bubbleSort(arr) {
  思想：在待排序列中找到最小元素，存放到已排序序列的起始位置；然后再从剩余未排序元素中，继续寻找最小元素，放到已排序列的末尾。
 
  ```js
- function selectionSort(arr) {
-   var minIndex
-   for (let i = 0; i < arr.length; i++) {
-     minIndex = i
-     for (let j = i + 1; j < arr.length; j++) {
-       if (arr[j] < arr[minIndex]) {
-         minIndex = j // 在循环后面数的时候发现比我初始定的min还小
-       }
-     }
-     [arr[i], arr[minIndex]] = [arr[minIndex], arr[i]]
-   }
-   return arr
- }
+function selectionSort(arr) {
+    let len = arr.length
+    for(let i=0; i<len; i++) {
+        let min = arr[i]
+        for(let j=i + 1; j<len; j++) {
+            if(min > arr[j]) {
+                [min, arr[j]] = [arr[j], min]
+            }
+        }
+        arr[i] = min
+    }
+    return arr
+}
  ```
 
  大致思想：

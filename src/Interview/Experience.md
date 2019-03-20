@@ -259,7 +259,7 @@ new Vue({
   - 重components、轻pages
     - 页面结构清晰
   - 原生组件可复用
-    - 尤其u-icon，可直接传svg、图片url
+    - u-modal
   - 资源模块化
     - vuex
         - 将vuex实例选项按模块划分，引入命名空间

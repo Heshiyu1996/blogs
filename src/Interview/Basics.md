@@ -134,7 +134,6 @@ inner() // 'heshiyu'
 
 ### 事件委托
 
-### 移动端H5适配
 #### video里的子标签的track
 在不同的手机系统、不同的浏览器都不兼容
 
@@ -310,7 +309,6 @@ appendDiv(function(node) {
  > 当实例化一个对象的时候，我们不仅可以获得这个`对象的实例属性（和方法）`，还可以获得`原型对象上的原型属性（和方法）`
 
 ![alt](./img/img-12.png)
- ### 单例模式
 
 
 ### [Node.js]
@@ -1555,6 +1553,14 @@ function func1(arr) {
   var arr = [1, 9, 7, 6]
   binary_search(arr, 7)
   ```
+ #### 时间复杂度的计算
+ `时间复杂度 = while的循环次数`
+ 假设共n个数，那下一轮是n/2，再下一轮是n/4（即n/2²）...最后是n/(2的k次方)。其中`k`是`循环的次数`
+ 故，要计算：n/(2的k次方) >= 1
+ 
+ 解，得：n = (2的k次方)
+
+ **k = logn**
 
  ### [js]Math.floor和parseInt
  相同：都能实现数字的向下取整
@@ -1710,3 +1716,13 @@ function func1(arr) {
     border-left: 50px solid transparent;
  }
  ```
+ ### 移动端H5适配
+
+ #### [css]媒体查询
+ ```css
+ /* 分辨率大于960px且小于1280px */
+ @media screen and (min-width: 960px) and (max-width: 1280px) {
+
+ }
+ ```
+ #### [css] rem
