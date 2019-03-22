@@ -41,7 +41,7 @@
     * [枚举（2019-01-28）](/src/Basics/TS/ENum.md)
 
 * 工具
-  * [Git](/src/Tool/Git.md)
+  * [Git（2019-03-22）](/src/Tool/Git.md)
   * [webpack](/src/Tool/Webpack.md)
   * [兼容性在线查询](https://caniuse.com/)
 
