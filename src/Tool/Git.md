@@ -4,9 +4,6 @@
 > 更新时间： 2019-01-29
 
 ## 定义
-Webpack是一个模块打包器。它通过一个给定的入口文件，然后开始找到项目中的所有依赖文件，并且借助 **loaders、plugins** 来 改变、压缩、优化它们，最后打包成一个或者多个浏览器可识别的js文件。
-![alt](./img/webpack-1.png)
-
 如果一个你要忽略的文件已经纳入到了git ，也就是说你已经提交过这个文件了。这时再在 .gitignore 文件中添加上对它的忽略是不起作用的。
 
 你可用：git rm -r --cache .  命令来清空本地的git缓存。
@@ -15,3 +12,17 @@ Webpack是一个模块打包器。它通过一个给定的入口文件，然后�
 
 这样你要忽略的文件就不会在被提交了。
 
+## 在github的三种信息
+在github里有三种信息：`name`（昵称）、`username`（用户名）、`email`（邮箱）。
+ - name：仅作github内展示用
+ - username：可用来登录
+ - email：可用来登录
+
+![alt](./img/git-2.png)
+
+## 在sourcetree里的配置
+在sourcetree里有两种信息：`全名`、`电子邮件地址`（。
+ - `全名`：仅作sourcetree内展示用
+ - `电子邮件地址`：要和`github`里的email对应（否则commit log里没有头像）
+
+![alt](./img/git-1.png)
