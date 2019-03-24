@@ -2,77 +2,187 @@
 > Webpack
 
 ## 定义
-Webpack是一个模块打包器。它通过一个给定的入口文件，然后开始找到项目中的所有依赖文件，并且借助 **loaders、plugins** 来 改变、压缩、优化它们，最后打包成一个或者多个浏览器可识别的js文件。
+Webpack是一个模块打包器。
+
+给定的入口文件，然后开始找到项目中的所有依赖文件，并且借助 **loaders、plugins** 来 `改变`、`压缩`、`优化` 它们，最后打包成一个（或者多个）浏览器可识别的js文件。
+
 ![alt](./img/webpack-1.png)
 
-## webpack 4.0 的新特性
-### mode 属性
-通过mode，可以设置打包环境，可以是development 或 production
+## webpack的两大特性
+`Webpack`是在2012年发布的，最初的目的是：`构建复杂的单页应用程序（SPA）`，所以它有两个特性：
+ - **代码分离**：
+    - 把代码分离到不同bundle中，然后可以`按需加载`或`并行加载`这些文件。
+    - 三种常用的代码分离方法：
+      - 入口起点：使用`entry`配置，进行代码分离
+      - SplitChunksPlugin：可以将`公共的依赖模块`提取到已有的（或新生成的）`chunk`（webpack对于“包”叫做`chunk`）【原CommonsChunkPlugin，在webpack4已被移除】
+      - 动态导入：通过模块的内联函数调用来分离
+ - **静态资源**
+    - 将所有静态资源导入到应用程序中，进行处理。
+
+### [代码分离1]入口起点
 ```js
-"scripts": {
-   "dev": "webpack --mode development",
-   "build": "webpack --mode production"
+// webpack.config.js
+const path = require('path')
+
+module.exports = {
+   entry: {
+      index: './src/index.js',
+      another: './src/another-module.js'
+   },
+   output: {
+      filename: '[name].bundle.js',
+      path: path.resolve(__dirname, 'dist')
+   }
 }
 ```
-#### 设置为“development”时，webpack提供以下特性：
+结果如下：会有`两个出口文件`：
+```
+Hash: 309402710a14167f42a8
+Version: webpack 2.6.1
+Time: 570ms
+            Asset    Size  Chunks                    Chunk Names
+  index.bundle.js  544 kB       0  [emitted]  [big]  index
+another.bundle.js  544 kB       1  [emitted]  [big]  another
+   [0] ./~/lodash/lodash.js 540 kB {0} {1} [built]
+   [1] (webpack)/buildin/global.js 509 bytes {0} {1} [built]
+   [2] (webpack)/buildin/module.js 517 bytes {0} {1} [built]
+   [3] ./src/another-module.js 87 bytes {1} [built]
+   [4] ./src/index.js 216 bytes {0} [built]
+```
 
-1、浏览器调试工具
+### [代码分离2]SplitChunksPlugin
+```js
+// webpack.config.js
+const path = require('path')
+const webpack = require('webpack')
 
-2、注释、开发阶段的详细错误日志和提示
 
-3、快速和优化的增量构建机制
+module.exports = {
+   entry: {
+      index: './src/index.js',
+      another: './src/another-module.js'
+   },
+   output: {
+      filename: '[name].bundle.js',
+      path: path.resolve(__dirname, 'dist')
+   },
+   optimization: {
+      splitChunks: {
+         chunks: 'all' // 'all'表示所有chunk都会被优化
+      }
+   }
+}
+```
 
-#### 设置为“production”时，webpack提供以下特性：
+`SplitChunkPlugin`知道，在`index.js`、`another.js`里有着重复的依赖模块：`lodash`，那么它的做法就是将`lodash`分离到 **单独的chunk** 中，减轻了它俩的大小。
 
-1、开启所有的优化代码
+`SplitChunkPlugin`的优势：
+ - 缓存公共模块
+   - 这些**公共模块**能在`最开始的时候`加载一次，随后`缓存起来`供后续使用，提升了速度。
+ - 通过最小的损耗去请求资源
+   - 因为文件改动时，生成的`编译文件hash值`会改变。若不将 **公共模块** 分离，则每次小改动（特别改的是**公共部分**），都会把所有内容`重新加载`一遍；如果分离，则只需重新请求这小部分的 **公共模块**，其余不变的js内容`不会重新请求`。
+```
+                          Asset      Size                 Chunks             Chunk Names
+              another.bundle.js  5.95 KiB                another  [emitted]  another
+                index.bundle.js  5.89 KiB                  index  [emitted]  index
+vendors~another~index.bundle.js   547 KiB  vendors~another~index  [emitted]  vendors~another~index
+Entrypoint index = vendors~another~index.bundle.js index.bundle.js
+Entrypoint another = vendors~another~index.bundle.js another.bundle.js
+```
+### [代码分离3]动态导入
+对于动态代码拆分，`webpack`提供了两种类似的技术：
+ - `import()`
+ - `require.ensure`（是webpack特有的，已被`import()`取代）
 
-2、更小的bundle体积
+#### import( )
 
-3、去除掉只在开发阶段运行的代码
+```js
+const path = require('path');
 
-4、Scope hoisting和Tree-shaking
+module.exports = {
+   mode: 'development',
+   entry: {
+      index: './src/index.js'
+   },
+   output: {
+      filename: '[name].bundle.js',
+      chunkFilename: '[name].bundle.js',
+      path: path.resolve(__dirname, 'dist')
+   }
+};
+```
+`chunkFilename`这个属性，它决定`non-entry chunk`（非入口的chunk）的名称
 
-### 开箱即用WebAssembly
-WebAssembly会带来运行时性能的大幅度提升，webpack4对它做了开箱即用的支持。
 
-也就是说，可以对本地的wasm模块进行直接的import或者export操作，也可以通过编写loaders来直接import C++
+```js
+function getComponent() {
+   return import(/* webpackChunkName: "lodash" */ 'lodash').then(({ default: _ }) => {
+     var element = document.createElement('div');
 
-### 0CJS
-0CJS的含义是0配置，webpack4尽可能地让开发者运行项目的成本变得更低。webpack4不再强制需要webpack.config.js作为 **打包的入口配置文件**，它默认的入口为'./src/'和默认出口'./dist'，这对小项目来说很方便。
+     element.innerHTML = _.join(['Hello', 'webpack'], ' ');
 
-当项目里包含'./src/index.js'文件的时候，执行webpack命令，webpack就会将该文件作为项目的入口文件进行打包配置。
+     return element;
 
-### 新的插件系统
+   }).catch(error => 'An error occurred while loading the component');
+}
 
-webpack4最大的突破就是有了 **新的插件系统**。
-#### 旧的插件系统：
+getComponent().then(component => {
+   document.body.appendChild(component);
+})
+```
+由于`import()`会返回一个promise，它表示的是动态地加载模块。
+ - 调用`import()`的地方，会被作为`分离的模块起点`（即，**被请求的模块** 和 **它引用的所有子模块**，会分离到一个单独的chunk中）
 
-1、Performance（定义上）
+通过注释，提供了`webpackChunkName`，这样会将拆分出来的bundle命名为：`lodash.bundle.js`
 
-2、Typings（类型上）
+```
+...
+                   Asset      Size          Chunks             Chunk Names
+         index.bundle.js  7.88 KiB           index  [emitted]  index
+vendors~lodash.bundle.js   547 KiB  vendors~lodash  [emitted]  vendors~lodash
+Entrypoint index = index.bundle.js
+...
+```
 
-3、异步
 
-4、循环钩子和执行顺序
 
-5、检查和分析
+#### require.ensure
+`require.ensure`可以实现js的`按需加载、分开打包`。
+```js
+require.ensure(
+   dependencies: String[],
+   callback: function(require),
+   errorCallback: function(error),
+   chunkName: String
+)
+```
 
-6、继承的方式（旧的需要`extend Tapable`，然后去用它的功能）
+ - `dependencies`：将其对应的文件拆分到一个单独的`bundle`中，此`bundle`会异步加载。
+ - `callback`：只要加载好全部依赖，就会执行此函数。当程序运行需要依赖时，可以使用`require()`来加载依赖（require是callback的参数）
+ - `errorCallback`：当webpack加载依赖失败时，会执行此函数
+ - `chunkName`：通过将同一个`chunkName`传递给不用的`require.ensure()`调用，可以将这些“同名的小集体”合并到一个单独的`chunk`中，只产生一个`bundle`
 
-#### 新的API：
+```js
+const home = (location, callback) => {
+  require.ensure([], require => {
+    callback(null, require('modules/home'))
+  }, 'home')  
+}
+```
 
-1、所有的hooks都存放到`hooks`这个对象里，作为扩展来的属性
+### 预取/预加载模块（prefetch/preload module）
+> webpack v4.6.0+ 添加了预取和预加载的支持
+ 
+ - 预取（prefetch）：`将来某些导航下`可能需要的资源
+ - 预加载（preload）：`当前导航下`可能需要的资源
 
-2、有多个`Hook类`：`sync/async normal/bailing/waterfall/looping`，他们都是取决于钩子的类型
+#### 预取（prefetch）
+有一个`HomePage`组件，其内部会渲染一个`LoginButton`组件。点击`LoginButton`组件后按需加载`LoginModal`组件。
 
-3、当注册多个hooks的时候，可以通过新建一个 **新的Hook对象**，然后每个hook作为这个对象的属性来注册，例：`this.hooks = { myHook: new SyncHook(...), myHook2: new SyncHook(...) }`
+```js
+// LoginButton.js
 
-4、每一个hook都有一定数量的参数（带名字）
+import(/* webpackPrefetch: true */ 'LoginModal');
+```
 
-5、当新增插件时，**必须** 提供名字
-
-6、当新增插件时，可以选择插件的类型（sync/callback/promise）：`.tap`、`.tapAsync`、`tapPromise`
-
-7、当新增插件时，你可以提供执行顺序，比如`before`、`stage`
-
-8、当调用插件时，你可以选择 **异步的类型**：.call（对于异步的hooks）、.callAsync（带有回调参数的hooks）、.callPromise（返回一个promise的hooks）
+效果：页面头部会追加`<link rel="prefetch" href="login-modal-chunk.js">`，告诉浏览器：在空闲时，要预取`login-modal-chunk.js`文件。
