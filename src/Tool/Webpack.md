@@ -185,4 +185,26 @@ const home = (location, callback) => {
 import(/* webpackPrefetch: true */ 'LoginModal');
 ```
 
-效果：页面头部会追加`<link rel="prefetch" href="login-modal-chunk.js">`，告诉浏览器：在空闲时，要预取`login-modal-chunk.js`文件。
+ - 效果：页面头部会追加`<link rel="prefetch" href="login-modal-chunk.js">`，告诉浏览器：在空闲时，要预取`login-modal-chunk.js`文件。
+ - 会在`父 chunk`加载结束后，才开始加载
+
+
+#### 预加载（preload）
+有一个`ChartComponent`图表组件，它需要依赖体积巨大的`ChartingLibrary`库。（为了体验性更好，它会在渲染时显示一个`LoadingIndicator（进度条）`组件，然后立即按需导入`ChartingLibrary`）
+
+```js
+// ChartComponent.js
+
+import(/* webpackPreload: true */ 'ChartingLibrary')
+```
+ - 效果：页面头部会追加`<link rel="preload">`请求`chart-library-chunk`。因为`ChartComponents`体积很小，很快被加载好，页面就会显示`LoadingIndicator（进度条）`。一直等到`charting-library-chunk`请求完成，进度条才消失。
+
+#### 预取（prefetch）和预加载（preload）的区别
+|   | 加载时机 | 下载时机 | 使用时机 |
+| ------ | ------ | ------ | ------ |
+| `预取（prefetch）` | 父chunk加载结束后 | 在浏览器空闲时 | 会用于未来某时刻 |
+| `预加载（preload）` | 父chunk加载时（并行加载） | 立即下载 | 立即请求 |
+
+及他们的使用：
+
+![alt](./img/webpack-2.png)
