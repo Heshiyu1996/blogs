@@ -1,9 +1,17 @@
 # Rollup
-> Rollup和Webpack一样，也是一款打包工具。Vue、React、Three.js以及很多知名的库也在使用Rollup。那它是怎么使用的、和Webpack有什么区别啊？
+> Rollup和Webpack一样，也是一款打包工具。经过一番研究，在最近的一个小项目[nos-js-uploader](https://github.com/Heshiyu1996/nos-js-uploader)选用了Rollup作为打包工具。
+> 
+> 同时也发现Vue、React、Three.js以及很多知名的库也在使用Rollup。
+> 
+> 为什么要用它？怎么使用它的？有哪些库使用它？
 > 
 > 更新时间： 2019-03-25
 
 我是导航条：
+ - [Webpack和Rollup的区别](#Webpack和Rollup的区别)
+      - [Webpack](#Webpack)
+      - [Rollup](#Rollup)
+      - [两者的选择原则](#两者的选择原则)
  - [开始使用Rollup](#开始使用Rollup)
    - [安装](#安装)
    - [编写配置文件rollup.config.js](#编写配置文件rollup.config.js)
@@ -14,12 +22,46 @@
       - [使用ESLint](#使用ESLint)
       - [用replace替换环境变量](#用replace替换环境变量)
       - [用uglify压缩](#用uglify压缩)
- - [Webpack和Rollup的区别](#Webpack和Rollup的区别)
-      - [Webpack](#Webpack)
-      - [Rollup](#Rollup)
-      - [两者的选择原则](#两者的选择原则)
  - [有哪些代码库使用了Rollup](#有哪些代码库使用了Rollup)
 
+
+
+## Webpack和Rollup的区别
+### Webpack
+`Webpack`是在2012年发布的，最初的目的是：`构建复杂的单页应用程序（SPA）`。
+
+它最大的两个特性：
+ - **代码分离**
+    - 把代码分离到不同bundle中，然后可以`按需加载`或`并行加载`这些文件。
+ - **静态资源**
+    - 将所有静态资源导入到应用程序中，进行处理。
+
+[详见《Webpack》一文](./Webpack.md)
+
+ > 打包原理：将每个模块封装成一个函数，并将他们放在一个包中。通过浏览器的`require`实现导入，逐一执行。
+
+ 优点：能处理很多事情（包括静态资源、HTML、CSS）。
+
+### Rollup
+`Rollup`可以让开发者，将项目 **按功能** 拆分成一个个子目录。通过模块化的方式，让这些模块相互引用，通过Rollup打包成一个单独JS（即bundle）。
+ > 打包原理：把所有代码放在同一个地方，然后一次性执行，从而生成`更简洁`、`更简单`的代码，启动更快。
+ 
+ 优点：
+  - 只处理JS，打包速度快
+  - 自动Tree-shaking（清除项目中没使用到的代码）
+  - 配置简单
+ 
+ 缺点：能处理大多数CommonJS文件（通过插件），但有些语法**根本不能转义为ES6**
+
+### 两者的选择原则：
+`Webpack`一般适用于大型应用
+ - 支持：代码拆分
+ - 支持：处理很多静态资源
+ - 支持：引入很多CommonJS模块的依赖
+
+`Rollup`一般适用于JavaScript库
+ - 基于ES6模块
+ - 希望他人直接能使用
 
 ## 开始使用Rollup
 ### 安装
@@ -304,45 +346,8 @@ export default {
 }
 ```
 
-
-## Webpack和Rollup的区别
-### Webpack
-`Webpack`是在2012年发布的，最初的目的是：`构建复杂的单页应用程序（SPA）`。
-
-它最大的两个特性：
- - **代码分离**
-    - 把代码分离到不同bundle中，然后可以`按需加载`或`并行加载`这些文件。
- - **静态资源**
-    - 将所有静态资源导入到应用程序中，进行处理。
-
-[详见《Webpack》一文](./Webpack.md)
-
- > 打包原理：将每个模块封装成一个函数，并将他们放在一个包中。通过浏览器的`require`实现导入，逐一执行。
-
- 优点：能处理很多事情（包括静态资源、HTML、CSS）。
-
-### Rollup
-`Rollup`可以让开发者，将项目 **按功能** 拆分成一个个子目录。通过模块化的方式，让这些模块相互引用，通过Rollup打包成一个单独JS（即bundle）。
- > 打包原理：把所有代码放在同一个地方，然后一次性执行，从而生成`更简洁`、`更简单`的代码，启动更快。
- 
- 优点：
-  - 只处理JS，打包速度快
-  - 自动Tree-shaking（清除项目中没使用到的代码）
-  - 配置简单
- 
- 缺点：能处理大多数CommonJS文件（通过插件），但有些语法**根本不能转义为ES6**
-
-### 两者的选择原则：
-`Webpack`一般适用于大型应用
- - 支持：代码拆分
- - 支持：处理很多静态资源
- - 支持：引入很多CommonJS模块的依赖
-
-`Rollup`一般适用于JavaScript库
- - 基于ES6模块
- - 希望他人直接能使用
-
 ## 有哪些代码库使用了Rollup
+### Vue的底层源码
 Vue的底层源码是使用`Rollup`打包的：
 
 ![alt](./img/rollup-1.png)
@@ -350,3 +355,15 @@ Vue的底层源码是使用`Rollup`打包的：
 ![alt](./img/rollup-2.png)
 
 上面我写错了，`promise`不会返回一个bundle文件，而是一个`bundle对象`。后续可以通过`bundle.generate()、bundle.write()`来生成最终的`bundle文件`。
+
+
+### 我自己的小项目
+
+![alt](./img/rollup-4.png)
+
+## 参考链接
+[rollup.js官网](https://rollupjs.org/guide/en)
+
+[《使用rollup打包JS的方法步骤》](https://www.jb51.net/article/152103.htm)
+
+[《使用Rollup打包JavaScript》](https://www.jianshu.com/p/6a7413481bd2)
