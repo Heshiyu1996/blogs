@@ -2,12 +2,10 @@
 学而不思则罔
 
 ## 前端基础
-* HTML
+* HTML/CSS
   * [Input](/src/Basics/HTML/Input.md)
 
-* CSS
-
-* JavaScript
+* JavaScript（ES6）
   * [DOM（2019-03-14）](/src/Basics/JS/DOM.md)
   * [Module（2019-02-26）](/src/Basics/JS/Module.md)
   * [Generator](/src/Basics/JS/Generator.md)
@@ -27,6 +25,10 @@
     * [泛型（2019-01-14）](/src/Basics/TS/Generics.md)
     * [枚举（2019-01-28）](/src/Basics/TS/ENum.md)
 
+* Node.js
+  * [回调函数（2019-01-24）](/src/NodeJS/Callback.md)
+  * [EventEmitter（2019-01-24）](/src/NodeJS/EventEmitter.md)
+
 * 工具
   * [Rollup(2019-03-24）](/src/Tool/Rollup.md)
   * [Git（2019-03-22）](/src/Tool/Git.md)
@@ -44,8 +46,8 @@
 * 算法
   * [八大排序](/src/Algorithm/Sort.md)
 
-## 前端进阶
-* Vue
+## Vue
+* 基础
   * [Vue.set（2019-02-26）](/src/Vue/VueSet.md)
   * [keepAlive（2019-01-30）](/src/Vue/KeepAlive.md)
   * [为什么v-for要添加唯一key？（2019-01-23）](/src/Vue/VueKey.md)
@@ -55,9 +57,9 @@
   * [vm.$attrs](/src/Vue/vm.$attrs.md)
   * [Vue.js的最佳实践](/src/Vue/experience.md)
 
-* Node.js
-  * [回调函数（2019-01-24）](/src/NodeJS/Callback.md)
-  * [EventEmitter（2019-01-24）](/src/NodeJS/EventEmitter.md)
+* 底层源码
+  * [类型检查——Flow（2019-03-25）](/src/Vue/sourceCode/flow.md)
+
 
 ## 读书心得
 * [《WebAssembly 的未来》](/src/Article/WebAssembly.md)

@@ -190,7 +190,7 @@ import(/* webpackPrefetch: true */ 'LoginModal');
 
 
 #### 预加载（preload）
-有一个`ChartComponent`图表组件，它需要依赖体积巨大的`ChartingLibrary`库。（为了体验性更好，它会在渲染时显示一个`LoadingIndicator（进度条）`组件，然后立即按需导入`ChartingLibrary`）
+有一个`ChartComponent`图表组件，它需要依赖体积巨大的`ChartingLibrary`库。（为了体验性更好，它会在渲染时显示一个`LoadingIndicator（进度条）`组件），然后立即按需导入`ChartingLibrary`
 
 ```js
 // ChartComponent.js
