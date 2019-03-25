@@ -3,6 +3,24 @@
 > 
 > 更新时间： 2019-03-25
 
+我是导航条：
+ - [开始使用Rollup](#开始使用Rollup)
+   - [安装](#安装)
+   - [编写配置文件rollup.config.js](#编写配置文件rollup.config.js)
+   - [启动rollup](#启动rollup)
+   - [常用的Rollup插件](#常用的Rollup插件)
+      - [兼容CommonJS](#兼容CommonJS)
+      - [使用Babel](#使用Babel)
+      - [使用ESLint](#使用ESLint)
+      - [用replace替换环境变量](#用replace替换环境变量)
+      - [用uglify压缩](#用uglify压缩)
+ - [Webpack和Rollup的区别](#Webpack和Rollup的区别)
+      - [Webpack](#Webpack)
+      - [Rollup](#Rollup)
+      - [两者的选择原则](#两者的选择原则)
+ - [有哪些代码库使用了Rollup](#有哪些代码库使用了Rollup)
+
+
 ## 开始使用Rollup
 ### 安装
 npm install -save-dev rollup
@@ -31,7 +49,7 @@ export default {
       - umd：通用模块定义，以amd、cjs和life为一体
    - name：生成包名称
 
-### 启动rollup进行打包
+### 启动rollup
 一般通过`package.json`进行打包命令，其中的 `-c` 表示直接按照配置文件（`rollup.config.js`）开始打包。
 ```json
 "scripts": {
@@ -93,13 +111,14 @@ npm install --save-dev rollup-plugin-babel@latest
          "@babel/preset-env",
          {
             "modules": false
-            // true的话，Babel会在Rollup处理之前，将我们模块先转成CommonJS，导致Rollup处理失败
          }
      ]
    ],
    "compact": false
 }
 ```
+上面的`modules`为`true`的话，`Babel`会在Rollup处理之前，将我们模块先转成`CommonJS`，导致`Rollup`处理失败
+
 3、更新`rollup.config.js`
 ```js
 // rollup.config.js
@@ -313,7 +332,7 @@ export default {
  
  缺点：能处理大多数CommonJS文件（通过插件），但有些语法**根本不能转义为ES6**
 
-### 选择原则：
+### 两者的选择原则：
 `Webpack`一般适用于大型应用
  - 支持：代码拆分
  - 支持：处理很多静态资源
@@ -330,4 +349,4 @@ Vue的底层源码是使用`Rollup`打包的：
 
 ![alt](./img/rollup-2.png)
 
-上面我写错了，`promise`不会返回一个bundle文件，而是一个bundle对象。后续可以通过`bundle.generate()、bundle.write()`来生成最终的`bundle文件`。
+上面我写错了，`promise`不会返回一个bundle文件，而是一个`bundle对象`。后续可以通过`bundle.generate()、bundle.write()`来生成最终的`bundle文件`。
