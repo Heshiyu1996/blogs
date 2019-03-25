@@ -6,11 +6,12 @@
   * [Input](/src/Basics/HTML/Input.md)
 
 * JavaScript（ES6）
-  * [DOM（2019-03-14）](/src/Basics/JS/DOM.md)
-  * [Module（2019-02-26）](/src/Basics/JS/Module.md)
+  * [模块规范一：AMD和CMD（2019-03-25）](/src/Basics/JS/AMDCMD.md)
+  * [模块规范一：ES6模块和CommonJS模块（2019-03-25）](/src/Basics/JS/Module.md)
   * [Generator](/src/Basics/JS/Generator.md)
   * [暂时性死区](/src/Basics/JS/TDZ.md)
   * [Event Loop（2019-01-25）](/src/Basics/JS/EventLoop.md)
+  * [DOM常用操作方法集合（2019-03-14）](/src/Basics/JS/DOM.md)
 
 * TypeScript
   * 基础
@@ -30,7 +31,7 @@
   * [EventEmitter（2019-01-24）](/src/NodeJS/EventEmitter.md)
 
 * 工具
-  * [Rollup(2019-03-24）](/src/Tool/Rollup.md)
+  * [Rollup（(2019-03-25）](/src/Tool/Rollup.md)
   * [Git（2019-03-22）](/src/Tool/Git.md)
   * [webpack（2019-03-24）](/src/Tool/Webpack.md)
   * [webpack4.0（2019-03-24）](/src/Tool/Webpack4.md)
