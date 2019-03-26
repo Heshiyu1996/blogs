@@ -1726,3 +1726,17 @@ function func1(arr) {
  }
  ```
  #### [css] rem
+
+ ### [js]script的加载规则
+ 默认情况下，浏览器**同步加载JavaScript脚本**，（即渲染引擎遇到`<script>`标签就会停下来，等脚本执行完毕再继续向下渲染）
+
+ 当然，浏览器也**允许脚本异步加载**，下面是两种 **异步加载** 的语法：
+ ```js
+ <script src="path/to/myModule.js" defer></script>
+ <script src="path/to/myModule.js" async></script>
+ ```
+前者（`defer`）指的是：当页面渲染完成，再执行；
+
+后者（`async`）指的是：一旦下载完成，渲染引擎就中断渲染，**执行这个脚本之后** 再继续渲染。
+
+另外，`defer`会按照它在页面中出现的顺序加载，`async`不能保证按顺序。
