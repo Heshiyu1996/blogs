@@ -59,7 +59,8 @@
   * [Vue.js的最佳实践](/src/Vue/experience.md)
 
 * 底层源码
-  * [类型检查——Flow（2019-03-25）](/src/Vue/sourceCode/flow.md)
+  * [类型检查——Flow（2019-03-25）](/src/Vue/sourceCode/Flow.md)
+  * [目录结构、构建过程（2019-03-26）](/src/Vue/sourceCode/Build.md)
 
 
 ## 读书心得
@@ -68,7 +69,7 @@
 * [《VUE CONF大会之后的感想(非技术)》【作者：RobinsonZhang】](/src/Article/VueConfFeeling.md)
 
 ## 项目经验
-* [NOS总结（2019-03-14）](/src/Experience/NOS.md)
+* [网易云存储NOS（2019-03-14）](/src/Experience/NOS.md)
 * [用node.js搭建本地服务器，并连接MySQL数据库（2019-01-06）](/src/Experience/Node-Mysql.md)
 * [项目小技巧（2019-01-06）](/src/Experience/Skill.md)
 * [在Vue里用Prettier为什么这么难！](/src/Experience/Prettier.md)
