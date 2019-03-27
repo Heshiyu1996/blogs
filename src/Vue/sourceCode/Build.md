@@ -31,6 +31,8 @@ Vue.js的源码都在src目录下，
 
 主要功能：`内置组件（components）`、`全局API封装（global-api）`、`Vue实例化（instance）`、`观察者（observer）`、`虚拟DOM（vdom）`、`工具函数（util）`等。
 
+![alt](./img/Build-5.png)
+
 
 ### platforms（跨平台）
 > `Vue.js`支持跨平台：`web`、`native`（需搭配weex）
@@ -65,13 +67,24 @@ Vue.js的源码都在src目录下，
 ## 两种版本的Vue.js
 利用`vue-cli`初始化Vue.js项目时，会询问用`Runtime Only`（运行时）版本还是`Runtime + Compiler`（运行时 + 编译器）版本：
  - `Runtime Only`（推荐）
-    - 适用情况：没有指定`template`，但指定了`render`
+
     >只包含**运行时的Vue.js**代码
     >
     >需要**额外安装**`vue-loader`把`.vue`编译成`JavaScript`
     >
     >编译出来的vue.js**体积小**很多
+
  - `Runtime + Compiler`
-    - 若写了模板，Vue在`运行时`，会动态把模板编译成`render`函数（**耗性能**）
+    - Vue在`运行时`，会动态把`模板`编译成`render`函数（**耗性能**）
 
 ![alt](./img/Build-1.png)
+
+## Vue的构建思路总结
+在web应用下，`Runtime + Compiler`版本构建出来的Vue.js的入口是在：
+
+`src/platforms/web/entry-runtime-with-compiler.js`。
+ - 也就是说，当执行`import Vue from 'vue'`，就是从 **这个入口** 执行代码来初始化Vue的。
+
+![alt](./img/Build-6.png)
+
+
