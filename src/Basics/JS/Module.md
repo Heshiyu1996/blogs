@@ -9,7 +9,7 @@
  - CommonJS
  - ES6 模块
 
-`ES6模块`的设计思想是尽量静态化，使得编译时就能确定模块的依赖关系。
+`ES6模块`的设计思想是尽量静态化，使得**编译时**就能确定模块的依赖关系。
 
 `CommonJS`只能在**运行时**确定这些东西。
 ## ES6模块
@@ -36,7 +36,7 @@
  ```
  
 ### import
-`import`命令是Singleton模式，是静态执行的（所以不能使用**表达式**、**变量** 这些需要在**运行时**才能得到结果的结构），并且`输入的变量是一个只读的接口`，不能对其重新赋值。
+`import`命令是**Singleton模式**，是静态执行的（所以不能使用**表达式**、**变量** 这些需要在**运行时**才能得到结果的结构），并且`输入的变量是一个只读的接口`，不能对其重新赋值。
  > 无法取代`require()`，因为`require`是运行时加载模块，`import`是在编译时处理模块
  > 
  > 多次加载，只会执行一次
@@ -105,7 +105,8 @@ export * from 'my_module'
 ```js
 <script type="module">
     import utils from "./utils.js"
-    // other code
+
+    // other code...
 </script>
 ```
 注意：
@@ -185,11 +186,60 @@ export let person = new Person('heshiyu')
 对于不同的脚本加载这个模块，得到的都是`同一个实例`
 
 ### 循环加载
-#### CommonJS
+#### CommonJS的循环加载
+脚本代码在`require`时就会全部执行。一旦某个模块被“循环加载”，只输出已执行的部分，还未执行的部分不会输出。
+```js
+// a.js
+exports.done = false // 2、先输出一个变量done
+var b = require('./b.js') // 3、加载另一个脚本文件b.js。此时a.js的代码暂停在这里了
+console.log('在a.js中， b.done = ' + b.done) // 9、b.js执行完了，此时的b是b.js最后的结果。故b.done = true
+exports.done = true // 10、再输出一个变量done
+console.log('a.js执行完毕') // 11、输出a.js执行完毕
 
-#### ES6
+// b.js
+exports.done = false // 4、先输出一个变量done
+var a = require('./a.js') // 5、因为缓存机制，b.js会去a.js模块对应对象的exports属性中取值（只能取目前已执行的部分，即a.done为false）
+console.log('在b.js中，a.done = ' + a.done) // 6、输出a.done = false
+exports.done = true // 7、再输出一个变量done
+console.log('b.js执行完毕') // 8、输出'b.js执行完毕'
+
+// main.js
+var a = require('./a.js') // 1、开始执行a.js；12、此时a拿到的是a.js最后的结果
+var b = require('./b.js') // 13、因为b.js已执行完，此时会输出缓存的b.js的执行结果
+console.log('在main.js中，a.done = ' + a.done + '，b.done = ' + b.done) // 13、输出a.done = true；b.done = true
+```
+执行`node main.js`，输出结果
+```
+在b.js中，a.done = false
+b.js执行完毕
+在a.js中， b.done = true
+a.js执行完毕
+在main.js中，a.done = true，b.done = true
+```
+
+#### ES6的循环加载
 `ES6模块`的循环加载
+`import`从一个模块中加载变量，这个变量会成为 **指向被加载模块** 的引用
+```js
+// a.js
+import { bar } from './b.js' // 1、看到import，先加载并运行b.js
+console.log('a.js') // 6、b.js加载并执行完了，输出'a.js'
+console.log(bar) // 7、从b.js里导入变量bar，输出'bar'
+export let foo = 'foo' // 8、需要从a.js里输出一个变量foo（但已无人需要了）
 
+// b.js
+import { foo } from './a.js' // 2、因为a.js已开始执行，所以不会重复执行
+console.log('b.js') // 3、输出'b.js'
+console.log(foo) // 4、输出foo，但目前a.js还没执行完，拿到的是undefined
+export let bar = 'bar' // 5、需要从b.js里输出一个变量bar
+```
+执行`node a.js`，输出结果：
+```
+b.js
+undefined
+a.js
+bar
+```
 
 ### ES6模块的转码
 除了`Babel`可以将ES6转为ES5的写法，还有以下两个方法：
