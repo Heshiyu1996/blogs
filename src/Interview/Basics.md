@@ -759,13 +759,13 @@ myFunc('heshiyu') // 'hehsiyu'
 #### `Promise.all([])`接收一个数组，数组中每个元素都是`Promise的实例`。
 例如：
 ```js
-var p1 = new Promise(function(resolve, reject) {
+var p1 = new Promise((resolve, reject) => {
     setTimeout(resolve, 3000, 'first')
 })
-var p2 = new Promise(function(resolve, reject) {
-    setTimeout('second')
+var p2 = new Promise((resolve, reject) => {
+    setTimeout(resolve, 0, 'second')
 })
-var p3 = new Promise(function(resolve, reject) {
+var p3 = new Promise((resolve, reject) => {
     setTimeout(resolve, 1000, 'third')
 })
 
@@ -775,6 +775,7 @@ p.then(data => console.log(data)) // ['first', 'second', 'third']
 
  - 当`p1、p2、p3`都为fulFilled，按`参数的顺序`传给p的回调函数（then）
  - 当`p1、p2、p3`其中一个为rejected，会把`第一个变rejected`的值传给p的回调函数（catch）
+> 注意：如果
 
 #### 异常处理
 因为`Promise.all()`方法是**一旦抛出其中一个异常**，那其他正常返回的数据也无法使用了
@@ -783,10 +784,20 @@ p.then(data => console.log(data)) // ['first', 'second', 'third']
 
 解决办法：
  - 方法一：改为串行调用（失去了并发优势）
- - 方法二：在Promise内，先用try-catch吃掉这个异常。在其catch内再调用resolve(err)，让外面的Promise“感觉”像是调用成功
+ - 方法二：将p1、p2、p3这些promise`自身定义一个catch方法`。
+    - 那它被rejected时，也`不会触发Promise.all()的catch`。而是会`触发自身定义的catch`。因为他们自身定义的catch方法`返回的是一个新Promise实例`，`作为参数的这个promise`实际上指的是这个新实例，这个`新实例会变成resolved`。
+ - 方法三：在Promise内，先用try-catch吃掉这个异常。在其catch内再调用resolve(err)，让外面的Promise“感觉”像是调用成功（和方法二的区别是，方法二是个新实例）
  ```js
  // 方法二：
- var p2 = new Promise(function(resolve, reject) {
+ var p2 = new Promise((resolve, reject) => {
+     setTimeout(resolve, 0, xxx)
+ })
+ .then(result => result)
+ .catch(err => err)
+ ```
+ ```js
+ // 方法三：
+ var p2 = new Promise((resolve, reject) => {
      setTimeout(() => {
          try {
              console.log(xxx) // xxx未声明，会抛出异常给下面的catch块
@@ -1740,3 +1751,47 @@ function func1(arr) {
 后者（`async`）指的是：一旦下载完成，渲染引擎就中断渲染，**执行这个脚本之后** 再继续渲染。
 
 另外，`defer`会按照它在页面中出现的顺序加载，`async`不能保证按顺序。
+
+ ### [js]通过defineProperty给对象添加属性
+ 对象里的属性并不只有`属性名`和`属性值`那么简单。
+
+ JavaScript属性大致可以分为两类：
+  - 数据属性
+  - 访问器属性
+  
+ #### 数据属性
+ `数据属性`具有4个描述其轻微的特征：
+
+
+ [configurable、enumerable和writable](http://www.softwhy.com/article-9359-1.html)
+
+ ### [js]扩展运算符（...）和Object.assign()只是部分深拷贝
+ `扩展运算符（...）`和`Object.assign()`可以对一个对象A进行`深拷贝`，但如果对象A里面还包含子对象/子数组，那么这部分就是`浅拷贝`。**(...)和Object.assign()这两个方法是等价的**
+ > 深拷贝：拷贝的是`值的副本`
+ > 
+ > 浅拷贝：拷贝的是`值的引用`
+
+```js
+let o1 = { 
+    name: 'I am o1',
+    address: {
+        province: 'gd',
+        city: 'qy'
+    }
+}
+let o4 = { ...o1 }
+
+o4.name = 'I am o4'
+console.log(o4)
+console.log(o1)
+
+o1.name = 'I am new o1'
+o1.address.province = 'hz'
+console.log(o4)
+console.log(o1)
+
+// { name: 'I am o4', address: { province: 'gd', city: 'qy' } }
+// { name: 'I am o1', address: { province: 'gd', city: 'qy' } }
+// { name: 'I am o4', address: { province: 'hz', city: 'qy' } }
+// { name: 'I am new o1', address: { province: 'hz', city: 'qy' } }
+```
