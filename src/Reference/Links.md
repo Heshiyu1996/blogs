@@ -1,6 +1,7 @@
 # 前端早读课
 > 一些优秀文章的收录
 
+* [js必须知道的33个概念](https://github.com/leonardomso/33-js-concepts)
 * [Vue.js 技术揭秘](https://ustbhuangyi.github.io/vue-analysis/)
 * [Node-模块源码分析](https://lq782655835.github.io/blogs/node/node-module.html)
 * [JavaScript的Event Loop机制](https://www.jianshu.com/p/87a9e0068dd8)
