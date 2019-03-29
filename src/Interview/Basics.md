@@ -53,6 +53,11 @@
     - [script标签的加载规则](#[JS]script标签的加载规则)
     - [通过defineProperty给对象添加属性](#[JS]通过defineProperty给对象添加属性)
     - [扩展运算符（...）、Object.assign()](#[JS]扩展运算符（...）、Object.assign())
+    - [模块规范一：AMD和CMD](#[JS]模块规范一：AMD和CMD)
+    - [模块规范二：ES6模块和CommonJS模块](#[JS]模块规范二：ES6模块和CommonJS模块)
+    - [Generator](#[JS]Generator)
+    - [暂时性死区](#[JS]暂时性死区)
+    - [EventLoop](#[JS]EventLoop)
 - 浏览器部分
     - [浏览器内核](#[浏览器]浏览器内核)
     - [浏览器缓存](#[浏览器]浏览器缓存)
@@ -73,8 +78,8 @@
 - Node.js部分
     - [异步式I/O和事件驱动](#[Node.js]异步式I/O和事件驱动)
     - [require的过程](#[Node.js]require的过程)
-- Typescript部分
-    - [接口用途](#[TypeScript]接口用途)
+    - [回调函数](#[Node.js]回调函数)
+    - [EventEmitter](#[Node.js]EventEmitter)
 - 算法
     - [八大排序](#[算法]八大排序)
     - [二分查找](#[算法]二分查找)
@@ -729,9 +734,11 @@ appendDiv(function(node) {
     - 在某个`.then`设置断点，不能直接进到下一个`.then`方法
 
  #### Async、Await
-`async`是一个函数修饰符。如果是`async`关键词声明的函数会**隐式**返回一个`Promise`；
+`async`是一个函数修饰符，表示函数里有异步操作
+ > `async`函数会返回一个`Promise`对象，可以使用`then`添加回调函数；
 
-`await`后面跟也是`Promise`，它的语义是：必须等到`await`后面跟的`Promise`有了返回值，才能继续执行`await`下一行代码；
+`await`表示紧跟在后面的表达式需要等待结果；
+ > 后面跟也是`Promise`，
 
  好处：
   - 简洁。易于阅读和理解
@@ -1422,6 +1429,21 @@ console.log(o1)
 // { name: 'I am new o1', address: { province: 'hz', city: 'qy' } }
 ```
 
+### [JS]模块规范一：AMD和CMD
+[模块规范一：AMD和CMD（2019-03-25）](/src/Basics/JS/AMDCMD.md)
+
+### [JS]模块规范二：ES6模块和CommonJS模块
+[模块规范二：ES6模块和CommonJS模块（2019-03-25）](/src/Basics/JS/Module.md)
+
+### [JS]Generator
+[Generator](/src/Basics/JS/Generator.md)
+
+### [JS]暂时性死区
+[暂时性死区](/src/Basics/JS/TDZ.md)
+
+### [JS]EventLoop
+[EventLoop](/src/Basics/JS/EventLoop.md)
+
 ### [浏览器]浏览器内核
  - Trident （IE内核）
  - Gecko （Firefox内核）
@@ -1482,7 +1504,9 @@ console.log(o1)
             3、合并CSS和JS文件：把多个js（css）合并为一个js（css）
             4、图片地图：允许在一张图片上关联多个URL，目标URL取决于点击的坐标
             5、对HTTP传输内容进行压缩（配置`Accept-Encoding`）
+            6、
         ```
+        另外还可以通过[图片转成base64](/src/Performance/base64.md)达到减少HTTP请求效果
  
  - Server方面
     - 使用CDN
@@ -1829,8 +1853,11 @@ emitter.emit('someEvent', 'name')
             /node_modules/foo.js
             ```
 
-### [TypeScript]接口用途
+### [Node.js]回调函数
+[回调函数](/src/NodeJS/Callback.md)
 
+### [Node.js]EventEmitter
+[EventEmitter（2019-01-24）](/src/NodeJS/EventEmitter.md)
 
 ### [算法]八大排序
  [八大排序](./../Algorithm/Sort.md)
@@ -1871,3 +1898,7 @@ emitter.emit('someEvent', 'name')
  解，得：n = (2的k次方)
 
  **k = logn**
+
+
+### [CSS]多列布局、伸缩布局、网格布局
+### [JS]async/await

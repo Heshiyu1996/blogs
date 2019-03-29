@@ -1,4 +1,5 @@
-# 项目经验（二面）
+# 项目经验
+转载请注明出处: [https://github.com/Heshiyu1996/blogs](https://github.com/Heshiyu1996/blogs)
 
 ### [Vue.js]Vue.js的优势与不足：
  - 优势（特点）
@@ -73,6 +74,7 @@ $listeners也是一个对象，存着由父组件传递给子组件定义的所�
      event: 'input'
  }
  ```
+
 ### [Vue.js]Vue里面的继承
 #### extend（单继承）
  - Vue的全局方法
@@ -140,7 +142,7 @@ new Vue({
 
 ### [VueConf]Make Your Vue App Accessible
 
- ### [vuelidate]表单校验
+### [vuelidate]表单校验
  #### 调研思路：
   - 基于数据模型
   - 支持自定义函数
@@ -154,7 +156,7 @@ new Vue({
   - 将`$v`的代理通过`mixin`的方式，加入到Vue实例中的`computed`选项
   - 默认是通过`input`事件进行校验。作者也推荐开发者可以通过给`v-model`定义`.lazy`修饰符，使得校验器可以进行懒校验
  
- ### [Vue]生命周期
+### [Vue]生命周期
 首先，从`new Vue()`开始
  - 初始化生命周期、初始化事件系统
  - `beforeCreate`
@@ -182,7 +184,6 @@ new Vue({
 
 
 ### vuex
-
 
 ### [jQuery]源码
  - 首先，是从`闭包` + `立即执行函数`开始的（传入了window对象）
@@ -248,7 +249,7 @@ new Vue({
  - 更简洁的输出
  - 语义化的命令
 
- ### [BOT]
+### [BOT]
  #### 个人职责
   - 项目重构（Regular.js -> Vue.js）
   - 高阶组件库开发
@@ -292,7 +293,7 @@ new Vue({
     - 大致思路：把刷新`可视区域的item`这个事件，放到用户滚动时触发；通过记录上次加载的startIndex、以及endIndex来记住buffer（？）
 
 
- ### [觅见日记]
+### [觅见日记]
  #### 个人职责
   - 调研并引入fly.js
   - 开发登录部分
@@ -345,7 +346,7 @@ new Vue({
 而fly.js它是通过自定义http engine来实现不同的adapter，来支持不同环境的。
 
 
- ### [小程序]登录过程
+### [小程序]登录过程
   - 微信
     - 小程序端调用`wx.login()`获取`code`
     - 带着`code`，传递给开发者后端
@@ -363,7 +364,7 @@ new Vue({
     - 在session有效期内，不需重复授权
 
 
- ### [小程序]生命周期
+### [小程序]生命周期
   - beforeCreate
   - created
     - 所有页面created会在项目加载的时候一起被调用，进入页面不会被调用，一般用onLoad代替
@@ -380,7 +381,7 @@ new Vue({
   - beforeDestroy
   - destroyed
 
- ### [小程序]跳转区别
+### [小程序]跳转区别
  `redirectTo`，跳转到指定页，并关闭当前页
 
  `navigateTo`，跳转到指定页，并保留当前页
@@ -389,7 +390,7 @@ new Vue({
 
 
 
- ### [Axios] 源码解析
+### [Axios] 源码解析
  `Axios`是一个基于`Promise`的http请求库。
 
  ```js
@@ -406,7 +407,7 @@ new Vue({
   - 对于`request`，我们就在`use`里对`config`进行修改，随后会覆盖掉默认配置
   - 对于`response`，我们就在`use`里对后端返回的数据进行一个预处理再返回
 
- ### [MVC] 什么是MVC？
+### [MVC] 什么是MVC？
 `M`指的是Model层
    - 用于封装和业务逻辑相关的数据、以及对数据处理的方法
 
@@ -420,7 +421,7 @@ new Vue({
 
  特点：职责明确、相互分离；
  
- ### [MVVM] 什么是MVVM？
+### [MVVM] 什么是MVVM？
  `M`：Model层，存放数据
 
  `V`：View层，视图层
@@ -502,8 +503,6 @@ new Vue({
 ### 通讯录搜索（按姓名查询、或按首拼音）
 将各个汉字各自存起
 
-### 一个page页面，有搜索框，展示框，说明下他们的职责
-
 ### 把svg当做字体
 
 
@@ -512,12 +511,7 @@ new Vue({
  - 不支持__proto__
  - 不支持default关键字
 
-### 封装过jq插件吗？
 
-
-### 你是如何搭建一个前端项目的？
-
-### 你所理解的高阶组件库？你开发过哪些组件，有哪些功能？
 
 ### 如何限定只接收10个http响应？
 
@@ -568,9 +562,7 @@ new Vue({
    start: "webpack-dev-server"
  }
  ```
- --------------
- 以下是结合vue的
- --------------
+ 以下是结合vue的：
  - 新建src
   - 里面还有assets、pages、index.js、app.vue...
  - 配置webpack.config.js（特别是output、loaders）
