@@ -6,8 +6,6 @@
 [项目经验总结](/src/Interview/Experience.md) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 [早读课集合](/src/Reference/Links.md)
 
-----
-
 ## Vue.js
 * 基础
   * [Vue.set（2019-02-26）](/src/Vue/VueSet.md)
@@ -20,7 +18,7 @@
   * [参加《VueConf》的感悟总结（2019-01-06）](/src/Vue/VueConf.md)
 
 * 底层源码
-  * [类型检查——Flow（2019-03-25）](/src/Vue/sourceCode/Flow.md)
+  * [类型检查——Flow（2019-03-25）](/src/Vue/sourceCode/flow.md)
   * [源码的目录结构、构建过程（2019-03-26）](/src/Vue/sourceCode/Build.md)
   * [数据驱动（2019-03-28）](/src/Vue/sourceCode/DataDriven.md)
 

@@ -22,6 +22,7 @@
     - [margin重叠问题](#[CSS]margin重叠问题)
     - [z-index和position的关系](#[CSS]z-index和position的关系)
     - [纯CSS画三角形](#[CSS]纯CSS画三角形)
+    - [【布局题】利用margin/padding实现宽高自适应](#[CSS]【布局题】利用margin/padding实现宽高自适应)
 - JavaScript部分
     - [闭包](#[JS]闭包)
     - [事件委托](#[JS]事件委托)
@@ -581,6 +582,70 @@ html {
     border-left: 50px solid transparent;
  }
  ```
+
+### [CSS]【布局题】利用margin/padding实现宽高自适应
+如图：实现一个**宽度、高度、间隙**随屏幕大小**自适应**的布局：
+
+ ![alt](./img/img-17.png)
+
+```html
+<div id="app">
+    <div class="top-wrapper">
+        <div class="user-wrapper" v-for="item in arr" :key="item.id"></div>
+    </div>
+    <div class="bottom-wrapper">
+        <div class="btn">底部按钮</div>
+    </div>
+</div>
+```
+```scss
+.top-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 10px;
+
+    .user-wrapper {
+        display: inline-block;
+        width: 23%; // 相对于父容器（即top-wrapper）宽度
+        margin-top: 2.67%; // 相对于父容器（即top-wrapper）宽度
+        background: green;
+        overflow: hidden; // 触发BFC条件，撑开该容器
+
+        &::after{
+            content: '';
+            display: block;
+            margin-top: 100%; // 相对父容器（即user-wrapper）宽度
+        }
+
+        &:nth-child(1),
+        &:nth-child(2),
+        &:nth-child(3),
+        &:nth-child(4) {
+            margin-top: 0;
+        }
+
+        .user-text {
+            position: absolute; // 文字需额外放到一个脱离标准流的容器中
+        }
+    }
+}
+```
+大致思路：把`参照物`都设置成`父容器的宽度`
+ - 对于小方块的宽度自适应：
+    - 每行4个小方块，它们各自的宽度百分比`（相对于父容器top-wrapper宽度）`，单个为`23%`，所以父容器（top-wrapper）还剩余`8%`的宽度。
+
+ - 对于小方块的高度自适应：
+    - 因为每个小方块的高度参考物不是父容器宽度，不能直接设置百分比（因为画正方形，可`将高度的百分比参考物`设置为`也相对于父容器top-wrapper的宽度`，可用`margin/padding百分比`）。
+    - 又因为每个小方块里面没有内容，所以需要用一个`伪类after`把父容器高度撑开（`此时每个小方块就是伪类的父容器`），将伪类设为`margin-top: 100%`，这时伪类相对父容器（即小方块）宽度`100%`，自动撑开高度，数值和宽度一样。
+    - 有个要注意的点是，要触发小方块的BFC特性，才能把高度撑开。
+
+ - 对于小方块的水平间距：
+    - 可以通过`justify-content: space-between`来实现块与块之间的水平间距。
+
+ - 对于小方块的垂直间距：
+    - 因为每一行有3条间隙，平分上面算的剩余`8%`的宽度，算得约每条`2.67%`
+    - 因为`高度不能直接设置百分比`。把参考物换成`父容器top-wrapper`可以通过`margin-top`实现，即每个小方块`margin-top: 2.67%`（也是相对于父容器top-wrapper宽度），实现垂直间距
 
 ### [JS]闭包
 `闭包`就是一个函数，这个函数能够访问 **其他函数的作用域** 中的变量。
