@@ -176,3 +176,15 @@
  - 先拿到data里的`key`，再拿到props、methods拿到`key`。要保证让他们不能冲突（因为最终都会挂载到`vm`这个实例上，通过`this`可以访问到）
  - 再对那些`不冲突data里的属性`调用：`proxy(vm, '_data', key)`
  - 在`proxy`里，通过`defineProperty`，对`vm`这个对象`新增一个key属性`，并将它的`属性描述`里的getter、setter指向`this[sourceKey][key]`里的getter、setter。这样做是为了使得访问`this.name`可以拿到`this._data.name`，也就是`this.$options.data`
+
+## Vue实例挂载的实现
+### 首先是$mount方法
+`vm.$mount`挂载的目标，就是把 **模板** 渲染成 **最终的DOM**。
+
+![alt](./img/datadriven-1.jpg)
+
+![alt](./img/datadriven-2.jpg)
+
+![alt](./img/datadriven-3.jpg)
+
+![alt](./img/datadriven-4.jpg)
