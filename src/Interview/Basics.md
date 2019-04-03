@@ -59,6 +59,8 @@
     - [Generator](#JSGenerator)
     - [暂时性死区](#JS暂时性死区)
     - [EventLoop](#JSEventLoop)
+    - [reduce()](#JSreduce())
+    - [函数的内部属性()](#JS函数的内部属性())
 - 浏览器部分
     - [浏览器内核](#浏览器浏览器内核)
     - [浏览器缓存](#浏览器浏览器缓存)
@@ -1508,6 +1510,94 @@ console.log(o1)
 
 ### [JS]EventLoop
 [EventLoop](/src/Basics/JS/EventLoop.md)
+
+### [JS]reduce()
+```js
+array.reduce(function(total, curVal, curIndex, arr) {
+    // 用于执行每个数组元素的函数
+}, initVal)
+```
+例子：
+```js
+let arr = [1, 2, 3]
+arr.reduce((total, curVal) => (total + curVal), 10) // 16
+```
+
+### [JS]函数的内部属性
+#### 函数内部属性一：arguments
+`arguments`是一个类数组对象，包含着：**传入函数中的所有参数**、**callee属性**、**length属性**。
+
+![alt](./img/img-18.png)
+ - `传入的参数`：
+    - `argument[0]`、`argument[1]`...去获取对应位置传入的参数
+    - 若在函数体里利用`argument[x]`修改 **对应位置x传入的参数** 的值，会同步在后续中对应位置x传入参数
+    ![alt](./img/img-19.png)
+ - `length属性`：返回 **实际传入参数的个数**
+ - `callee属性`：是一个引用，指向 **当前所执行的函数**
+    - 在`'use strict'`下，该caller属性会被禁用
+```js
+// 不足：函数的执行 与 函数名 紧密耦合。因为函数名最好别改，改了就会连同下面return的factorial也要改
+function factorial(num) {
+    if (num < 1) {
+        return 1
+    } else {
+        return num * factorial(num - 1)
+        // return num * arguments.callee(num - 1)
+    }
+}
+// arguments.callee优势，可以消除上面提到的紧密耦合
+```
+注意：通过 **函数声明** 来定义函数的效果 和 直接通过 **函数表达式** 来定义函数的效果，是`一样`的，（`函数名` 实际上也是一个 `指向函数对象的指针`）。
+```js
+var factorial = function(num) { ... }
+```
+
+```js
+// 改用arguments.callee后
+var trueFactorial = factorial
+
+factorial = function() { // 切断了 变量factorial 和 函数对象的联系
+    return 0
+}
+
+trueFactorial(5) // 120
+factorial(5) // 0
+```
+#### 函数内部属性二：特殊对象this
+`this`指向的是：函数执行的环境对象（若在全局中，this的值是`window`）
+```js
+var color = 'red'
+var o = {
+    color: 'blue'
+}
+
+function sayColor() {
+    console.log(this.color) // 调用函数前，this的值并不确定。在执行过程中确定。
+}
+
+sayColor() // 'red'，因为在全局作用域
+
+
+o.sayColor = sayColor
+o.sayColor() // 'blue'，因为是在对象o的作用域
+```
+> `函数名` 实际上是一个 `指向函数对象的指针`，所以这里`o.sayColor = sayColor`之后，即使在不同环境执行，全局的`sayColor`函数与`o.sayColor`函数指向的仍然是同一个函数。
+
+#### 函数内部属性三：caller
+`caller`指向的是 **调用当前函数的父函数引用**（若在全局中调用当前函数，caller的值是`null`）
+
+也可以通过`arguments.callee.caller`，是一样的效果
+
+```js
+function outer() {
+    inner()
+}
+
+function inner() {
+    console.log(inner.caller) // 显示outer的源码
+}
+outer()
+```
 
 ### [浏览器]浏览器内核
  - Trident （IE内核）

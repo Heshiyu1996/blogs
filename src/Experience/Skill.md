@@ -3,6 +3,24 @@
 > 
 > 更新时间：2019-01-06
 
+### console.assert()
+`console.assert()`是断言工具函数。
+
+使用方法：
+```js
+console.assert(5 === 3, '前面的不成立啦！')
+// Assertion failed: 前面的不成立啦！
+```
+类型讲解：
+
+`console.assert(expression, errorTip)`
+ - 参数1：
+    - 类型：`Boolean`
+    - 要判断的 **逻辑表达式**
+ - 参数2：
+    - 类型：`String`
+    - 错误后的提示语句
+
 ### 如何将字符串"false"转布尔值？
 ```js
 // 明显这样是不行的：
