@@ -24,7 +24,7 @@
 
 ## Vue Router
 * 基础
-  * [基础使用方法（2019-04-03）](/src/VueRouter/Basic.md)
+  * [基础（2019-04-03）](/src/VueRouter/Basic.md)
 
 * 底层源码
 
