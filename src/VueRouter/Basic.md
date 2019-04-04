@@ -101,10 +101,10 @@ routes = [{
 要使用`嵌套路由`，有两个条件：
  - 在该路由所要渲染的组件（如`Fruit`组件）下添加一个路由出口：`<router-view></router-view>`
  - 对该路由新增`children`属性，配置如同`routes`
- - 以`/`开头的嵌套路径会被当做根路径。（如下设置，要访问`Apple组件`，则`path: '/animal/apple'`）
- - 访问`'/animal/apple'`、`'/animal/banana'`都可以将`Apple组件`、`Banana组件`从`Fruit组件`的`<router-view></router-view>`路由出口中渲染出来；
- - 访问`/animal`则只能看到`Fruit组件`自己的东西，它旗下的路由出口没有任何东西。
-    - 解决办法：提供一个空的子路由
+    - 以`/`开头的嵌套路径会被当做根路径。（如下配置，要访问`Apple组件`，则`path: '/animal/apple'`）
+    - 访问`'/animal/apple'`、`'/animal/banana'`都可以将`Apple组件`、`Banana组件`从`Fruit组件`的`<router-view></router-view>`路由出口中渲染出来；
+    - 访问`/animal`则只能看到`Fruit组件`自己的东西，它旗下的路由出口没有任何东西。
+    - 解决办法：提供一个空的子路由（如下面配置的`3-child3`）
 ```js
 routes: [
     {

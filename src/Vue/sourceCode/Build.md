@@ -85,6 +85,6 @@ Vue.js的源码都在src目录下，
 `src/platforms/web/entry-runtime-with-compiler.js`。
  - 也就是说，当执行`import Vue from 'vue'`，就是从 **这个入口** 执行代码来初始化Vue的。
 
-![alt](./img/Build-6.png)
+![alt](./img/Build-6.jpg)
 
 
