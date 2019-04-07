@@ -1337,7 +1337,9 @@ aaa
 { value: 3, done: false }
 ccc
 bbb
-{ value: 666, done: true }
+y, 660
+{ value: 666, done: false }
+{ value: 3, done: true }
 ```
 #### Generator函数能封装异步的原因？
 根本原因：Generator函数可以**暂停执行**和**恢复执行**
