@@ -43,7 +43,7 @@
     - [js数组的方法](#JSjs数组的方法)
     - [去重](#JS去重)
     - [for...in和for...of](#JSfor...in和for...of)
-    - [生成器、迭代器](#JS生成器、迭代器)
+    - [Generator函数](#JSGenerator函数)
     - [Math.floor、parseInt](#JSMath.floor、parseInt)
     - [this的指向](#JSthis的指向)
     - [Ajax](#JSAjax)
@@ -687,43 +687,68 @@ inner() // 'heshiyu'
 #### video里的子标签的track
 在不同的手机系统、不同的浏览器都不兼容
 
-### [JS]回调函数
-把函数作为参数传递，等待请求完成之后执行callback函数
-
-需求：创建100个div节点，然后把这些div节点都**设置为隐藏**。
+### [JS]回调地狱
+`回调地狱`：
+ - 嵌套了很多层回调函数，使得代码**不易阅读与维护**。
+ - 多个异步操作形成**强耦合**
+    - 只要有一个操作需要修改，它的上层回调、下层回调就要跟着改
 ```js
-var appendDiv = function() {
-    for ( let i=0; i< 100; i++) {
-        var div = document.createElement('div')
-        div.innerHTML = i
-        document.body.appendChild(div)
-        div.style.display = 'none' // 这句不合理，影响复用
-    }
-}
-appendDiv()
-```
-可以看出`div.style.display = 'none'`的硬编码放在`appendDiv`中显然是不合理的。因为并不是每个人创建了节点都希望他们立刻被隐藏。
-
-做法：把`div.style.display = 'none'`抽离出来，用**回调函数**的形式传入appendDiv：
-```js
-var appendDiv = function(callback) {
-    for( let i=0; i< 100; i++ ) {
-        var div = document.createElement('div')
-        div.innerHTML = i
-        document.body.appendChild(div)
-        // 节点创建好了，还有其他需求吗？
-        if (typeof callback === 'function') {
-            callback(div)
-        }
-    }
-}
-
-appendDiv(function(node) {
-    node.style.display = 'none' // vip客户说：我还要增加一个功能，隐藏掉div
+asyncFunc1(opt, (...args1) => {
+    asyncFunc2(opt, (...args2) => {
+        asyncFunc3(opt, (...args3) => {
+            asyncFunc4(opt, (...args4) => {
+                // some operation
+            })
+        })
+    })
 })
 ```
-把`“隐藏节点”`的逻辑放在回调函数中，委托给appendDiv方法，在指定时刻执行这个“客户定义的”回调函数。
+可以看到左侧明显出现了一个**三角形缩进**。
 
+解决回调地狱的`5种方法`（JavaScript的异步编程）：
+ - function拆解
+    - 优点：代码清晰
+    - 缺点：缺少通用性
+    - ```js
+        function func4(obj) {
+            asyncFunc4(opt, (...args4) => { // some operation })
+        }
+        function func3(obj) {
+            asyncFunc3(opt, (...args3) => func4())
+        }
+        function func2(obj) {
+            asyncFunc2(opt, (...args2) => func3())
+        }
+        function func1(obj) {
+            asyncFunc1(opt, (...args1) => func2())
+        }
+
+        func1(opt)
+      ```
+ - 事件发布/订阅模式
+    - ```js
+        const events = require('events')
+        const eventEmitter = new events.EventEmitter()
+
+        eventEmitter.on('func3', (args3) => {
+            asyncFunc2(opt, (args3) => {
+                console.log(args3)
+            })
+        })
+
+        eventEmitter.on('func2', (args2) => {
+            asyncFunc2(opt, (args2) => {
+                eventEmitter('func3', args2)
+            })
+        })
+
+        asyncFunc1(opt, (...args1) => {
+            eventEmitter.emit('func2', 'hello')
+        })
+      ```
+ - Promise
+ - Generator
+ - async/await
 
 ### [JS]设计模式
 #### 发布-订阅模式
@@ -1271,65 +1296,65 @@ function func1(arr) {
     ```
 注意：`for...of`只适用于`拥有迭代器对象`的集合（例如：数字、字符串、map、set等），`不能遍历对象`
  
-### [JS]生成器、迭代器
- `生成器（Generator）`是一个`能返回迭代器对象`的函数
+### [JS]Generator函数
+看一个`Generator函数`：
+```js
+function* asyncJob(x) {
+    console.log('aaa')
+    var y = yield x + 2
+    console.log('bbb')
+    console.log('y', y)
+    var y2 = yield y + 6
+    return y2
+}
 
- `迭代器（Iterator）`是一个`拥有next方法`的对象，这个方法返回一个对象：
- ```js
- {
-     value: 2 , // 当前值
-     done: true // 表示当前迭代器是否迭代完成
- }
- ```
+var g = asyncJob(1) // Generator函数会返回一个遍历器g
+console.log(g.next())
+// ① 先输出'aaa'
+// ② 再输出{ value: 3, done: false }
+// value表示：yield语句后面跟的表达式的值，此时y的赋值还未完成！
+// done表示：Generator函数是否执行完毕
+// -----此时Generator函数执行到此处，执行权交给外面（第一个yield前的、且其后的表达式并返回）-----
+console.log('ccc')
+// ③ 输出'ccc'
+console.log(g.next(660))
+// next函数把执行权交回里面，继续执行
+// 因为往next()传参（只能带一个），上一次“yield后跟的表达式返回值 = 参数（即666）”，给了y
+// 完成y的赋值，因为next传参660，所以y = 660
+// ④ 先输出'bbb'
+// ⑤ 再输出'y, 660'
+// 遇到第二个yield，执行yield后跟表达式
+// ⑥ 返回对象{ value: 666, done: false }，此时y2的赋值还未完成
+// -----此时Generator函数执行到此处，执行权交给外面（第二个yield前的、且其后的表达式并返回）-----
+console.log(g.next(3))
+// next函数把执行权交回里面，继续执行
+// 因为往next()传参（只能带一个），上一次“yield后跟的表达式返回值 = 参数（即3）”，给了y
+// 完成y的赋值，因为next传参3，所以y2 = 3
+// ⑦ 最后输出{ value: 3, done: true }
+```
+```
+aaa
+{ value: 3, done: false }
+ccc
+bbb
+{ value: 666, done: true }
+```
+#### Generator函数能封装异步的原因？
+根本原因：Generator函数可以**暂停执行**和**恢复执行**
 
- #### Generator的实现
-  - ES5
-  ```js
-  function makeIterator(arr) {
-      var index = 0
+两个特性：
+ - 函数内外的数据交换
+    - 内对外：next返回的value
+    - 外对内：next传入的参数（只能传一个）
+ - 错误处理
 
-      return {
-          next: function() {
-              var done = index >= arr.length
-              return {
-                  value: done ? undefined : arr[index++], // 注意，index++为“先人后己”，读取的是arr[index]，随后index++
-                  done: done
-              }
-          }
-      }
-  }
 
-  var iterator = makeIterator([1, 9, 7, 6])
-  // iterator是迭代器，makeIterator是生成器
+#### yield的特点
+- 用来说明`next函数`返回的`value值`
+- 每个`yield`调用后，后面的代码都会停止执行
+- `yield`不能穿透函数（即`不能使用forEach`来遍历声明yield，`必须用for`！！）
 
-  iterator.next() // { value: 1, done: false }
-  iterator.next() // { value: 9, done: false }
-  iterator.next() // { value: 7, done: false }
-  iterator.next() // { value: 6, done: false }
-  iterator.next() // { value: undefined, done: true }
-  ```
-  - ES6
-  ```js
-  function* createIterator(arr) {
-      for(let i=0; i< arr.length; i++) {
-          yield arr[i]
-      }
-  }
-
-  var iterator2 = createIterator([1, 9, 7, 6])
-
-  iterator2.next() // { value: 1, done: false }
-  iterator2.next() // { value: 9, done: false }
-  iterator2.next() // { value: 7, done: false }
-  iterator2.next() // { value: 6, done: false }
-  iterator2.next() // { value: undefined, done: true }
-  ```
- #### yield的特点
-  - 用来说明`next函数`返回的`value值`
-  - 每个`yield`调用后，后面的代码都会停止执行
-  - `yield`不能穿透函数（即`不能使用forEach`来遍历声明yield，`必须用for`！！）
-
- 迭代器对象可以任意具有.next方法的对象
+迭代器对象可以任意具有.next方法的对象
 
 ### [JS]Math.floor、parseInt
  相同：都能实现数字的向下取整
@@ -2057,3 +2082,65 @@ emitter.emit('someEvent', 'name')
 
 ### [CSS]多列布局、伸缩布局、网格布局
 ### [JS]async/await
+
+### [CSS]CSS选择器
+#### >（子选择器）
+ - 注意：不包括 **孙元素**
+ ```html
+ <div id="a">
+    <p>11111111111111</p>
+    <p>22222222222222</p>
+    <div>
+　　　　<p>333333333</p>
+　　</div><!--该<p>在<div>中-->
+</div>
+
+<style>
+    #a>p
+    {
+        background-color: red; 
+    }
+</style>
+ ```
+ ![alt](./img/img-20.png)
+
+#### +（相邻选择器）
+ - 注意：同一个 **父元素**
+ ```html
+ <div id="a">
+    <h1>11111111111111</h1>
+    <p>22222222222222</p>
+    <p>33333333333333</p><!--只会选择第一个相邻的匹配元素-->
+    <div>
+      <p>44444444444</p>
+    </div>
+</div>
+
+<style>
+    h1+p {
+        background-color: red;
+    }
+</style>
+ ```
+ ![alt](./img/img-21.png)
+
+#### ~（匹配选择器）
+ - 注意：**后面的**、且**同级的**元素
+ ```html
+ <div id="a">
+    <p>1111</p>
+    <h1>2222</h1>
+    <p>3333</p>
+    <p>4444</p>
+    <div>
+      <p>5555</p>
+    </div>
+</div>
+
+<style>
+    h1~p {
+        background-color: red;
+    }
+</style>
+ ```
+ ![alt](./img/img-22.png)
