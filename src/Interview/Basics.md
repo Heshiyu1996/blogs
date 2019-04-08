@@ -1523,6 +1523,36 @@ console.log(o1)
 // { name: 'I am o4', address: { province: 'hz', city: 'qy' } }
 // { name: 'I am new o1', address: { province: 'hz', city: 'qy' } }
 ```
+#### 项目中的实例
+利用`扩展运算符（...）`拷贝的对象里的`子对象/子数组`是`浅拷贝`。
+```js
+// 有这么一个对象defaultStart
+let defaultStart = {
+    name: '',
+    children: []
+}
+
+// 第一次对newData进行拷贝
+let newData = { ...defaultStart }
+newData.children.push(cInfo)
+
+// 第二次对newData进行拷贝
+let newData = { ...defaultStart }
+newData.children.push(cInfo) // 这时的children还是上次的children
+
+// 解决办法：
+// ① newData.children = []
+// ② newData.children.length = 0
+```
+
+### [JS]深拷贝
+`若没有function`，可以使用：
+```js
+JSON.parse(JSON.stringify(obj))
+
+// 缺点：会忽略函数function
+```
+
 
 ### [JS]模块规范一：AMD和CMD
 [模块规范一：AMD和CMD（2019-03-25）](/src/Basics/JS/AMDCMD.md)

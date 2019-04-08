@@ -3,6 +3,14 @@
 > 
 > 更新时间：2019-01-06
 
+### vuelidate
+`vuelidate`是一款很轻量的校验框架。其中的`helpers.req()`让我经常弄不懂，总结一下：
+
+#### helpers.req()
+ - helpers.req(value)：表示`未填时，为false`，`填了才为true`（**作用和required一样**）
+ - !helpers.req(value)：表示`未填时，为true`，`填了会为false`，此时要**搭配后面一个条件才为true**（**作用和可选一样**）。
+    - 例如：`return !helpers.req(value) || value.length > 2`，它表示：未填时，为true；但一旦填了，那就要长度大于2才为true了
+
 ### console.assert()
 `console.assert()`是断言工具函数。
 
