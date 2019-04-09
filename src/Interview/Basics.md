@@ -177,15 +177,31 @@ CSS3样式提纲：
  width（height）包括了padding、border，（`margin依旧独立`），故最终width会小一些
 
 ### [CSS]弹性盒模型
+*（关于弹性盒模型的内容已更新完全）*
+
 采用Flex布局的元素，成为`Flex容器`，它的子元素自动成为`Flex项目`
 
-容器存在两根轴：`主轴（水平）`、`交叉轴（垂直）`。`项目`默认沿主轴排列
+容器存在两根轴：`主轴（水平）`、`交叉轴（垂直）`。【`项目`默认沿主轴排列】
+
+![alt](./img/img-24.png)
+
  - 容器的属性
-    - **justify-content** // 主轴上项目的对齐方式 { flex-start | flex-end | center | space-between }
-    - **align-items** // 交叉轴上项目的对齐方式 { flex-start | flex-end | center }
-    - flex-direction // 主轴的方向
-    - flex-wrap // 主轴是否换行
-    - flex-flow // 上两个缩写
+    - **justify-content** // 主轴上项目的对齐方式 
+        - { flex-start | flex-end | center | space-between | space-around }
+        - 依次代表：左对齐、右对齐、居中对齐、两端对齐（两两间距相等）、两端对齐（两两间距 = 端点与边距 x 2）
+        - ![alt](./img/img-23.png)
+    - **align-items** // 交叉轴上项目的对齐方式 
+        - { flex-start | flex-end | center | baseline | stretch }
+        - ![alt](./img/img-25.png)
+    - **align-content** // 定义多根轴线的对齐方式（若只有一根轴线，该属性不起作用）
+    - **flex-direction** // 主轴的方向
+        - { row | row-reverse | column | column-reverse }
+        - ![alt](./img/img-26.png)
+    - **flex-wrap** // 主轴是否换行（换行表示接受压缩）
+        - { nowrap | wrap | wrap-reverse }
+        - ![alt](./img/img-27.png)
+    - **flex-flow** // 主轴方向、主轴换行的缩写
+        -  { flex-direction || flex-wrap }
 
  - 项目的属性
     - order // 项目各自的排列顺序
@@ -1551,6 +1567,28 @@ newData.children.push(cInfo) // 这时的children还是上次的children
 JSON.parse(JSON.stringify(obj))
 
 // 缺点：会忽略函数function
+```
+
+`若有function`，可以使用：
+```js
+export const deepClone = source => {
+    if (!souce || typeof source !== 'object') {
+        // 不是对象
+        throw new Error('error arguments', 'shallowClone')
+    }
+    var targetObj = source.constructor === Array ? [] : {}
+    for (var keys in source) {
+        if(source.hasOwnProperty(keyss)) {
+            if(source[keys] && typeof source[keys] === 'object') {
+                targetObj[keys] = source[keys].constructor === Array ? [] : {}
+                targetObj[keys] = deepClone(source[keys])
+            } else {
+                targetObj[keys] = source[keys]
+            }
+        }
+    }
+    return targetObj
+}
 ```
 
 
