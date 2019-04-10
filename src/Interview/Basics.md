@@ -187,28 +187,88 @@ CSS3样式提纲：
 
  - 容器的属性
     - **justify-content** // 主轴上项目的对齐方式 
-        - { flex-start | flex-end | center | space-between | space-around }
+        - { flex-start（默认） | flex-end | center | space-between | space-around }
         - 依次代表：左对齐、右对齐、居中对齐、两端对齐（两两间距相等）、两端对齐（两两间距 = 端点与边距 x 2）
         - ![alt](./img/img-23.png)
     - **align-items** // 交叉轴上项目的对齐方式 
-        - { flex-start | flex-end | center | baseline | stretch }
+        - { flex-start | flex-end | center | baseline | stretch（默认） }
         - ![alt](./img/img-25.png)
     - **align-content** // 定义多根轴线的对齐方式（若只有一根轴线，该属性不起作用）
     - **flex-direction** // 主轴的方向
-        - { row | row-reverse | column | column-reverse }
+        - { row（默认） | row-reverse | column | column-reverse }
         - ![alt](./img/img-26.png)
     - **flex-wrap** // 主轴是否换行（换行表示接受压缩）
-        - { nowrap | wrap | wrap-reverse }
+        - { nowrap（默认） | wrap | wrap-reverse }
         - ![alt](./img/img-27.png)
     - **flex-flow** // 主轴方向、主轴换行的缩写
         -  { flex-direction || flex-wrap }
 
  - 项目的属性
-    - order // 项目各自的排列顺序
-    - flex-grow // 放大比例
-    - flex-shrink // 缩小比例
-    - flex-basis
+    - **order** // 项目各自的排列顺序
+        - 数值越小，越靠前（默认为0）
+        - ![alt](./img/img-28.png)
+    - **flex-grow** // 放大比例
+        - 数值代表放大比例，默认为0。
+        - 数值代表瓜分父容器的剩余空间
+        - 数值越大，放大得越厉害
+        - 若存在子项目**设置了宽度**，剩余空间要减掉这部分宽度才算剩余空间，即`最终宽度 = 本身宽度 + 最终剩余空间 * flex-grow所占比例`
+        - ![alt](./img/img-31.png)
+        - 若子项目**没有设置宽度**，剩余空间被子项目瓜分，即`最终宽度 = 最终剩余空间 * flex-grow所占比例`
+        - ![alt](./img/img-31.png)
+    - **flex-shrink** // 缩小比例
+        - 数值代表缩小比例，默认为1
+        - 数值越大，缩小得越厉害
+        - 若存在子项目**设置了宽度**，剩余空间要减掉这部分宽度才算剩余空间，即`最终宽度 = 本身宽度 - 超出空间 * shrink所占比例`
+        - ![alt](./img/img-31.png)
+    - **flex-basis** // 分配多余空间前，子项目占据的**主轴空间（main-size）**
+        - auto（默认）或者（长度px固定，相当于`直接设定宽度一样`，会`覆盖width`）
+        - ![alt](./img/img-30.png)
     - **flex** // 上三个的缩写
+        - 顺序：flex-grow、flex-shrink、flex-basis
+        - 常见缩写规则：
+        ```css
+            .item {
+                flex: 1
+            }
+            /* 等价于 */
+            .item {
+                flex-grow: 1;
+                flex-shrink: 1;
+                flex-basis: 0%;
+            }
+
+            .item {
+                flex: auto;
+            }
+            /* 等价于 */
+            .item {
+                flex-grow: 1;
+                flex-shrink: 1;
+                flex-basis: auto;
+            }
+
+            .item {
+                flex: 10%; /* 或固定值px */
+            }
+            /* 等价于 */
+            .item {
+                flex-grow: 1;
+                flex-shrink: 1;
+                flex-basis: 10%; /* 或固定值px */
+            }
+
+            .item {
+                flex: 2 3;
+            }
+            /* 等价于 */
+            .item {
+                flex-grow: 2;
+                flex-shrink: 3;
+                flex-basis: 0%;
+            }
+        ```
+    - **align-self** // 覆盖父元素align-items，使指定子项目可以有不一样的交叉轴上对齐方式
+        - ![alt](./img/img-29.png)
 
 兼容性：IE10 `及以上`
 
