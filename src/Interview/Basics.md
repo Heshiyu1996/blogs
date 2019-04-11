@@ -218,10 +218,11 @@ CSS3样式提纲：
     - **flex-shrink** // 缩小比例
         - 数值代表缩小比例，默认为1
         - 数值越大，缩小得越厉害
-        - 若存在子项目**设置了宽度**，剩余空间要减掉这部分宽度才算剩余空间，即`最终宽度 = 本身宽度 - 超出空间 * shrink所占比例`
+        - 若存在子项目**设置了宽度**，则看占超出空间的多少，即`最终宽度 = 本身宽度 - 超出空间 * shrink所占比例`
         - ![alt](./img/img-31.png)
     - **flex-basis** // 分配多余空间前，子项目占据的**主轴空间（main-size）**
-        - auto（默认）或者（长度px固定，相当于`直接设定宽度一样`，会`覆盖width`）
+        - { auto（默认） | 固定px }
+        - 长度px固定，相当于`直接设定宽度一样`，会`覆盖width`
         - ![alt](./img/img-30.png)
     - **flex** // 上三个的缩写
         - 顺序：flex-grow、flex-shrink、flex-basis
@@ -267,7 +268,8 @@ CSS3样式提纲：
                 flex-basis: 0%;
             }
         ```
-    - **align-self** // 覆盖父元素align-items，使指定子项目可以有不一样的交叉轴上对齐方式
+    - **align-self** // 覆盖父元素align-items，使`指定子项目`可以有不一样的交叉轴上对齐方式
+        - { auto（默认） | flex-start | flex-end | center | baseline | stretch }
         - ![alt](./img/img-29.png)
 
 兼容性：IE10 `及以上`
@@ -410,7 +412,6 @@ html {
  }
  ```
 
-
 ### [CSS]粘性定位（Sticky）
  `Sticky`是position的粘性属性。它是在`relative`和`fixed`中切换，具体看是否要移出`viewPort`。
  ```css
@@ -422,8 +423,7 @@ html {
  也就是说：当滚动时，这个元素有移出的倾向，则切换为`fixed`（通过阈值来进行一些buff的作用）
  - 阈值是：`top`、`bottom`、`left`、`right`，必须设置四者之一
  - 若设定了阈值为`top: 10px`，则表示：当距离`viewPort的顶部`提前到`10px`的位置就切换`fixed`
- - 该元素并不脱离文档流，仍然保留元素原本在文档流中的位置
-
+ - 该元素并`不脱离文档流`，**仍然保留**元素原本在文档流中的位置
 
 ### [CSS]设置元素不可见的方法
 ```css
@@ -605,7 +605,7 @@ html {
  - 若两个相邻的外边距`一正（+）一负（-）`，结果是`两者之和`
 
 ### [CSS]z-index和position的关系
-`z-index`用于设置元素的堆叠顺序，堆叠顺序高的会处于堆叠顺序底的前面
+`z-index`用于设置元素的堆叠顺序，堆叠顺序大的会处于堆叠顺序小的前面
 
 它只在`position`为`absolute`、`relative`或`fixed`的元素上有效
 
@@ -657,10 +657,11 @@ html {
     height: 0;
     /* border-top: 50px solid red; */
     border-right: 50px solid transparent;
-    border-bottom: 50px solid blue;
     border-left: 50px solid transparent;
+    border-bottom: 50px solid blue;
  }
  ```
+ ![alt](././img/img-34.png)
 
 ### [CSS]【布局题】利用margin/padding实现宽高自适应
 如图：实现一个**宽度、高度、间隙**随屏幕大小**自适应**的布局：
@@ -1189,24 +1190,45 @@ p.then(data => console.log(data)) // ['first', 'second', 'third']
     - search
     - split
 
- ##### exec
- 对string进行正则匹配，并返回匹配结果（若需所有，执行white，结束标志为null）
-
+ ##### [RegExp]exec
+ 对string进行正则匹配，并返回匹配结果
+ 
+ 若正则表达式是 **全局匹配**：
  - 参数：string
- - 返回：['匹配结果', '由括号括起来的小分组匹配值', index, input]
+ - 返回：[ '匹配结果' , '由括号括起来的小分组匹配值' , index , input]
+ - （若需所有，执行white，结束标志为null）
 
 ```js
-var regex = /d(b+)d/g; 
-regex.exec('cdbbdbsdbdbz')
-// ["dbbd", "bb", index: 1, input: "cdbbdbsdbdbz"] 
+var regex = /h(s+)y/g; 
+regex.exec('ahahsyhsssy')
+// ["hsy", "s", index: 3, input: "ahahsyhsssy"] 
 
-regex.exec('cdbbdbsdbdbz')
-// ["dbd", "b", index: 7, input: "cdbbdbsdbdbz"] 
+regex.exec('ahahsyhsssy')
+// ["hsssy", "sss", index: 6, input: "ahahsyhsssy"] 
 
-regex.exec('cdbbdbsdbdbz')
+regex.exec('ahahsyhsssy')
 // null 
 ```
- ##### test
+ 
+ 若正则表达式是 **非全局匹配**：
+ - 参数：string
+ - 返回：[ '匹配结果' , '由括号括起来的小分组匹配值' , index , input]
+ - 无论如何，`永远只匹配到第一条`
+
+```js
+var regex = /h(s+)y/g; 
+regex.exec('ahahsyhsssy')
+// ["hsy", "s", index: 3, input: "ahahsyhsssy"] 
+
+regex.exec('ahahsyhsssy')
+// ["hsy", "s", index: 3, input: "ahahsyhsssy"] 
+
+regex.exec('ahahsyhsssy')
+// ["hsy", "s", index: 3, input: "ahahsyhsssy"] 
+```
+
+
+ ##### [RegExp]test
 测试string是否包含匹配结果，若包含返回true；否则返回false
  - 参数：string
  - 返回：true | false
@@ -1216,7 +1238,7 @@ regex.test('heshiyu')
 // true
 ```
 
-##### match
+##### [String]match
 根据pattern进行正则匹配，如果匹配到，返回匹配结果；否则返回null
 
 若正则表达式是 **全局匹配**：
@@ -1228,28 +1250,36 @@ var regex = /i/g
 str.match(regex)
 // ['i', 'i']
 ```
-若正则表达式是 **非全局匹配**：（和`exec`有点像）
+若正则表达式是 **非全局匹配**：（和`exec`有点点像，但不完全像）
  - 参数：regex
  - 返回：[匹配到的内容1, 匹配到的内容2, ...]
 ```js
 var str = 'hi, heshiyu'
 var regex = /i/
+
+str.match(regex)
+// ['i', groups: undefined, index: 1, input, heshiyu]
+
+str.match(regex)
+// ['i', groups: undefined, index: 1, input, heshiyu]
+
 str.match(regex)
 // ['i', groups: undefined, index: 1, input, heshiyu]
 ```
 
-##### search
+##### [String]search
 根据pattern进行正则匹配，如果匹配到一个结果，则返回他的索引；否则返回-1
  - 参数：regex | string
- - 返回：numer
+ - 返回：number
 ```js
 var str = 'hi, heshiyu'
 var regex = /i/
 str.search(regex)
+
 // 1
 ```
 
-##### replace
+##### [String]replace
 根据pattern进行正则匹配，把匹配结果替换为replacement
  - 参数1：regex | string
  - 参数2：string
@@ -1258,11 +1288,12 @@ str.search(regex)
 var str = "i love china!"
 var pattern = /i/g
 var ret = str.replace(pattern, "I")
-alert(ret)
+
+console.log(ret)
 //I love chIna!
  ```
 
-##### split
+##### [String]split
 根据pattern进行正则分割，返回一个分割数组
  - 参数1：regex | string
  - 返回：分割结果
@@ -1270,6 +1301,7 @@ alert(ret)
 var  str = 'http://www.baidu.com/'
 var  reg = /\W/
 var  ret = str.split(reg)
+
 console.log(ret)
 //["http", "", "", "www", "baidu", "com", ""] 
 ```
@@ -1288,7 +1320,9 @@ console.log(ret)
     - 参数3：要新加入的项目
     - 返回：被移除掉的项（array）
  - sort()
-    - 参数：比较函数（function）
+    - 参数：（可选）比较函数（function）
+        - sort((a, b) => a - b) // 从小到大
+    - 不传参数：按照`字符编码的顺序`进行排序
  - reverse()
 
 #### 非变异方法
@@ -1337,7 +1371,7 @@ function func1(arr) {
 ```
 
 ### [JS]for...in和for...of
- - for...in
+ - for...in *（读取对象/数组的key值）*
     ```js
         var arr = [1, 9, 6, 7]
         var obj = {
@@ -1354,7 +1388,7 @@ function func1(arr) {
         }
         // name
     ```
- - for...of
+ - for...of *（读取）*
     ```js
         var arr = [1, 9, 6, 7]
         var obj = {
@@ -1658,9 +1692,6 @@ export const deepClone = source => {
 ### [JS]模块规范二：ES6模块和CommonJS模块
 [模块规范二：ES6模块和CommonJS模块（2019-03-25）](/src/Basics/JS/Module.md)
 
-### [JS]Generator
-[Generator](/src/Basics/JS/Generator.md)
-
 ### [JS]暂时性死区
 [暂时性死区](/src/Basics/JS/TDZ.md)
 
@@ -1690,7 +1721,7 @@ arr.reduce((total, curVal) => (total + curVal), 10) // 16
     ![alt](./img/img-19.png)
  - `length属性`：返回 **实际传入参数的个数**
  - `callee属性`：是一个引用，指向 **当前所执行的函数**
-    - 在`'use strict'`下，该caller属性会被禁用
+    - 在`'use strict'`下，该callee属性会被禁用
 ```js
 // 不足：函数的执行 与 函数名 紧密耦合。因为函数名最好别改，改了就会连同下面return的factorial也要改
 function factorial(num) {
@@ -2227,8 +2258,8 @@ emitter.emit('someEvent', 'name')
     <p>11111111111111</p>
     <p>22222222222222</p>
     <div>
-　　　　<p>333333333</p>
-　　</div><!--该<p>在<div>中-->
+　　　　<p>333333333</p><!--该<p>在<div>中-->
+　　</div>
 </div>
 
 <style>
@@ -2241,7 +2272,7 @@ emitter.emit('someEvent', 'name')
  ![alt](./img/img-20.png)
 
 #### +（相邻选择器）
- - 注意：同一个 **父元素**
+ - 注意：`紧密`、`且后跟着的`那`一个`元素
  ```html
  <div id="a">
     <h1>11111111111111</h1>
