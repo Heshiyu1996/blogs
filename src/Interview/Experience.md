@@ -25,8 +25,15 @@ Vue实例初始化的过程中，实现依赖管理。大致总结如下：
 ### [Vue.js]$attrs 和 $listeners
 $attrs是一个对象，存着由父组件传递给子组件、但是没有在子组件里prop的特性
 
-$listeners也是一个对象，存着由父组件传递给子组件定义的所有方法的集合（即，一些@emit）
+$listeners也是一个对象，存着在`父作用域中的v-on事件监听器`
  - 通过`$listeners`可以向孙组件去传递那些emit事件，由孙组件去触发“爷组件”的方法
+```html
+<!-- u-search-type.vue -->
+<u-input @keypress.enter="goSearch"></u-input>
+
+<!-- u-input.vue -->
+<input v-on="$listeners" />
+```
 
 ### [Vue.js]改变prop值的方法
 > Vue一般防止子组件改变父组件的状态，所以不应该在子组件内部改变prop
@@ -194,15 +201,15 @@ new Vue({
     - 原因：实现很简单。只需在实现链式调用的方法的返回结果里，返回this即可解决
 
 ### [js]Babel将ES6转换成ES5的原理
- `Babel`是一个转移器，它是将JavaScript的高版本规则转移成低版本规则的一个工具。
+ `Babel`是一个转译器，它是将`JavaScript的高版本规则`转移成`低版本规则`的一个工具。
 
  它的原理分三个部分：
   - parsing（解析）
-    - 通过`babylon`把ES6代码生成AST
+    - 把ES6代码生成AST
   - transforming（转译）
-    - 通过`babel-traverse`把AST遍历，转译成新的AST
+    - 把AST遍历，优化成新的AST
   - generating（生成）
-    - 通过`babel-generator`按照新的AST生成ES5代码
+    - 按照新的AST生成ES5代码
 
  #### plugins和presets 
  `plugins`应用于整个转译过程（尤其是`transforming`）
@@ -587,3 +594,5 @@ elem.addEventListener('touchstart', fn, { passive: false })
 通过给第三个参数传递`passive`为`false`（被动为假，即主动。）来明确告诉浏览器：**事件处理程序**自己会调用`preventDefault`来阻止默认行为，你不用等了。
 
 如果能提前告诉浏览器：**“我不调用preventDefault来阻止默认行为”**，那么浏览器就能快速生成事件，从而提升页面性能。
+
+### [Vue.js]slot-scope
