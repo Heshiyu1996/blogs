@@ -2307,7 +2307,7 @@ emitter.emit('someEvent', 'name')
 
 ### [CSS]多列布局、伸缩布局、网格布局
 ### [JS]async/await
-async是Generator函数的语法糖
+async是Generator函数的语法糖，它会返回一个promise对象（并且会等到内部所有await后面的Promise对象执行完才会发生状态改变）
 
 #### async的使用形式
 ```js
@@ -2329,8 +2329,49 @@ class Storage {
 
 // 箭头函数
 var func1 = async () => { ... }
-
 ```
+
+#### async函数的实现原理
+async函数实际上是Generator函数和自动执行器的一个包装
+```js
+async function func1(args) {
+    // ...
+}
+
+// 等价于
+function func1(args) {
+    return spawn(function* () {
+        // ...
+    })
+}
+```
+其中spawn函数
+```js
+function spawn(genF) {
+    return new Promise((resolve, reject) => {
+        var gen = genF
+        step(nextF) {
+            try {
+                var next = nextF()
+            } catch(e) {
+                return reject(e)
+            }
+            if (next.done) {
+                return resolve(next.value)
+            }
+
+            Promise.resolve(next.value).then(v => {
+                step(function() { return gen.next(v) })
+            }, e => {
+                step(function() { return gen.throw(e) })
+            })
+        }
+
+        step(function() { return gen.next(undefined) })
+    })
+}
+```
+因为立即resolved的Promise是在`本轮事件循环的末尾执行`，所以最好前面加个`return`
 
 ### [CSS]CSS选择器
 #### >（子选择器）
