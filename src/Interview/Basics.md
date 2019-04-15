@@ -62,6 +62,7 @@
     - [reduce()](#JSreduce())
     - [函数的内部属性()](#JS函数的内部属性())
     - [事件处理函数和默认行为的执行顺序](#JS事件处理函数和默认行为的执行顺序)
+    - [for...in、Object.keys()、Object.getOwnPropertyNames()](#JSfor...in、Object.keys()、Object.getOwnPropertyNames())
 - 浏览器部分
     - [浏览器内核](#浏览器浏览器内核)
     - [浏览器缓存](#浏览器浏览器缓存)
@@ -1470,6 +1471,13 @@ y, 660
 
 迭代器对象可以任意具有.next方法的对象
 
+#### Generator函数的自动执行
+Generator是一个异步操作的容器，它的自动执行需要一种机制（当异步操作有了结果，这种机制就要自动交回执行权），有两种方法：
+ - 回调函数。
+    - 将异步操作包装成Thunk函数，在回调函数里交回执行权
+ - Promise对象。
+    - 将异步操作包装成Promise对象，在then方法里交回执行权
+
 ### [JS]Math.floor、parseInt
  相同：都能实现数字的向下取整
 
@@ -1673,12 +1681,12 @@ export const deepClone = source => {
     }
     var targetObj = source.constructor === Array ? [] : {}
     for (var keys in source) {
-        if(source.hasOwnProperty(keyss)) {
-            if(source[keys] && typeof source[keys] === 'object') {
+        if(source.hasOwnProperty(keys)) {
+            if(!source[keys] || typeof source[keys] !== 'object') {
+                targetObj[keys] = source[keys]
+            } else {
                 targetObj[keys] = source[keys].constructor === Array ? [] : {}
                 targetObj[keys] = deepClone(source[keys])
-            } else {
-                targetObj[keys] = source[keys]
             }
         }
     }
@@ -1791,6 +1799,13 @@ outer()
 
 也有例外：
  - checkbox的**事件默认行为会先执行**。如果一旦阻止了默认行为，就会**恢复到执行默认行为之前的状态**（用户无感知）
+
+### [JS]for...in、Object.keys()、Object.getOwnPropertyNames()
+for...in是遍历对象中的`所有可枚举属性`（包括自有属性和继承属性）
+
+Object.keys()：返回一个数组，数组里是对象中`可枚举的自有属性`的名称
+
+Object.getOwnPropertyNames()：返回一个数组，数组里是对象中`所有的自有属性`（不管是否可枚举）
 
 ### [浏览器]浏览器内核
  - Trident （IE内核）
@@ -2022,17 +2037,40 @@ dev: {
   - 服务端返回的数据不能是标准的json格式，而是通过callback包裹（需要客户端和服务端定制开发）
   - 安全问题
   - 要确定jsonp请求是否失败并不容易
-  ```js
+
+`JSONP`使用步骤：
+
+1、注册一个callback：
+
+```html
+<script>
+    var myHandler = function(data) {
+        alert('获得从服务端的数据：', data)
+    }
+</script>
+```
+
+2、发送请求给服务器
+
+客户端（js）写法一，利用script标签的src属性跨域：
+```html
+  <script src="http://flightQuery.com/jsonp/flightResult.aspx?code=CA1998&callback=flightHandler"></script>
+```
+
+客户端（jquery）写法二，利用jquery的ajax：
+  ```html
+  <script>
   $.ajax({
       url: 'http://www.baidu.com',
       async: false,
       type: 'get',
-      dataType: 'jsonp', // 1、请求类型设置`jsonp`
       data: {
           'id': 1
       },
-      jsonp: 'callback', // 3、默认callback
-      jsonpCallback: 'fn', // 2、设置回调函数名称，要与服务器响应包含的callback名称相同
+
+      dataType: 'jsonp', // 1、指定服务器返回的数据类型
+      jsonpCallback: 'myHandler', // 2、指定回调函数名称，要与服务器响应包含的callback名称相同
+
       success: function(data) {
           alert(data)
       },
@@ -2040,7 +2078,19 @@ dev: {
           alert(err)
       }
   })
+  </script>
+  
   ```
+3、服务端（flightResult.aspx）返回以下代码：
+```js
+myHandler({
+    "code": "200",
+    "desc": 'hello',
+    "detail": "hehe"
+})
+```
+以上代码会用于调用`myHandler`这个回调函数。
+
  
  `CORS`的特点：
   - 支持所有请求类型
@@ -2133,6 +2183,13 @@ dev: {
  - watch（）：用来监听事件
 
  IE8下最好用`gulp`，IE9用`webpack`
+
+### [WEB]为什么form表单可以跨域
+因为原页面用 form 提交到另一个域名之后，原页面的脚本无法获取新页面中的内容。
+
+所以浏览器认为这是安全的。
+
+而 AJAX 是可以读取响应内容的，因此浏览器不能允许你这样做。
 
 ### [Node.js]异步式I/O和事件驱动
 Node.js 采用了`单线程`、`异步式I/O`、`事件驱动`的程序设计模型，实现了：`包和模块`、`文件系统`、`网络通信`、`操作系统API`等功能
@@ -2250,6 +2307,30 @@ emitter.emit('someEvent', 'name')
 
 ### [CSS]多列布局、伸缩布局、网格布局
 ### [JS]async/await
+async是Generator函数的语法糖
+
+#### async的使用形式
+```js
+// 函数声明
+async function func1 () { ... }
+
+// 函数表达式
+var func1 = async function () { ... }
+
+// 对象的方法
+var obj = {
+    async func1() { ... }
+}
+
+// 类的方法
+class Storage {
+    async func1() { ... }
+}
+
+// 箭头函数
+var func1 = async () => { ... }
+
+```
 
 ### [CSS]CSS选择器
 #### >（子选择器）

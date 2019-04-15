@@ -596,3 +596,55 @@ elem.addEventListener('touchstart', fn, { passive: false })
 如果能提前告诉浏览器：**“我不调用preventDefault来阻止默认行为”**，那么浏览器就能快速生成事件，从而提升页面性能。
 
 ### [Vue.js]slot-scope
+
+### [移动端]判断是否为Retina屏
+```js
+if (window.devicePixelRatio && window.devicePixelRatio >= 2)
+```
+### [weppack]webpack常用的loader和plugins
+loader:
+ - vue-loader、sass-loader、babel-loader、url-loader
+
+plugins:
+ - html-webpack-plugin
+    - 用于生成一个html文件，并将最终生成的js、css以及一些静态资源以`script`、`link`的形式动态插入其中。
+ - webpack-dev-middleware
+    - 生成一个和webpack的compiler绑定的中间件
+ - webpack-dev-server
+    ```js
+    // 配置 webpack-dev-server 行为
+    devServer: {
+        open: process.platform === 'darwin',
+        host: '0.0.0.0',
+        port: 8081,
+        https: false,
+        proxy: null
+    }
+    ```
+
+### [webpack]webpack插件是怎么实现的
+webpack插件有以下特点：
+ - 独立的JS模块，暴露相应函数
+ - 函数原型上的apply方法会注入compiler对象
+ - compiler对象上挂载了相应的webpack事件钩子
+ - 事件钩子的回调函数里能拿到编译后的compilation对象（如果是异步钩子还能拿到相应的callback）
+
+#### 为什么要定义apply方法？
+底层源码是通过`plugin.apply()`调用插件的。
+
+#### compiler对象
+开发插件时，可以从`compiler`对象里拿到`所有和webpack主环境相关`的内容。
+
+#### webpack常见的事件钩子
+ - after-plugins
+    - 设置完一组插件的初始化之后
+ - run
+    - 在读取记录之前
+ - compile
+    - 在创建新的compilation之前
+ - emit
+    - 在生成资源、并输出到目录之前
+ - after-emit
+    - 在生成资源、并输出到目录之后
+ - done
+    - 完成编译
