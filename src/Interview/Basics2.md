@@ -4,6 +4,8 @@
 - 浏览器部分
     - [浏览器内核](#浏览器浏览器内核)
     - [浏览器缓存](#浏览器浏览器缓存)
+    - [输入URL，会发生什么？（完整的http过程）](#浏览器输入URL，会发生什么？（完整的http过程）)
+    
 - Web部分
     - [XSS、CSRF、SQL注入](#WEBXSS、CSRF、SQL注入)
     - [Web性能优化](#WEBWeb性能优化)
@@ -11,13 +13,18 @@
     - [渐进增强、优雅降级](#WEB渐进增强、优雅降级)
     - [正向代理、反向代理](#WEB正向代理、反向代理)
     - [跨域资源共享（CORS）](#WEB跨域资源共享（CORS）)
-    - [JSONP和CORS的区别](#WEBJSONP和CORS的区别)
+    - [解决跨域的问题](#WEB解决跨域的问题)
     - [与后台保持不断的通信的方法](#WEB与后台保持不断的通信的方法)
     - [cookie和session的区别](#WEBcookie和session的区别)
     - [HTTP](#WEBHTTP)
     - [移动端H5适配](#WEB移动端H5适配)
     - [webpack](#WEBwebpack)
     - [gulp与webpack的区别](#WEBgulp与webpack的区别)
+    - [为什么form表单可以跨域](#WEB为什么form表单可以跨域)
+    - [HTTP和HTTPS的区别](#WEBHTTP和HTTPS的区别)
+    - [三次握手、四次挥手](#WEB三次握手、四次挥手)
+    - [HTTP2.0](#WEBHTTP2.0)
+    -
 - Node.js部分
     - [异步式I/O和事件驱动](#Node.js异步式I/O和事件驱动)
     - [require的过程](#Node.jsrequire的过程)
@@ -43,6 +50,27 @@
     - 若不是，再看`Last-Modified`、`ETag`检查是否命中 `协商缓存`
         - 若是，浏览器会响应新的Header信息给客户端（但不会返回资源内容），没有新修改的地方（304）
         - 若不是，响应全新的资源内容给客户端
+
+ ### [浏览器]输入URL，会发生什么？（完整的http过程）
+ 1、浏览器输入url
+
+ 2、浏览器检查`强缓存`（Expires、Cache-control）
+
+ 3、DNS解析url，获取主机ip
+
+ 4、组装HTTP报文
+
+ 5、发起TCP的3次握手
+
+ 6、TCP连接建立后，发送HTTP请求
+
+ 7、服务器接收并解析，检查`协商缓存`（ETag、Last-Modified）
+
+ 8、通过TCP返回响应报文
+
+ 9、浏览器缓存响应
+
+ 10、浏览器进行`解析HTML（构造DOM树）`、`下载资源`、`构造CSSOM树`、`执行JS脚本`
 
 ### [WEB]XSS、CSRF、SQL注入
 针对Web服务器的攻击，常见的有：`XSS（跨站脚本攻击）`、`CSRF（跨站请求伪造）`、`SQL注入`
@@ -194,7 +222,7 @@ dev: {
 
 
 ### [WEB]跨域资源共享（CORS）
- `CORS`是W3C标准，叫“跨域资源共享”。它允许`浏览器`向`跨源服务器`发出`XMLHttpRequest`请求，从而克服AJAX只能`同源使用`的限制。
+ `CORS`是W3C标准，叫“跨域资源共享”。
 
  需要`浏览器`+`服务端`同时支持（IE10+），主要是在服务端增加一个 **过滤拦截器**。
 
@@ -223,10 +251,10 @@ dev: {
  - 不在许可范围
     - 响应头信息**没有**`Access-Control-Allow-Origin`（能被`XMLHttpRequest`的`onerror`捕获）
 
-> 有关Cookie**（前提：源在许可范围内）**
+> 有关Cookie（前提：源在许可范围内）
 >    - 响应头信息会有`Access-Control-Allow-Credentials`（`true`：请求可以带Cookie；`false`：相反）
 >    - 响应头信息的`Access-Control-Allow-Origin`不能设为`*`，必须指定明确
->    - 浏览器要设置`xhr.withCredentials = true`才可以发Cookie，且只有用`服务器域名`设置的Cookie才会上传（其他域名的Cookie不会上传）
+>    - 浏览器也要设置`xhr.withCredentials = true`才可以发Cookie，且只有用`服务器域名`设置的Cookie才会上传（其他域名的Cookie不会上传）
 
 #### 非简单请求
 `非简单请求`是指请求方法：`PUT`、`DELETE` 或者 Content-Type：`application/json`的请求，它会先发送一个`预检请求`（`OPTIONS`）。
@@ -252,9 +280,17 @@ dev: {
   - 对于请求头部，会有一个`Origin`字段
   - 对于响应头部，也会有`Access-Control-Allow-Origin`
   
-### [WEB]JSONP和CORS的区别
+### [WEB]解决跨域的问题
+解决跨域：
+ - JSONP
+ - CORS
+ - window.postMessage
+ - window.name
+ - Nginx
+
+#### JSONP
  `JSONP`的特点：
-  - 只支持`GET`
+  - 只支持`GET`，不支持`POST`（相当于下载一个js文件，相当于浏览器输入一个url一样）
   - 服务端返回的数据不能是标准的json格式，而是通过callback包裹（需要客户端和服务端定制开发）
   - 安全问题
   - 要确定jsonp请求是否失败并不容易
@@ -317,13 +353,84 @@ myHandler({
   - 支持所有请求类型
   - 服务端只需将处理后的数据直接返回，不需特殊处理
 
+#### CORS
+见上面一个知识点
 
+#### window.postMessage
+```js
+// 子iframe
+window.parent.postMessage('fullScreen', *)
+
+// 父窗口
+window.onmessage('fullScreen', () => { ... })
+
+```
+
+#### window.name（搭配iframe）
+因为在一个窗口的生命周期内，载入的所有页面共享一个window.name。
+```html
+<body>
+    <iframe id="iframe" src="http://www.baidu.com/data.html" onload="getData()" />
+</body>
+
+<script>
+    function getData() {
+        var iframe = document.getElementById('iframe')
+        iframe.onload = function() {
+            var data = iframe.contentWindow.name
+            // 获取data.html里的数据
+        }
+        iframe.src = "b.html" // 转为和a同源的b.html
+    }
+</script>
+```
+
+#### Nginx
+利用Nginx通过反向代理来转发请求，来满足浏览器的同源策略，实现跨域。
+
+例如：
+
+前端`http://localhost:8094`，想请求`http://localhost:1894/api/basic/login`这个接口
+
+1、配置Nginx.conf，里面的定位规则：
+```js
+server {
+    listen      8094;  #监听端口
+    server_name localhost;
+
+    location / {
+        root html; #文件根目录
+        index index.html index.htm; #默认起始页
+    }
+
+    #新增以下location定位规则
+    location /rest {
+        rewrite ^.+rest/?(.*)$ /$1 break; #只取标志位$1，作为重定向地址
+        proxy_pass http://localhost:1894; #表明该请求要代理到的主机
+    }
+}
+
+ # server：代表启动的一个服务
+ # location：代表定位规则
+    # rewrite：结合正则表达式、标志位，对url进行重写、重定向（语法：`rewrite regex replacement [flag]`）
+        # 例如：`rewrite ^.+rest/?(.*)$ /$1 break`，
+```
+
+2、前端访问时，url填写`/rest/api/basic/login`即可。
 
 
 ### [WEB]与后台保持不断的通信的方法
  - 不断轮询
  - 长时间连接
  - WebSocket
+
+#### WebSocket
+WebSocket是一种协议，和HTTP协议一样位于应用层，都是TCP/IP协议的子集。
+ - HTTP是单向通信协议（只有客户端发起HTTP请求，服务端才会返回数据）
+ - WebSocket是双向通信协议（建立连接后，客户端、服务器都可以主动向对方发送或接受数据）
+它建立前需要借助HTTP协议，建立连接后，持久连接的双向通信就和HTTP协议无关了。
+
+
 
 ### [WEB]cookie和session的区别
 `cookie`
@@ -411,6 +518,59 @@ myHandler({
 所以浏览器认为这是安全的。
 
 而 AJAX 是可以读取响应内容的，因此浏览器不能允许你这样做。
+
+ ### [WEB]HTTP和HTTPS的区别
+ `http`是无状态的超文本传输协议，是明文传输的；**它是基于TCP/IP的**。
+  - 标准端口：80
+  - 不需要ca证书
+
+ `https`是由SSL + http协议构建的加密传输协议
+  - 标准端口：443
+  - 需要ca证书
+  - 增加cpu、带宽消耗
+  - 首次连接比较慢
+
+ ### [WEB]三次握手、四次挥手
+ 三次握手：
+  - `客户端`发送`SYN=1`给`服务端`
+  - `服务端`收到`SYN=1`后，会给`客户端`发送`SYN=1、ACK=1`
+  - `客户端`收到`SYN=1、ACK=1`后，会给`服务端`发送`ACK=1`
+
+![alt](./img/img-38.png)
+
+ 四次挥手：
+  - `客户端`会发送`FIN=1`给`服务端`
+  - `服务端`收到`FIN=1`后，会发送`ACK=1`给`客户端`
+  - `服务端`再发送`FIN=1`给`客户端`
+  - `客户端`收到`FIN=1`，发送`ACK=1`给`服务端`
+
+ ### [WEB]HTTP2.0
+ HTTP2.0大幅度提高了web性能。
+
+ `HTTP2.0`和`HTTP1.1`的区别：
+  - 多路复用
+  - 二进制分帧
+  - 报文头压缩
+  - 服务器推送
+
+ ### [WEB]HTTP1.0如何复用TCP连接
+ HTTP1.1默认连接是`持久连接`，客户端会在持久连接上连续发起请求。
+
+ HTTP1.1以前的版本默认都是`非持久连接`，需要在HTTP请求头指定`connection: Keep`
+
+ ### [WEB]长连接
+ - 短轮询：客户端周期性地向服务器发起HTTP请求（一个request对应一个response）
+ - 长轮询：客户端发起HTTP请求，服务器并不是每次都立即响应（等待数据更新后才响应，否则保持该连接直到超时）（一个request对应一个response）
+ - HTTP流：客户端发起请求，服务器保持连接状态。
+
+ ### [WEB]DNS
+ 顺序：
+  - 本地host文件
+  - 本地DNS解析器
+  - 本地DNS服务器
+  - 根域名服务器
+  - 顶级域名服务器
+  - 权威域名服务器
 
 ### [Node.js]异步式I/O和事件驱动
 Node.js 采用了`单线程`、`异步式I/O`、`事件驱动`的程序设计模型，实现了：`包和模块`、`文件系统`、`网络通信`、`操作系统API`等功能

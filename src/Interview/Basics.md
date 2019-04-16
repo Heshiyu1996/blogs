@@ -878,12 +878,69 @@ asyncFunc1(opt, (...args1) => {
  - async/await
 
 ### [JS]设计模式
-#### 发布-订阅模式
-发布-订阅模式（也称：观察者模式），它定义了**对象间的一对多依赖**关系（即，当一个对象的状态发生改变时，所有依赖于它的对象都将得到通知）
+#### 观察者模式
+观察者模式，是一个对象，维护一个依赖列表。当任何状态发生改变时，去通知每一个观察者。
 
-优点：
- - 时间上（广泛应用于异步编程，是一种代替传递回调函数的方案）
- - 对象间（不需强耦合再一起。虽然不清楚彼此细节，但不影响它们之间通信）
+![alt](./img/img-36.png)
+
+#### 发布-订阅模式
+和观察者模式非常相似，但是最大的区别在于：
+> 在发布-订阅模式，发布者（publishers）不会直接将消息发送给特定的订阅者
+
+`发布者和订阅者`之间不知道对方的存在，需要通过`消息代理`来通信
+
+|观察者模式|发布订阅模式|
+|--|--|
+|观察者、被观察者可以直接联系|无直接依赖关系，要通过消息代理（例微信公众号平台）|
+|紧耦合|松耦合|
+|同步|异步|
+|当组件之间依赖关系简单时|当组件之间依赖关系复杂时|
+
+![alt](./img/img-37.png)
+
+#### 中介者模式
+现实中的中介者：博彩公司
+ - 如果没有博彩公司，上千万的人一起计算赔率、输赢是非常困难
+ - 有了博彩公司作为中介者对象，每个人只需跟博彩公司发生关联，由博彩公司来根据每个人的投注情况计算好赔率（彩民赢了，找博彩公司拿；输了就把钱交给博彩公司）
+
+ #### 一个购买商品的例子：
+ ![alt](./img/img-35.png)
+ 
+ 如图，如果没有使用任何设计模式，这里应该是在`select`、`input`的各自onchange事件里，去获取`当前用户所选的条件下`的库存情况。
+
+ 如果使用了中介者模式，只需增加一个`中介者对象`
+ ```js
+ var goods = {
+     'red': 3
+ }
+
+ var mediator = (function() {
+    var colorSelect = document.getElementById('colorSelect'),
+        numberInput = document.getElementById('numberInput')
+        nextBtn = document.getElementById('nextBtn')
+    
+    return {
+        changed (obj) {
+            var color = colorSelect.value,
+                number = numberInput.value,
+                stock = good[color]
+                
+                if (obj === colorSelect) { // 如果选择的是颜色下拉框
+                    // ...
+                } else if (obj === numberInput) { // 如果选择的是数量输入框
+                    // ...
+                }
+
+                nextBtn.innerHTML = '购买'
+        }
+    }
+ })()
+ ```
+ 可见，所有的对象会和`中介者对象`通信。当这些对象发生改变时，通知`中介者对象`，同时告诉`中介者对象`自己的身份，以便中介者辨别是谁发生了改变，剩下的事情就交给了中介者来完成。
+
+ **好处**：降低各个对象之间的耦合度
+
+ **缺点**：中介者对象自身往往难以维护
 
 ### [JS]原型、构造函数、对象和原型链
  - `原型`（prototype）包含着：`某一种特定类型`（如Person类型）中**所有实例共享的属性**和**方法**。
@@ -1549,18 +1606,19 @@ Generator是一个异步操作的容器，它的自动执行需要一种机制�
 
  #### 闭包里this的作用域
 
-### [JS]Ajax
+ ### [js]Ajax
  原理：
   - 实例化一个`XMLHttpRequest`对象
   - 设置回调函数`onreadystatechange`
   - 使用`open`、`setRequestHeader`、`send`结合发送请求
 
   其中`xhr.readyState`有如下5种状态：
-   - 0：请求还未初始化
-   - 1：连接已建立
-   - 2：请求已接收
-   - 3：请求处理中
-   - 4：请求已完成，且响应已收到
+   - 0：XMLHttpRequest对象已创建，但还没调用open
+   - 1：正在向服务端发送请求
+   - 2：已经接收响应的内容
+   - 3：正在解析响应的内容
+     - 根据响应的MIME类型，把数据转换成能通过responseBody、responseText或responseXML属性存取的格式
+   - 4：解析完成，可以在客户端调用了
 
  ```js
     var url = 'http://www.api.com/checkLogin'
@@ -1987,47 +2045,3 @@ Math.floor(Math.random() * 6) // [0, 6)之间的整数，向下取整
 // 95-99
 Math.floor(Math.random() * 5 + 95) // [95, 100)之间的整数，向下取整
 ```
-
-### [JS]中介者模式
-现实中的中介者：博彩公司
- - 如果没有博彩公司，上千万的人一起计算赔率、输赢是非常困难
- - 有了博彩公司作为中介者对象，每个人只需跟博彩公司发生关联，由博彩公司来根据每个人的投注情况计算好赔率（彩民赢了，找博彩公司拿；输了就把钱交给博彩公司）
-
- #### 一个购买商品的例子：
- ![alt](./img/img-35.png)
- 
- 如图，如果没有使用任何设计模式，这里应该是在`select`、`input`的各自onchange事件里，去获取`当前用户所选的条件下`的库存情况。
-
- 如果使用了中介者模式，只需增加一个`中介者对象`
- ```js
- var goods = {
-     'red': 3
- }
-
- var mediator = (function() {
-    var colorSelect = document.getElementById('colorSelect'),
-        numberInput = document.getElementById('numberInput')
-        nextBtn = document.getElementById('nextBtn')
-    
-    return {
-        changed (obj) {
-            var color = colorSelect.value,
-                number = numberInput.value,
-                stock = good[color]
-                
-                if (obj === colorSelect) { // 如果选择的是颜色下拉框
-                    // ...
-                } else if (obj === numberInput) { // 如果选择的是数量输入框
-                    // ...
-                }
-
-                nextBtn.innerHTML = '购买'
-        }
-    }
- })()
- ```
- 可见，所有的对象会和`中介者对象`通信。当这些对象发生改变时，通知`中介者对象`，同时告诉`中介者对象`自己的身份，以便中介者辨别是谁发生了改变，剩下的事情就交给了中介者来完成。
-
- **好处**：使得各个对象之间的耦合度降低
-
- **缺点**：中介者对象自身往往难以维护
