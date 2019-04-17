@@ -1,6 +1,8 @@
 # 前端早读课
 > 一些优秀文章的收录
 
+* [练手](https://mp.weixin.qq.com/s?__biz=MzA5MzY4NTQwMA==&mid=2651010206&idx=4&sn=4e732c3bebb32caa3a50f8be6de088fd&chksm=8bad8769bcda0e7f1e4c9a863b2151f775c184ba43eea3c390b70f9d659896122909a27c1942&scene=0&xtrack=1#rd)
+
 * [js必须知道的33个概念](https://github.com/leonardomso/33-js-concepts)
 
 * [Vue.js 技术揭秘](https://ustbhuangyi.github.io/vue-analysis/)

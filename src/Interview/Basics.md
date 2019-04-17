@@ -2044,3 +2044,39 @@ Math.floor(Math.random() * 6) // [0, 6)之间的整数，向下取整
 // 95-99
 Math.floor(Math.random() * 5 + 95) // [95, 100)之间的整数，向下取整
 ```
+
+### [JS]柯里化
+柯里化是高阶函数的特殊用法。
+
+ - 先传递一部分参数给指定函数
+ - 这个函数会返回另外一个函数
+ - 由被返回的函数去处理剩下的参数
+
+ 好处：
+ - 参数复用
+ - 提前确定走哪个方法
+ - 延迟运行
+
+ ```js
+ add(1)(2)(3) = 6
+
+ function add() {
+    // 定义一个数组专门存储所有参数
+    var _args = Array.prototype.slice.call(arguments)
+
+    // 在内部声明一个函数，利用闭包的特性来保存
+    var _adder = function() {
+        _args.push(...argument)
+        return _adder
+    }
+
+    // 利用toString隐式转换的特性，当最后执行时隐式转换，并计算最终的值返回
+    _adder.toString = function() {
+        return _args.reduce(function(a, b) {
+            return a + b
+        })
+    }
+
+    return _adder
+ }
+ ```
