@@ -1712,7 +1712,6 @@ arr.constructor === Array // true
  #### 数据属性
  `数据属性`具有4个描述其轻微的特征：
 
-
  [configurable、enumerable和writable](http://www.softwhy.com/article-9359-1.html)
 
 ### [JS]扩展运算符（...）、Object.assign()

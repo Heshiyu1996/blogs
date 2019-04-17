@@ -465,7 +465,7 @@ new Vue({
 
  解决方式：
   - 原生解决：
-    - 利用`touchstart`、`touchend`记录`时间`、`手指位置`。若期间手指处于同一位置、且时间很短、且期间未触发`touchmove`事件，则可触发`click`
+    - 利用`touchstart`、`touchend`记录`时间`、`手指位置`。若期间手指处于同一位置、且时间很短、且期间未触发`touchmove`事件，则可触发`click`，并且阻止`touchend`的默认行为
   - 利用Zepto.js中的`tap`事件（`singleTap`点击事件）解决
     - 缺点：会发生`点透事件`
  
