@@ -988,6 +988,21 @@ asyncFunc1(opt, (...args1) => {
   - 不方便调试
     - 在某个`.then`设置断点，不能直接进到下一个`.then`方法
 
+对于Promise的异常捕获：
+
+`Promise.prototype.catch()`是`.then(null, function(err) { ... })`的别名
+```js
+p.then(data => console.log(data))
+.catch(err => console.log(err))
+
+// 等价于
+p.then(data => console.log()})
+.then(null, err => console.log(err))
+```
+可知，`catch()`和`then()第二个参数的区别`：
+ - catch()可以捕获前面所有的异常（`包括Promise里的reject、then里的`）
+ - 第二个参数只能捕获`Promise里的reject、前一个then`的错误
+
  #### Async、Await
 `async`是一个函数修饰符，表示函数里有异步操作
  > `async`函数会返回一个`Promise`对象，可以使用`then`添加回调函数；
@@ -1066,6 +1081,11 @@ myFunc('heshiyu') // 'hehsiyu'
  特点：
    - `call`：只能一个参数一个参数传
    - `apply`：只支持传一个数组（`arguments`）
+
+```js
+// 他们的用法
+
+```
 
  #### 实现call
  ```js
@@ -2091,7 +2111,7 @@ Math.floor(Math.random() * 5 + 95) // [95, 100)之间的整数，向下取整
 
 ### [JS]ES6新数据结构Set、Map
 #### Set
-Set类似于数组，特点是里面的值是唯一的（即不会出现重复）、且遍历顺序就是插入顺序。
+Set类似于**数组**，特点是里面的`值是唯一`的（即不会出现重复）、且`遍历顺序就是插入顺序`。
 ```js
 // 新建一个Set结构
 var set = new Set(['贺世宇', '作者'])
@@ -2128,7 +2148,7 @@ var crr = [...new Set(arr)]
 
 ```
 #### Map
-Map类似于对象，也是键值对集合。特点是里面的键（key）不仅限于字符串、且遍历顺序就是插入顺序。**（可保证键值唯一）**
+Map类似于**对象**，也是键值对集合。特点是里面的`键（key）不仅限于字符串`、且`遍历顺序就是插入顺序`。**（可保证键值唯一）**
 
 ![alt](./img/img-40.png)
 
@@ -2158,4 +2178,12 @@ var map = new Map([
     - values()
     - entries()
     - forEach() // 接受第二个参数，用于绑定this
-    
+
+### [JS]==和===的区别
+`==`（相等）和`===`（恒等）的区别，前者`会进行类型转换（1）`再对`值进行比较（2）`，后者`不会进行类型转换（1）`，同时也对`值进行比较（2）`。
+
+### [JS]JS的继承
+ - 原型链
+    - 原理：1、先创建子类的实例对象this；2、再将父类的方法添加到this上
+ - Class的extends
+    - 原理：1、先创建父类的实例对象（调用super）；2、通过子类的构造函数修改this
