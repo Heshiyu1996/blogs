@@ -810,6 +810,28 @@ inner() // 'heshiyu'
 当程序执行完`var inner = outer()`，其实`outer`的执行环境并没有销毁。因为它里面的**变量a仍然被inner函数的作用域链所引用**，当程序执行完`inner()`，`inner`和`outer`的执行环境才被销毁。
 
 ### [JS]事件委托
+事件委托（也称事件代理），指的是：指定一个事件处理程序，来管理某一类型的所有事件。
+
+好处：
+ - 性能的角度，减少DOM的交互次数
+ - 动态新增子元素时，无需额外绑定事件
+
+坏处：
+ - 要对“不需要代理的节点”进行过滤
+```js
+window.onload = function(){
+　　var oUl = document.getElementById("ul1")
+　　oUl.onclick = function(ev){
+        //兼容IE
+        var ev = ev || window.event
+        var target = ev.target || ev.srcElement
+        if(target.nodeName.toLowerCase() == 'li'){
+            alert(123)
+            alert(target.innerHTML)
+　　　　}
+　　}
+}
+```
 
 #### video里的子标签的track
 在不同的手机系统、不同的浏览器都不兼容
@@ -832,50 +854,7 @@ asyncFunc1(opt, (...args1) => {
 ```
 可以看到左侧明显出现了一个**三角形缩进**。
 
-解决回调地狱的`5种方法`（JavaScript的异步编程）：
- - function拆解
-    - 优点：代码清晰
-    - 缺点：缺少通用性
-    - ```js
-        function func4(obj) {
-            asyncFunc4(opt, (...args4) => { // some operation })
-        }
-        function func3(obj) {
-            asyncFunc3(opt, (...args3) => func4())
-        }
-        function func2(obj) {
-            asyncFunc2(opt, (...args2) => func3())
-        }
-        function func1(obj) {
-            asyncFunc1(opt, (...args1) => func2())
-        }
-
-        func1(opt)
-      ```
- - 事件发布/订阅模式
-    - ```js
-        const events = require('events')
-        const eventEmitter = new events.EventEmitter()
-
-        eventEmitter.on('func3', (args3) => {
-            asyncFunc2(opt, (args3) => {
-                console.log(args3)
-            })
-        })
-
-        eventEmitter.on('func2', (args2) => {
-            asyncFunc2(opt, (args2) => {
-                eventEmitter('func3', args2)
-            })
-        })
-
-        asyncFunc1(opt, (...args1) => {
-            eventEmitter.emit('func2', 'hello')
-        })
-      ```
- - Promise
- - Generator
- - async/await
+（可见：[JS]异步解决方案的发展历程）
 
 ### [JS]设计模式
 #### 观察者模式
@@ -1963,8 +1942,8 @@ function func1(args) {
 ```js
 function spawn(genF) {
     return new Promise((resolve, reject) => {
-        var gen = genF
-        step(nextF) {
+        var gen = genF()
+        function step(nextF) {
             try {
                 var next = nextF()
             } catch(e) {
@@ -2080,3 +2059,103 @@ Math.floor(Math.random() * 5 + 95) // [95, 100)之间的整数，向下取整
     return _adder
  }
  ```
+
+### [JS]this的各种情况
+ - 作为函数调用，this指向window（非严格模式）；this指向undefined（严格模式）
+ - 作为某对象方向调用，this指向该对象。
+ - 使用call、apply、bind可以改变this指向
+ - 在构造函数里调用，this指向新创建的对象
+ - 箭头函数没有自己的this，都是最外层函数的this，它指向箭头函数定义时外层函数所在的对象
+
+### [JS]异步解决方案的发展历程
+ - 回调函数
+    - 缺点：回调地狱、不能捕获错误
+
+ - 事件监听
+    - 缺点：整个流程变成事件驱动，思路不太清晰
+
+ - 发布订阅
+    - 优点：多了一个“消息中心”
+
+ - Promise
+    - 优点：解决了回调地狱
+    - 缺点：1、无法取消Promise；2、错误需要通过回调函数来捕获
+
+ - Generator
+    - 优点：控制函数的执行
+    - 缺点：要编写自动执行器
+ - Async/Await
+    - 优点：1、Generator+自动执行器；2、更像同步写法
+ - WebWorker
+    - 优点：开启了一个“新线程”
+
+### [JS]ES6新数据结构Set、Map
+#### Set
+Set类似于数组，特点是里面的值是唯一的（即不会出现重复）、且遍历顺序就是插入顺序。
+```js
+// 新建一个Set结构
+var set = new Set(['贺世宇', '作者'])
+```
+
+它有两个实例属性：
+ - constructor
+ - size
+
+它有4个操作方法、4个遍历方法
+ - 操作：
+    - add(value)
+    - delete(value)
+    - has(value)
+    - clear()
+
+ - 遍历：
+    - keys() //由于Set没有键值，那么键名===键值
+    - values()
+    - entries()
+    - forEach() // 接受第二个参数，用于绑定this
+
+用处：`去除数组中重复成员`：
+```js
+var arr = [1, 3, 3, 5]
+
+// 方法一：
+var s = new Set()
+arr.forEach(x => s.add(x))
+var brr = Array.from(s)
+
+// 方法二：
+var crr = [...new Set(arr)]
+
+```
+#### Map
+Map类似于对象，也是键值对集合。特点是里面的键（key）不仅限于字符串、且遍历顺序就是插入顺序。**（可保证键值唯一）**
+
+![alt](./img/img-40.png)
+
+```js
+// 新建一个Map结构
+var map = new Map([
+    ['name', '贺世宇'],
+    ['title', '作者']
+])
+
+// 
+```
+
+它有实例属性：
+ - size
+
+它有5个操作方法、4个遍历方法：
+ - 操作
+    - set(key, value) // 返回最新Map，所以可以链式调用
+    - get(key)
+    - has(key)
+    - delete(key)
+    - clear()
+
+ - 遍历
+    - keys()
+    - values()
+    - entries()
+    - forEach() // 接受第二个参数，用于绑定this
+    
