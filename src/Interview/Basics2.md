@@ -630,6 +630,26 @@ emitter.emit('someEvent', 'name')
  - 需要维护`WebSocket`连接
  - 消息推送比较复杂
 
+属性：
+```js
+Socket.readyState // 0未建立；1已建立；2正在关闭；3已关闭
+Socket.bufferedAmount
+```
+
+方法：
+```js
+Socket.send() // 向服务端发送数据
+Socket.close() // 关闭连接
+```
+
+事件：
+```js
+Socket.onopen // 连接建立时触发
+Socket.onmessage //接收到服务消息时触发
+Socket.onerror // 连接错误时触发
+Socket.onclose // 连接关闭时触发
+```
+
 ### [Node.js]require的过程
 `require`命令的基本功能是，读取并执行一个指定的文件，然后返回 **该模块** 的`exports`对象。
 
@@ -704,6 +724,14 @@ emitter.emit('someEvent', 'name')
   ```
  #### 时间复杂度的计算
  `时间复杂度 = while的循环次数`
+ 
+ - 算法的基本操作执行次数是问题规模n的某一个函数，记作T(n)；
+ - 存在一个辅助函数f(n)，使得T(n)/f(n)当n趋向于无穷大时，他们的值是个不为零的常数，那f(n)就是T(n)的同数量级函数
+ - 这个算法的时间复杂度是O(f(n))
+
+ > 同数量级函数有：1、log2n、n、nlog2n、n平方、n三次方、2的n次方、n的阶乘
+
+ #### 例子：
  假设共n个数，那下一轮是n/2，再下一轮是n/4（即n/2²）...最后是n/(2的k次方)。其中`k`是`循环的次数`
  故，要计算：n/(2的k次方) >= 1
  

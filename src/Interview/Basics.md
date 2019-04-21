@@ -23,6 +23,8 @@
     - [z-index和position的关系](#CSSz-index和position的关系)
     - [纯CSS画三角形](#CSS纯CSS画三角形)
     - [【布局题】利用margin/padding实现宽高自适应](#CSS【布局题】利用margin/padding实现宽高自适应)
+    - [三列布局的实现](#CSS三列布局的实现)
+    
 - JavaScript部分
     - [闭包](#JS闭包)
     - [事件委托](#JS事件委托)
@@ -770,6 +772,87 @@ html {
  ```
  ![alt](./img/img-22.png)
 
+### [CSS]三列布局的实现
+三列布局：三个元素：左、中、右、，其中左、右固定宽度为200px，中间宽度自适应。
+ ```html
+    <div class="left"></div>
+    <div class="center"></div>
+    <div class="right"></div>
+ ```
+ - 1、flexBox（有父容器）
+ ```css
+    .contain {
+        display: flex;
+    }
+    .left,
+    .right {
+        width: 200px;
+    }
+    .center {
+        flex: 1;
+    }
+ ```
+ - 2、浮动定位
+ ```css
+    .left,.right {
+        width: 200px;
+        height: 200px;
+    }
+    .left {
+        float: left;
+    }
+    .right {
+        float: right;
+    }
+    .center {
+        height: 200px;
+    }
+ ```
+ - 3、绝对定位
+ ```css
+    .left,
+    .right {
+        position: absolute;
+        width: 200px;
+        height: 200px;
+    }
+    .left {
+        left: 0;
+    }
+    .right {
+        right: 0;
+    }
+    .center {
+        position: absolute;
+        left: 300px;
+        right: 300px;
+        height: 200px;
+    }
+ ```
+ - 4、表格布局（有父容器）
+ ```css
+    .contain {
+        display: table;
+        width: 100%; /* 注意，这里因为是table，所以width是100% */
+        height: 200px;
+    }
+    .left,
+    .right {
+        display: table-cell;
+        width: 200px;
+    }
+    .center {
+        display: table-cell;
+    }
+ ```
+ - 5、网格布局（有父容器）
+ ```css
+    .contain {
+        display: grid;
+        grid-template-rows: 200px;
+        grid-template-columns: 300px auto 300px;
+    }
+ ```
 
 
 
@@ -922,8 +1005,7 @@ asyncFunc1(opt, (...args1) => {
  **缺点**：中介者对象自身往往难以维护
 
 ### [JS]原型、构造函数、对象和原型链
- - `原型`（prototype）包含着：`某一种特定类型`（如Person类型）中**所有实例共享的属性**和**方法**。
-每个`原型`都有一个`.constructor`属性，它指向的是构造函数本身（constructor）
+ - `原型`（prototype）包含着：`某一种特定类型`（如Person类型）中**所有实例共享的属性**和**方法**。每个`原型`都有一个`.constructor`属性，它指向的是构造函数本身（constructor）
 
  - `构造函数`都有一个`.prototype`属性，它指向的是该构造函数的原型（prototype）
 
@@ -2181,10 +2263,19 @@ var map = new Map([
     - clear()
 
  - 遍历
-    - keys()
-    - values()
-    - entries()
-    - forEach() // 接受第二个参数，用于绑定this
+    - keys() // 注意，无参数
+    - values() // 注意，无参数
+    - entries() // 注意，无参数
+    - forEach() // 第一个参数是迭代函数（val, key, map），接受第二个参数，用于绑定this
+
+和**普通对象**的区别：
+ - key的类型：
+    - 
+| | Map | 普通对象 |
+|--|--|--|
+| key的类型 | 任意类型 | 只能是字符串 |
+| keys() | 变量.keys() | Object.keys(obj) |
+| 遍历顺序 | 插入顺序 | 对象散列结构，无顺序
 
 ### [JS]==和===的区别
 `==`（相等）和`===`（恒等）的区别，前者`会进行类型转换（1）`再对`值进行比较（2）`，后者`不会进行类型转换（1）`，同时也对`值进行比较（2）`。
@@ -2194,3 +2285,29 @@ var map = new Map([
     - 原理：1、先创建子类的实例对象this；2、再将父类的方法添加到this上
  - Class的extends
     - 原理：1、先创建父类的实例对象（调用super）；2、通过子类的构造函数修改this
+
+组合继承：
+
+组合`原型继承、借用构造函数`，使得实例化的对象具有各自的实例属性（方法），也有公用的原型属性（方法）。
+
+```js
+function Person() {
+    this.skin = true
+}
+function Student(name) {
+    this.name = name
+    Person.call(this)
+}
+
+Student.prototype = new Person() // 此时Student.prototype被重写了，变成Student.prototype === Person
+Student.prototype.constructor = Student // 将原型对象上的constructor重新指向Student构造函数
+
+var stu = new Student('heshiyu')
+```
+
+### [JS]垃圾回收机制
+JS垃圾回收机制：
+ - 标记清除
+    -  垃圾收集器在运行时会给存储在内存中的所有变量加上标记。然后，会去掉环境中的变量、被环境中变量引用的标记。此后，如果还有标记的，就视为准备删除的变量。最后，垃圾收集器会销毁这些准备删除的值，并回收他们的内存。
+ - 引用计算
+    -  引用计数会跟踪每个值被引用的次数。当声明一个变量，并将一个引用类型赋值给变量时，这个值的引用次数为1。相反，如果取消引用换成别的值了，这个值就-1。垃圾收集器下次运行时，会释放那些引用次数为0的值所占的内存。
