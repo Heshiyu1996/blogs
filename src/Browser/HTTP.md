@@ -43,11 +43,11 @@
  - `Connection`：针对该连接所预期的选项
  - `Content-Encoding`：服务端压缩资源的方式
  - `ETag`：浏览器缓存机制
- - `Expires`：浏览器缓存机制
+ - `Expires`：浏览器缓存机制（Cookie的生存周期，若为0或负值，则关闭页面时清除）
  - `Last-Modified`：浏览器缓存机制
  - `Location`：重定向
  - `Server`：服务器的名称（nginx）
- - `Set-Cookie`：设置HTTP cookie
+ - `Set-Cookie`：用来在浏览器种cookie（一旦被种下，当浏览器访问url就会自动带上这个cookie）
  - `Vary`：进行一些缓存判断（**在执行 浏览器缓存机制 时会读取**）
 
 ![alt](./img/http-3.png)

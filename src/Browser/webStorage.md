@@ -66,7 +66,7 @@ localStorage.clear()
 
 #### 用法
 ```js
-// 设置cookie（expires是有效期）
+// 设置cookie（请求头中的Expires可以设置有效期，0或者负数表示：关闭页面马上清除Cookie）
 document.cookie = 'name=' + myName + ';age=' + myAge + 'expires=' + exp.toGTMString()
 
 // 读取cookie

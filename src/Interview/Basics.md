@@ -54,7 +54,7 @@
     - [target、currentTarget](#JStarget、currentTarget)
     - [检测变量类型](#JS检测变量类型)
     - [script标签的加载规则](#JSscript标签的加载规则)
-    - [通过defineProperty给对象添加属性](#JS通过defineProperty给对象添加属性)
+    - [通过Object.defineProperty给对象添加属性](#JS通过Object.defineProperty给对象添加属性)
     - [扩展运算符（...）、Object.assign()](#JS扩展运算符（...）、Object.assign())
     - [模块规范一：AMD和CMD](#JS模块规范一：AMD和CMD)
     - [模块规范二：ES6模块和CommonJS模块](#JS模块规范二：ES6模块和CommonJS模块)
@@ -1790,15 +1790,66 @@ arr.constructor === Array // true
 
 另外，`defer`会按照它在页面中出现的顺序加载，`async`不能保证按顺序。
 
-### [JS]通过defineProperty给对象添加属性
+### [JS]通过Object.defineProperty给对象添加属性
  对象里的属性并不只有`属性名`和`属性值`那么简单。
 
- JavaScript属性大致可以分为两类：
-  - 数据属性
-  - 访问器属性
-  
- #### 数据属性
- `数据属性`具有4个描述其轻微的特征：
+`Object.defineProperty(obj, prop, descriptor)`
+
+其中，第三个参数`descriptor`（描述符）可以分为：
+  - 数据描述符
+  - 访问器描述符
+
+ | | configurable | enumerable | value | writable | get | set |
+ | - | - | - | - | - | - | - |
+ | 数据描述符 | √ | √ | √ | √ | × | × |
+ | 存取描述符 | √ | √ | × | × | √ | √ |
+
+  - 如果一个描述符不具有`value、writable、get、set`任何一个关键字，那就默认是`数据描述符`。
+  - 当描述符省略了字段，若为布尔值（默认false）；value、get、set（默认为undefined）
+  - 使用`直接赋值`的方式创建对象的属性，enumerable为true
+
+#### writable
+writable属性若为fasle，则不能修改对象的这个属性。（不会报错，但值也不会变）
+```js
+var o = {} // Creates a new object
+
+Object.defineProperty(o, 'a', {
+  value: 37,
+  writable: false
+})
+
+o.a = 25 // 不会报错，但值也不会变
+```
+
+#### enumerable
+enumerable属性若为false,则不能再`for...in`或`Object.keys()`中被枚举。
+```js
+var o = {}
+Object.defineProperty(o, "a", { value : 1, enumerable:true })
+Object.defineProperty(o, "b", { value : 2, enumerable:false })
+Object.defineProperty(o, "c", { value : 3 }) // 省略了指enumerable，默认false
+o.d = 4 // 如果使用直接赋值的方式创建对象的属性，则这个属性的enumerable为true
+
+for (var i in o) {
+    console.log(i)
+}
+// 'a' 'b'
+```
+
+### configurable
+configurable属性若为false，则表示：1、该对象的这个属性不能被删除；2、除了`value`、`wratable`以外的其他特性能否被修改。
+```js
+var o = {}
+Object.defineProperty(o, 'a', {
+    get() {
+        return 1
+    },
+    configurable: false
+})
+delete o.a // 返回false,删除不成功
+```
+
+ `数据描述符`具有4个描述其行为的特征：
 
  [configurable、enumerable和writable](http://www.softwhy.com/article-9359-1.html)
 

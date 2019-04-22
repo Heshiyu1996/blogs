@@ -1,5 +1,8 @@
 # 前端早读课
 > 一些优秀文章的收录
+* [Vue源码阅读 - 依赖收集原理](https://juejin.im/post/5b40c8495188251af3632dfa)
+
+* [深入解析Vue依赖收集原理](https://www.ruphi.cn/archives/336/#anchor3)
 
 * [练手](https://mp.weixin.qq.com/s?__biz=MzA5MzY4NTQwMA==&mid=2651010206&idx=4&sn=4e732c3bebb32caa3a50f8be6de088fd&chksm=8bad8769bcda0e7f1e4c9a863b2151f775c184ba43eea3c390b70f9d659896122909a27c1942&scene=0&xtrack=1#rd)
 
