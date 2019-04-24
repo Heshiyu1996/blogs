@@ -1,5 +1,7 @@
 # 前端早读课
 > 一些优秀文章的收录
+* [讓我們來談談 CSRF](https://blog.techbridge.cc/2017/02/25/csrf-introduction/)
+
 * [Vue源码阅读 - 依赖收集原理](https://juejin.im/post/5b40c8495188251af3632dfa)
 
 * [深入解析Vue依赖收集原理](https://www.ruphi.cn/archives/336/#anchor3)

@@ -66,6 +66,17 @@
     - [事件处理函数和默认行为的执行顺序](#JS事件处理函数和默认行为的执行顺序)
     - [for...in、Object.keys()、Object.getOwnPropertyNames()](#JSfor...in、Object.keys()、Object.getOwnPropertyNames())
     - [async/await](#JSasync/await)
+    - [[JS]计算随机数0-5、95-99](#JS[JS]计算随机数0-5、95-99)
+    - [柯里化](#JS柯里化)
+    - [this的各种情况](#JSthis的各种情况)
+    - [异步解决方案的发展历程](#JS异步解决方案的发展历程)
+    - [ES6新数据结构Set、Map](#JSES6新数据结构Set、Map)
+    - [==和===的区别](#JS==和===的区别)
+    - [异步解决方案的发展历程](#JS异步解决方案的发展历程)
+    - [JS的继承](#JSJS的继承)
+    - [垃圾回收机制](#JS垃圾回收机制)
+    - [toString()、valueOf()](#JStoString()、valueOf())
+    - [类数组对象、可遍历对象](#JS类数组对象、可遍历对象)
     
 
 ### [HTML]Web-Worker
@@ -2197,20 +2208,21 @@ Math.floor(Math.random() * 5 + 95) // [95, 100)之间的整数，向下取整
  - 延迟运行
 
  ```js
- add(1)(2)(3) = 6
+ add(1)(2)(3).valueOf() // 6
 
  function add() {
     // 定义一个数组专门存储所有参数
-    var _args = Array.prototype.slice.call(arguments)
+    // var _args = Array.prototype.slice.call(arguments)
+    var _args = [...arguments]
 
     // 在内部声明一个函数，利用闭包的特性来保存
     var _adder = function() {
-        _args.push(...argument)
+        _args.push(...arguments)
         return _adder
     }
 
     // 利用toString隐式转换的特性，当最后执行时隐式转换，并计算最终的值返回
-    _adder.toString = function() {
+    _adder.valueOf = function() {
         return _args.reduce(function(a, b) {
             return a + b
         })
@@ -2337,7 +2349,7 @@ var map = new Map([
  - Class的extends
     - 原理：1、先创建父类的实例对象（调用super）；2、通过子类的构造函数修改this
 
-组合继承：
+#### 组合继承：
 
 组合`原型继承、借用构造函数`，使得实例化的对象具有各自的实例属性（方法），也有公用的原型属性（方法）。
 
@@ -2362,3 +2374,62 @@ JS垃圾回收机制：
     -  垃圾收集器在运行时会给存储在内存中的所有变量加上标记。然后，会去掉环境中的变量、被环境中变量引用的标记。此后，如果还有标记的，就视为准备删除的变量。最后，垃圾收集器会销毁这些准备删除的值，并回收他们的内存。
  - 引用计算
     -  引用计数会跟踪每个值被引用的次数。当声明一个变量，并将一个引用类型赋值给变量时，这个值的引用次数为1。相反，如果取消引用换成别的值了，这个值就-1。垃圾收集器下次运行时，会释放那些引用次数为0的值所占的内存。
+
+### [JS]toString()、valueOf()
+所有对象（**undefined、null除外**）都继承了这两个转换方法：
+ - toString()：返回对象的字符串表示
+ - valueOf()：返回对象的字符串、数值或布尔值表示
+
+```js
+var a = 3,
+    b = '3',
+    c = true,
+    d = { test: '123', example: 123 },
+    e = function(){ console.log('example') },
+    f = ['test', 'example']
+
+a.toString() // '3'
+b.toString() // '3'
+c.toString() // 'true'
+d.toString() // '[object Object]'
+e.toString() // function(){ console.log('example') }
+f.toString() // 'text,example'。相当于arr.join(',')
+
+a.valueOf() // 3
+b.valueOf() // '3'
+c.valueOf() // true
+d.valueOf() // {test: "123", example: 123}
+e.valueOf() // function(){ console.log('example') }
+f.valueOf() // ['test', 'example']
+```
+
+### [JS]类数组对象、可遍历对象
+`类数组对象`：具有length属性的对象
+ - Array.from()
+
+`可遍历对象`：具有Iterator接口的对象（**Array、Map、Set、String、函数的arguments对象、NodeList对象**）
+ - Array.from()
+ - 扩展运算符（...)
+
+下面这个`类数组对象`，但它`没有部署Iterator接口`：
+```js
+let arrayLike = {
+    '0': 'a',
+    '1': 'b',
+    '2': 'c',
+    length: 3
+}
+
+// （1）使用扩展运算符
+let arr = [...arrayLike]
+// Error: Cannot spread non-iterable object.
+
+// （2）使用Array.from()
+Array.from(arrayLike)
+// ["a", "b", "c"]
+
+// Array.from()等价于
+Array.prototype.slice.call(arrayLike)
+// 也等价于
+[].slice.call(arrayLieke)
+```
