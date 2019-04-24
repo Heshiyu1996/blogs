@@ -80,7 +80,16 @@
     
 
 ### [HTML]Web-Worker
-Web Worker是HTML5的新功能。Web Worker标准包含两部分：**Worker对象**（该对象暴露给创建该线程 的线程用的）、**WorkerGlobalScope**（这是一个用来表示新创建的Worker的全局对象，也是Worker线程内部使用的对象）
+
+Web Worker是HTML5的新功能，用于实现JS的多线程操作。
+
+*但Web Worker子线程`完全受主线程控制`，无法操作DOM，所以**本质上JS还是单线程的**。*
+
+它包含两部分：
+ - **Worker对象**
+    - 该对象暴露给 **创建该Web Worker的线程** 用的
+ - **WorkerGlobalScope**
+    - 这是一个用来表示 **新创建的Worker的全局对象**（也是Worker线程内部使用的对象）
 
 外界：
  - 实例化一个worker对象
@@ -2202,11 +2211,6 @@ Math.floor(Math.random() * 5 + 95) // [95, 100)之间的整数，向下取整
  - 这个函数会返回另外一个函数
  - 由被返回的函数去处理剩下的参数
 
- 好处：
- - 参数复用
- - 提前确定走哪个方法
- - 延迟运行
-
  ```js
  add(1)(2)(3).valueOf() // 6
 
@@ -2231,6 +2235,42 @@ Math.floor(Math.random() * 5 + 95) // [95, 100)之间的整数，向下取整
     return _adder
  }
  ```
+
+ 好处：
+ - 参数复用
+ - 提前返回
+    ```js
+    // before
+    var addEvent = function(el, type, fn, capture) {
+        if (window.addEventListener) {
+            el.addEventListener(type, function(e) {
+                fn.call(el, e)
+            }, capture)
+        } else if(window.attachEvent) {
+            el.attachEvent('on' + type, function(e) {
+                fn.call(el, e)
+            })
+        }
+    }
+
+    // after
+    var addEvent = (function() {
+        if (window.addEventListener) {
+            return function(el, sType, fn, capture) {
+                el.addEventListener(sType, function(e) {
+                    fn.call(el, e)
+                }, capture)
+            }
+        } else if (window.attachEvent) {
+            return function(el, sType, fn, capture) {
+                el.attachEvent('on' + sType, function(e) {
+                    fn.call(el, e)
+                })
+            }
+        }
+    })()
+    ```
+ - 延迟运行
 
 ### [JS]this的各种情况
  - 作为函数调用，this指向window（非严格模式）；this指向undefined（严格模式）
