@@ -2,9 +2,9 @@
 学而不思则罔
 
 ## 知识集合
-  * [基础知识总结](/src/Interview/Basics.md)
+  * [基础知识总结（HTML、CSS、JavaScript）](/src/Interview/Basics.md)
 
-  * [基础知识总结2](/src/Interview/Basics2.md)
+  * [基础知识总结2（浏览器、WEB、Node.js、算法）](/src/Interview/Basics2.md)
 
   * [项目经验总结](/src/Interview/Experience.md)
 

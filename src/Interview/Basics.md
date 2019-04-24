@@ -1577,7 +1577,7 @@ function func1(arr) {
 ```
 
 ### [JS]for...in和for...of
- - for...in *（读取对象/数组的key值）*
+ - for...in *（读取对象或数组的key值）*
     ```js
         var arr = [1, 9, 6, 7]
         var obj = {
@@ -1594,7 +1594,7 @@ function func1(arr) {
         }
         // name
     ```
- - for...of *（读取）*
+ - for...of *（读取数组的value值，且只能遍历部署了Iterator接口的数据）*
     ```js
         var arr = [1, 9, 6, 7]
         var obj = {
@@ -1611,7 +1611,7 @@ function func1(arr) {
         }
         // error
     ```
-注意：`for...of`只适用于`拥有迭代器对象`的集合（例如：数字、字符串、map、set等），`不能遍历对象`
+因为`for...of`循环本质上是**调用Iterator接口产生的遍历器**，所以它只适用于`部署了Iterator接口`的数据（例如：数字、字符串、Map、Set、arguments、NodeList等），这是普通对象没有的
  
 ### [JS]Generator函数
 看一个`Generator函数`：
@@ -2432,4 +2432,15 @@ Array.from(arrayLike)
 Array.prototype.slice.call(arrayLike)
 // 也等价于
 [].slice.call(arrayLieke)
+```
+### [JS][ ].find()、[ ].findIndex()和[ ].filter()
+```js
+[1, 3, 5, 8].find(x => x > 3)
+// 5
+
+[1, 3, 5, 8].findIndex(x => x > 3)
+// 2
+
+[1, 3, 5, 8].filter(x => x > 3)
+// [5, 8]
 ```
