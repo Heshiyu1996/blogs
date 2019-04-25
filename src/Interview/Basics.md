@@ -1721,12 +1721,12 @@ Generator是一个异步操作的容器，它的自动执行需要一种机制�
   - 使用`open`、`setRequestHeader`、`send`结合发送请求
 
   其中`xhr.readyState`有如下5种状态：
-   - 0：XMLHttpRequest对象已创建，但还没调用open
-   - 1：正在向服务端发送请求
-   - 2：已经接收响应的内容
-   - 3：正在解析响应的内容
+   - 0：open未调用
+   - 1：open已调用
+   - 2：接收到头信息
+   - 3：接收到响应主体
      - 根据响应的MIME类型，把数据转换成能通过responseBody、responseText或responseXML属性存取的格式
-   - 4：解析完成，可以在客户端调用了
+   - 4：响应完成
 
  ```js
     var url = 'http://www.api.com/checkLogin'
@@ -1736,7 +1736,7 @@ Generator是一个异步操作的容器，它的自动执行需要一种机制�
     xhr.setRequestHeader('x-from', 'pc')
 
     xhr.onreadystatechange = function(res) {
-        if (xhr.readyState == 4) {
+        if (xhr.readyState == 4 && xhr.status === 200) {
             var response = JSON.parse(xhr.response)
             if (response.success == false) {
                 alert('您的账号暂无权限，请先注册~')
@@ -1797,7 +1797,7 @@ arr.constructor === Array // true
 ```
 
 ### [JS]script标签的加载规则
- 默认情况下，浏览器**同步加载JavaScript脚本**，（即渲染引擎遇到`<script>`标签就会停下来，等脚本执行完毕再继续向下渲染）
+ 默认情况下，浏览器**同步加载JavaScript脚本**，（即**渲染引擎**遇到`<script>`标签就会把控制权交给**JS引擎**去执行脚本，执行完毕再把控制权交给**渲染引擎**，继续向下渲染）
 
  当然，浏览器也**允许脚本异步加载**，下面是两种 **异步加载** 的语法：
  ```js
@@ -1856,7 +1856,7 @@ for (var i in o) {
 // 'a' 'b'
 ```
 
-### configurable
+#### configurable
 configurable属性若为false，则表示：1、该对象的这个属性不能被删除；2、除了`value`、`wratable`以外的其他特性能否被修改。
 ```js
 var o = {}
@@ -2205,7 +2205,7 @@ Math.floor(Math.random() * 5 + 95) // [95, 100)之间的整数，向下取整
 ```
 
 ### [JS]柯里化
-柯里化是高阶函数的特殊用法。
+柯里化是一种采用了**高阶函数**的**函数式编程技巧**。
 
  - 先传递一部分参数给指定函数
  - 这个函数会返回另外一个函数

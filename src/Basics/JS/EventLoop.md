@@ -29,6 +29,8 @@ Promise.resolve().then(() => {
 })
 
 console.log(9)
+
+// 1 9 3 7 4 6 8 5 2
 ```
 
 ### 1、执行栈（call stack）
@@ -66,6 +68,7 @@ JS运行时是单线程，但是浏览器不是。浏览器提供了一些api供
  - 7、回到第2步，检查`宏任务队列`中是否有未执行的`宏任务`，继续下一轮循环
 
 注意：`Ajax请求完毕后`触发的回调函数会进入`宏任务队列`
+
 ![alt](./img/eventloop-3.png)
 
 参考链接：[JavaScript的Event Loop机制](https://www.jianshu.com/p/87a9e0068dd8)
