@@ -2,9 +2,9 @@
 > 学而不思则罔
 
 ## 目录
-| | | | | |
-|--|--|--|--|--|
-| 基础知识 | [基础（HTML、CSS、JavaScript）](/src/Interview/Basics.md) | [基础2（浏览器、WEB、Node.js、算法）](/src/Interview/Basics2.md) | [早读课](/src/Reference/Links.md) | |
+| 类别 | | | |
+|--|--|--|--|
+| 基础知识 | [基础（HTML、CSS、JavaScript）](/src/Interview/Basics.md) | [基础2（浏览器、WEB、Node.js、算法）](/src/Interview/Basics2.md) | [早读课](/src/Reference/Links.md) |
 | 项目实践 | [日常随笔](/src/Interview/Experience.md) | [个人经验总结](/src/Experience/Summary.md) | [工具总结](/src/Experience/Tools.md) |
 | Vue.js | [基础](/src/Vue/Basics.md) | [底层源码](/src/Vue/SourceCode.md) | [VueConf](/src/Vue/VueConf.md) |
 | Vue-Router | [基础](/src/VueRouter/Basic.md) | 底层源码 |
