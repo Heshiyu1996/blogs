@@ -648,3 +648,148 @@ webpack插件有以下特点：
     - 在生成资源、并输出到目录之后
  - done
     - 完成编译
+
+### [移动端]移动端适配1px问题
+问题：在移动端上，有时候设置`border: 1px`，但实际上显示的是2px（或3px）
+
+原因：
+ - 1、`<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">`，定义了初始值、最大缩放值为1，并禁止用户缩放。一刀切。
+ - 2、`devicePixelRatio = 设备物理像素 / 设备独立像素`，其中*设备独立像素*就是设置的css像素，`设备物理像素`就是实际显示像素。（对于Retina屏，该值为2或者3）
+
+ 解决：
+ - 1、配体查询、小数（不推荐）
+    - 安卓、低版本IOS（8以下）不兼容小数。
+        ```css
+        .border {
+            border: 1px solid red;
+        }
+        @media screen and (-webkit-min-device-pixel-ratio: 2) {
+            .border {
+                border: 0.5px solid red;
+            }
+        }
+        @media screen and (-webkit-min-device-pixel-ratio: 3) {
+            .border {
+                border: 0.33333px solid red;
+            }
+        }
+        ```
+ - 2、flexible.js
+    - 检测IOS机型，计算出`scale = 1/devicePixelRatio`，然后`设置viewport`
+    ```js
+    scale = 1 / devicePixelRatio
+
+    metaElem = document.createElement('meta')
+    metaElem.setAttribute('name', 'viewport')
+    metaElem.setAttribute('content', 'initial-scale=' + scale + ', maximum-scale=' + scale + ', minimum-scale=' + scale + ', user-scalable=no')
+    ```
+ - 3、伪类+transform
+    - 利用js判断是否Retina屏；把`原先元素border去掉`，利用:before和:after`重做border`，并`transform: scale(0.5)`
+    ```js
+    // 利用js判断是否Retina屏
+    if (window.devicePixelRatio && devicePixelRatio >= 2) {
+        document.querySelector('div').className = 'scale-1px'
+    }
+    ```
+    ```css
+    .scale-1px {
+        position: relative;
+        border: none;
+    }
+    .scale-1px:after {
+        content: ' ';
+        position: absolute;
+        top: 0;
+        left: 0;
+        border: 1px solid red;
+        width: 200%;
+        height: 200%;
+        transform: scale(0.5);
+        transform: scale: left top;
+    }
+    ```
+### [移动端]a标签点击出现灰色背景
+解决：
+ - 1、IOS和部分安卓
+    ```css
+    .child {
+        -webkit-tab-highlight-color: rgba(0, 0, 0, 0);
+    }
+    ```
+ - 2、部分安卓、winphone
+    ```html
+    <meta name="msapplication-tap-highlight" content="no">
+    ```
+ - 3、小米2
+    使用`div`标签
+
+### [移动端]滚动卡顿问题
+原因：
+ - 1、`事件处理函数`会比`默认行为`先触发（除了checkbox）
+ - 2、浏览器无法预知用户是否禁止默认行为
+
+解决：
+通过`passive为true`来明确告诉浏览器：**事件处理函数不会调用preventDefault来阻止默认滚动行为。**（浏览器就能快速生成事件，从而提升页面性能。）
+```js
+elem.addEventListener('touchstart', fn, { passive: true })
+```
+
+### [移动端]click延时问题
+原因：移动端双击会放大，在第一次点击后需等待200ms左右来判断是否会进行下次双击
+
+解决：
+ - 1、利用zepto.js
+    - 优点：利用tab事件来监听click
+    - 缺点：点透事件（移动端的事件冒泡机制：touchstart、touchmove、touchend、click）
+ - 2、原生js实现
+    - 思路：监听touchstart事件。若无移动，且在离开屏幕时，触发touchend时计算时间差，若很短，则主动进行click事件，并preventDefault在touchend上的冒泡。
+
+### [pc]keep-alive不能正常销毁
+问题：设置了`<keep-alive>`组件的include属性后，keep-alive组件不能正常销毁，且会占用内存。
+
+解决：
+ - 1、给所有vue实例增加name实例选项（未解决）
+ - 2、查看keep-alive源码：
+ ```js
+  // created时，创建cache对象
+  created () {
+    this.cache = Object.create(null)
+    this.keys = []
+  },
+
+  // destroyed时，遍历cache对象，并删除
+  destroyed () {
+    for (const key in this.cache) {
+      pruneCacheEntry(this.cache, key, this.keys)
+    }
+  },
+  
+  // mounted时，会监听include、exclude这两个字段
+  mounted () {
+    this.$watch('include', val => {
+      pruneCache(this, name => matches(val, name))
+    })
+    this.$watch('exclude', val => {
+      pruneCache(this, name => !matches(val, name))
+    })
+  }
+
+  // pruneCache函数用于判断缓存规则，若不符合，则去除该keep-alive组件
+ ```
+ 通过断点，发现destroyed没有进入。查看该组件，发现是手动触发了this.$destroy方法，使得缓存组件无法正常摧毁。
+
+ ### [pc]庞大数据的渲染、校验、保存问题
+ 问题：庞大的数据导致前端的渲染、保存卡顿
+ 
+ 解决：
+  - 1、后端真分页、后端校验、单条保存
+    - 缺点：HTTP请求增多
+  - 2、前端假分页、前端校验、整体保存
+    - 优点：减少HTTP请求、校验快
+  - 3、利用vue-virtual-scroller
+    - 优点：懒加载
+    - 原理：将加载事件绑定在scroll事件上，并记录上次渲染item的startIndex、endIndex，利用一个buffer进行存储。
+ 
+
+
+
