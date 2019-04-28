@@ -174,3 +174,18 @@ checkFile(ev) {
 ```js
 ev.target.value = null
 ```
+
+### 服务端set-cookie后，浏览器application查看cookie为空
+原因：前后端项目中的端口不同，使用了CORS跨域，影响了cookie的设置
+
+解决：
+ - 服务端（响应头部）：
+    ```js
+        res.header("Access-Control-Allow-Origin", "具体请求源"); // 这里要写具体请求地址
+        res.header(" Access-Control-Allow-Credentials", true); // cookie可以包含在请求头中，一起发给服务器
+    ```
+ - 浏览器端（axios头部）：
+    ```js
+        axios.defaults.withCredentials = true
+    ```
+注意：服务端`设置httponly`后，客户端就不能使用document.cookie获取值
