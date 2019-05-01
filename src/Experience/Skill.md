@@ -3,6 +3,13 @@
 > 
 > 更新时间：2019-01-06
 
+### vue-cli打包到服务端
+若是被部署到域名的根路径上：`https://www.baidu.com/`
+ - 设置`publicPath: './`
+
+若是被部署到指定的子路径上：`https://www.baidu.com/elephant/`
+ - 设置`publicPath: '/elephant/'`
+
 ### vuelidate
 `vuelidate`是一款很轻量的校验框架。其中的`helpers.req()`让我经常弄不懂，总结一下：
 
