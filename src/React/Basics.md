@@ -167,6 +167,7 @@ React.DOM.ul(
 ```
 
 #### 使用工厂类创建React组件
+一般需要配合**无状态函数式组件**
 ```js
 const { render } = ReactDOM
 
@@ -187,3 +188,75 @@ render(
     document.getElementById('react-container')
 )
 ```
+> 如果你曾经在React里使用过JSX，那么也许永远也不会使用工厂类了。
+
+### JSX
+创建React元素的方法：
+ - React.createElement
+ - 工厂类
+ - JSX
+
+```js
+// React Element
+React.createElement(Component1, { items: ['No 1', 'No 2'] }, null)
+
+// 等价于
+// JAX
+<Component1 items={['No 1', 'No 2']} />
+```
+
+### JSX小技巧
+
+#### 组件嵌套
+JSX支持嵌套：
+```js
+<Component1>
+    <child1 />
+    <child2 />
+    <child3 />
+</Component1>
+```
+
+#### className
+`class`是JavaScript的保留字，改用`className`
+```js
+<h1 className="title-wrapper">Title</h1>
+```
+
+#### JavaScript表达式
+JavaScript用花括号括起，其中声明的变量会**进行求值，并返回结果**。
+
+```js
+// 要使用JS代码，记得{ }括起
+<ul>
+    {
+        this.props.items.map((item, i) =>
+            <li key={i}> {item} </li>
+        )
+    }
+</ul>
+```
+
+JSX无法被浏览器解析，必须（通过*Babel*）转换成*createElement或者工厂类*，这个过程叫做：`转译`。
+
+### Babel
+#### 直接引入babel-core
+转译时机：*在浏览器执行这些源代码前，进行转译*
+
+ - 在HTML引入一个babel-core
+ - 将脚本代码块的类型设置为`text/babel`
+ ```js
+ <script type="text/babel"></script>
+ ```
+
+#### 和webpack搭配
+转译时机：提前对JS文件进行静态转译
+
+（后续讲解...）
+
+### Babel的presets模块
+常用的：
+ - babel-preset-env
+    - 对属于ES2015、ES2016和ES2017规范的内容进行转译（包含了：babel-preset-es2015、babel-preset-es2016、babel-preset-es2017三个模块的功能）
+ - babel-preset-react
+    - 将JSX格式转译成React.createElement调用。
