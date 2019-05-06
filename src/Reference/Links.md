@@ -1,5 +1,9 @@
 # 前端早读课
 > 一些优秀文章的收录
+* [Chrome扩展及应用开发（首发版）](http://www.ituring.com.cn/book/1421)
+
+* [切换node版本](https://newsn.net/say/node-n.html)
+
 * [讓我們來談談 CSRF](https://blog.techbridge.cc/2017/02/25/csrf-introduction/)
 
 * [Vue源码阅读 - 依赖收集原理](https://juejin.im/post/5b40c8495188251af3632dfa)
