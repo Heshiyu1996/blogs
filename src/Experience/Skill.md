@@ -3,6 +3,19 @@
 > 
 > 更新时间：2019-01-06
 
+### 解构赋值要看被解构的是什么类型
+```js
+// 如果要被解构的是个对象
+let { name, age } = item
+
+// 如果要被解构的是个数组
+let [ name, age ] = array
+```
+不然会报这个错误：
+Invalid attempt to destructure non-iterable instance
+
+![alt](./img/skill-2.png)
+
 ### vue-cli打包到服务端
 若是被部署到域名的根路径上：`https://www.baidu.com/`
  - 设置`publicPath: './`
