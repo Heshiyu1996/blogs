@@ -3,6 +3,11 @@
 > 
 > 更新时间：2019-01-06
 
+### 使用Vue开发环境提示
+![alt](./img/skill-3.png)
+
+解决办法：在main.js里`Vue.config.productionTip = false;`
+
 ### 解构赋值要看被解构的是什么类型
 ```js
 // 如果要被解构的是个对象
