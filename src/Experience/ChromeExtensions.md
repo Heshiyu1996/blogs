@@ -119,3 +119,17 @@ chrome.cookies.remove({
     console.log(cookie) // 这就是那个被删除的cookie
 })
 ```
+
+### content script里的matches写法：
+ - 匹配所有域名：`<all_urls>`
+ - 匹配某个域名下：`http://127.0.0.1/*`
+ - 匹配所有http协议的域名：`http://*/*`（https同理）
+
+
+### 调研过
+#### 不能自动弹出popup.html
+谷歌浏览器不支持模拟用户click事件来弹出popup.html，网上给出2种方式：
+ - 1、通过`background.js`来执行代码`window.open('chrome-extension://YOUR_CHROME_EXTENSION_ID/_generated_background_page.html') `
+ - 2、通过`content.js`动态创建一个`<div>`，然后由这个div显示popup.html的内容（如果是Vue，则动态创建一个带有id的div，然后再引入其main.js来挂载上去）
+
+[stackoverflow连接](https://stackoverflow.com/questions/5544256/chrome-extensionhow-to-pragmatically-open-the-popup-window-from-background-htm)
