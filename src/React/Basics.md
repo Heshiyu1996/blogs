@@ -260,3 +260,49 @@ JSX无法被浏览器解析，必须（通过*Babel*）转换成*createElement�
     - 对属于ES2015、ES2016和ES2017规范的内容进行转译（包含了：babel-preset-es2015、babel-preset-es2016、babel-preset-es2017三个模块的功能）
  - babel-preset-react
     - 将JSX格式转译成React.createElement调用。
+
+### 事件处理函数的绑定方式
+class方法默认不会绑定this，所以一般绑定`onClick`事件处理函数时，注意绑定`this`，否则会为undefined
+
+解决方法：
+ - Class fields（定义方法为箭头函数）
+```jsx
+handleClick = () => {
+    console.log('this', this)
+}
+
+<button onClick={this.handleClick} />
+```
+第一种方式的缺点：不能带参数；且类似antd组件库，他的一些内置方法（onCancel）有内置参数的要注意
+
+  - 箭头函数（调用方法为箭头函数）
+```jsx
+handleClick(e) {
+    console.log(console.log(e))
+}
+<button onClick={(e) => this.handleClick(e)} />
+```
+第二种方式的缺点：若将该回调函数通过props传入子组件可能会使得子组件重新渲染。
+
+第二种方式的好处：可以传递参数
+```jsx
+<button onClick={(e) => this.this.handle(id, e)} />
+```
+ - 在constructor里显式bind
+```jsx
+constructor(props) {
+    super(props)
+    this.handleClick = this.handleClick.bind(this)
+}
+```
+
+### React里的key
+#### 何时加key
+一个好的经验法则是：在 map() 方法中的元素需要设置 key 属性。
+
+#### key全局唯一吗？
+不是全局唯一的，同一个数组里面唯一就行
+
+
+#### 子组件可以通过props读取的key吗
+不可以，key是传给React的
