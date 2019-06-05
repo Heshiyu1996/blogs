@@ -306,3 +306,48 @@ constructor(props) {
 
 #### 子组件可以通过props读取的key吗
 不可以，key是传给React的
+
+### React中的反向传递
+组件B是组件A的子组件：
+```jsx
+// A
+class A extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            parentName: 'A'
+        }
+    }
+    // ③ 父组件接收到参数，进行setState
+    handleChangeInParent = parentName => {
+        this.setState({ parentName })
+    }
+
+    render() {
+        return (
+            <div>
+                {/* ①父组件将 能够触发state改变的回调函数（callback）传递给子组件 */}
+                <B callback={this.handleChangeInParent}></B>
+            </div>
+        )
+    }
+}
+```
+
+```jsx
+// B
+class B extends React.Component {
+    handleChangeInChild = e => {
+        e.preventDefault()
+        //② 子组件调用 父组件传过来的回调函数，并传实参
+        this.props.callback(this.refs.todo.value.toString())
+    }
+
+    render() {
+        return (
+            <input type="text" ref="todo" />
+            <button onClick={this.handleChangeInChild}></button>
+        )
+    }
+}
+```
