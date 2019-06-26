@@ -1,5 +1,13 @@
 # 前端早读课
 > 一些优秀文章的收录
+
+* [Vue 最黑暗的一天](https://juejin.im/post/5d0f64d4f265da1b67211893)
+    - 是一篇译文，主要讲述的是最近在VueJS社区上，对Vue3.0新的API（Function based API）不太满意，而且也有部分人认为是舍弃了旧语法，浪费了之前的Vue学习时间。作者举了两个小例子，从自己的角度解释了这个API的优势，也举了“文件夹”是按照功能归类，而不是按照类型归类的例子。
+    - 最后稍微提了一下，对于开源软件不必要太过多的无理批评，应该礼貌表达。
+
+
+* [JavaScript深入系列、JavaScript专题系列、ES6系列、React系列](https://github.com/mqyqingfeng/Blog)
+
 * [Chrome扩展及应用开发（首发版）](http://www.ituring.com.cn/book/1421)
 
 * [切换node版本](https://newsn.net/say/node-n.html)
