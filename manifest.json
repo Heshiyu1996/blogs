@@ -1,0 +1,26 @@
+{
+    "name": "chenfeng",
+    "short_name": "feng",
+    "start_url": "index.html",
+    "display": "standalone",
+    "background_color": "#2196f3",
+    "description": "个人网站",
+    "theme_color": "blue",
+    "icons": [
+      {
+        "src": "/favicon.jpg",
+        "sizes": "144x144",
+        "type": "image/png"
+      }
+    ],
+    "related_applications": [
+      {
+        "platform": "web"
+      },
+      {
+        "platform": "play",
+        "url": "https://play.google.com/store/apps/details?id=cheeaun.hackerweb"
+      }
+    ]
+  }
+
