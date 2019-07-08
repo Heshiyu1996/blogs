@@ -351,3 +351,63 @@ class B extends React.Component {
     }
 }
 ```
+
+### 在React里使用hot-loader
+webpack-dev-server是热加载，指的是保存后，刷新整个页面；
+
+react-hot-loader是热加载，同时也支持局部更新（需依赖HotModuleReplacement热加载插件）
+
+1、安装`react-hot-loader`
+```
+npm install --save-dev react-hot-loader
+```
+
+2、将webpack.config.js中的devServer的hot设为true
+```js
+devServer: {
+    hot: true
+}
+```
+
+3、在`.babelrc`里添加plugin
+```json
+{
+    "presets": ["es2015", "react"],
+    "plugins": ["react-hot-loader/babel"]
+}
+```
+
+4、在`webpack.config.js`的plugins里添加依赖的`HotModuleReplacement`插件
+```js
+
+plugins: [
+    new webpack.HotModuleReplacementPlugin() //设置这里
+]
+```
+
+5、在项目主入口`main.js`添加代码
+```jsx
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Greeter from './greeter';
+import "./main.css";
+import { AppContainer } from 'react-hot-loader'; //设置这里
+ 
+const render = (App) => {
+	ReactDOM.render(
+		<AppContainer>
+			<App />
+		</AppContainer>,
+	document.getElementById('root')
+	)
+}
+ 
+render(Greeter)
+ 
+// Hot Module Replacement API 
+if (module.hot) {
+    module.hot.accept('./greeter', () => {
+        render(require('./greeter').default)
+    })
+}
+```
